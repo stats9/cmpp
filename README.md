@@ -40,7 +40,7 @@ devtools::install_github("stats9/cmpp")
 
 ## Usage
 ```R
-library(CompetingRiskR)
+library(cmpp)
 
 # Example: Fitting a Gompertz model for cumulative incidence
 fit <- gompertz_cif(time = time, event = event, covariates = ~ age + treatment)

@@ -1,12 +1,21 @@
 Package: cmpp
 Type: Package
-Title: What the Package Does in One 'Title Case' Line
+Title: Parametric Methods for Cumulative Incidence Functions in Competing Risks
 Version: 1.0
 Date: 2024-12-08
-Author: Your Name
-Maintainer: Your Name <your@email.com>
-Description: One paragraph description of what the package does as one
-        or more full sentences.
+Author: Habib Ezzat Abadi Pour (Stats9)
+Maintainer: Habib Ezzat Abadi Pour <habibezati@outlook.com>
+Description: Implements parametric modeling and regression methods for cumulative incidence functions in 
+        the presence of competing risks. Methods include the direct Gompertz-based approach 
+        and generalized regression models as described in Jeong and Fine (2006, 2007). 
+        The package facilitates maximum likelihood estimation, variance computation, 
+        and goodness-of-fit evaluation for competing risks data, 
+        with applications to clinical trials and survival analysis. 
 License: GPL (>= 2)
 Imports: Rcpp (>= 1.0.13)
 LinkingTo: Rcpp
+Depends: 
+    R (>= 2.10)
+LazyData: true
+Encoding: UTF-8
+RoxygenNote: 7.3.2

@@ -1,3 +1,5 @@
-useDynLib(cmpp, .registration=TRUE)
-importFrom(Rcpp, evalCpp)
-export(cdf_gomp, compute_grad, GrLike, Initialize, LogLike1, pdf_gomp)
+# Dynamically load the shared library and register C++ functions
+useDynLib(cmpp, .registration = TRUE)
+
+# Export C++ functions that you want to make available in R
+export(cpp_Initialize, cpp_cdf_gomp, cpp_pdf_gomp, cpp_GetDim, cpp_LogLike1, cpp_compute_grad, cpp_makeMat, cpp_Cleanup)

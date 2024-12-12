@@ -1,5 +1,3 @@
-#include "myfunctions.h"
-
 // [[Rcpp::depends(RcppEigen)]]
 #include <Rcpp.h>
 #include <RcppEigen.h>
@@ -39,11 +37,11 @@ public:
         return x;
     }
 
-    double F_Gomp(double x, double alpha, double beta) {
+     F_Gomp(double x, double alpha, double beta) {
         return 1 - std::exp(beta * (1 - std::exp(alpha * x)) / alpha); 
     }
 
-    double f_Gomp(double x, double alpha, double beta) {
+     double f_Gomp(double x, double alpha, double beta) {
         return beta * std::exp(alpha * x + (beta / alpha) * (1 - std::exp(alpha * x)));
     }
 
@@ -112,47 +110,84 @@ public:
     }
 };
 
-// Define an instance of Cmpp class 
-Cmpp cmpp(Eigen::MatrixXd(1, 1), Eigen::VectorXd(1), Eigen::VectorXi(1), Eigen::VectorXi(1), 1);
+Cmpp* cmpp = nullptr; // Define a pointer to Cmpp class instance
 
 // [[Rcpp::export]]
-void Initialize(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, double h) {
+void cpp_Initialize(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, double h) {
     // Convert Rcpp types to Eigen types
     Eigen::Map<Eigen::MatrixXd> feature_matrix(Rcpp::as<Eigen::Map<Eigen::MatrixXd>>(features));  // Convert R matrix to Eigen matrix
     Eigen::Map<Eigen::VectorXd> x_vector(Rcpp::as<Eigen::Map<Eigen::VectorXd>>(x));                // Convert R vector to Eigen vector
     Eigen::Map<Eigen::VectorXi> delta1_vector(Rcpp::as<Eigen::Map<Eigen::VectorXi>>(delta1));      // Convert R vector to Eigen vector
     Eigen::Map<Eigen::VectorXi> delta2_vector(Rcpp::as<Eigen::Map<Eigen::VectorXi>>(delta2));      // Convert R vector to Eigen vector
-    
-    // Create an instance of the Cmpp class
-    cmpp = Cmpp(feature_matrix, x_vector, delta1_vector, delta2_vector, h);
+
+    // If an instance already exists, delete it
+    if (cmpp != nullptr) {
+        delete cmpp;
+    }
+    // Create a new instance of the Cmpp class
+    cmpp = new Cmpp(feature_matrix, x_vector, delta1_vector, delta2_vector, h);
 }
 
 // [[Rcpp::export]]
-double cdf_gomp(double x, double alpha, double beta) {
-    return cmpp.F_Gomp(x, alpha, beta); 
+double cpp_cdf_gomp(double time, double shape, double scale) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    return cmpp->F_Gomp(time, shape, scale); 
 }
 
 // [[Rcpp::export]]
-double pdf_gomp(double x, double alpha, double beta) {
-    return cmpp.f_Gomp(x, alpha, beta); 
+double cpp_pdf_gomp(double x, double alpha, double beta) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    return cmpp->f_Gomp(x, alpha, beta); 
 }
 
 // [[Rcpp::export]]
-Rcpp::List GetDim() {
-    return cmpp.GetNum_method();
+Rcpp::List cpp_GetDim() {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    return cmpp->GetNum_method();
 }
 
 // [[Rcpp::export]]
-double LogLike1(Eigen::VectorXd& Param) {
-    return cmpp.LogLike1_method(Param); 
+SEXP cpp_LogLike1(SEXP paramSEXP) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+
+    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(paramSEXP));
+    double result = cmpp->LogLike1_method(Param);
+    return Rcpp::wrap(result);
 }
 
-// [[Rcpp::export]]
-double GrLike(const Eigen::VectorXd& Param, Eigen::VectorXd& grad) {
-    return cmpp.evaluate(Param, grad);
-}
+
 
 // [[Rcpp::export]]
-Eigen::VectorXd compute_grad(const Eigen::VectorXd& Param) {
-    return cmpp.compute_numeric_gradient(Param);
+SEXP cpp_compute_grad(SEXP paramSEXP) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+
+    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(paramSEXP));
+    Eigen::VectorXd grad = cmpp->compute_numeric_gradient(Param);
+    return Rcpp::wrap(grad);
+}
+
+
+// [[Rcpp::export]]
+Eigen::MatrixXd cpp_makeMat(int n, int m, double value){
+    Eigen::MatrixXd mat = Eigen::MatrixXd::Constant(n, m, value);
+    return mat; 
+}
+
+// Clean up memory by deleting the pointer when done
+// [[Rcpp::export]]
+void cpp_Cleanup() {
+    if (cmpp != nullptr) {
+        delete cmpp;
+        cmpp = nullptr;
+    }
 }

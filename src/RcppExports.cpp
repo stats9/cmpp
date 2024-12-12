@@ -11,9 +11,9 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
-// Initialize
-void Initialize(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, double h);
-RcppExport SEXP _cmpp_Initialize(SEXP featuresSEXP, SEXP xSEXP, SEXP delta1SEXP, SEXP delta2SEXP, SEXP hSEXP) {
+// cpp_Initialize
+void cpp_Initialize(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, double h);
+RcppExport SEXP _cmpp_cpp_Initialize(SEXP featuresSEXP, SEXP xSEXP, SEXP delta1SEXP, SEXP delta2SEXP, SEXP hSEXP) {
 BEGIN_RCPP
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< NumericMatrix >::type features(featuresSEXP);
@@ -21,102 +21,100 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< IntegerVector >::type delta1(delta1SEXP);
     Rcpp::traits::input_parameter< IntegerVector >::type delta2(delta2SEXP);
     Rcpp::traits::input_parameter< double >::type h(hSEXP);
-    Initialize(features, x, delta1, delta2, h);
+    cpp_Initialize(features, x, delta1, delta2, h);
     return R_NilValue;
 END_RCPP
 }
-// cdf_gomp
-double cdf_gomp(double x, double alpha, double beta);
-RcppExport SEXP _cmpp_cdf_gomp(SEXP xSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
+// cpp_cdf_gomp
+double cpp_cdf_gomp(double time, double shape, double scale);
+RcppExport SEXP _cmpp_cpp_cdf_gomp(SEXP timeSEXP, SEXP shapeSEXP, SEXP scaleSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type time(timeSEXP);
+    Rcpp::traits::input_parameter< double >::type shape(shapeSEXP);
+    Rcpp::traits::input_parameter< double >::type scale(scaleSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_cdf_gomp(time, shape, scale));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_pdf_gomp
+double cpp_pdf_gomp(double x, double alpha, double beta);
+RcppExport SEXP _cmpp_cpp_pdf_gomp(SEXP xSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< double >::type x(xSEXP);
     Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
     Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
-    rcpp_result_gen = Rcpp::wrap(cdf_gomp(x, alpha, beta));
+    rcpp_result_gen = Rcpp::wrap(cpp_pdf_gomp(x, alpha, beta));
     return rcpp_result_gen;
 END_RCPP
 }
-// pdf_gomp
-double pdf_gomp(double x, double alpha, double beta);
-RcppExport SEXP _cmpp_pdf_gomp(SEXP xSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
+// cpp_GetDim
+Rcpp::List cpp_GetDim();
+RcppExport SEXP _cmpp_cpp_GetDim() {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type x(xSEXP);
-    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
-    Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
-    rcpp_result_gen = Rcpp::wrap(pdf_gomp(x, alpha, beta));
+    rcpp_result_gen = Rcpp::wrap(cpp_GetDim());
     return rcpp_result_gen;
 END_RCPP
 }
-// GetDim
-Rcpp::List GetDim();
-RcppExport SEXP _cmpp_GetDim() {
+// cpp_LogLike1
+SEXP cpp_LogLike1(SEXP paramSEXP);
+RcppExport SEXP _cmpp_cpp_LogLike1(SEXP paramSEXPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    rcpp_result_gen = Rcpp::wrap(GetDim());
+    Rcpp::traits::input_parameter< SEXP >::type paramSEXP(paramSEXPSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_LogLike1(paramSEXP));
     return rcpp_result_gen;
 END_RCPP
 }
-// LogLike1
-double LogLike1(Eigen::VectorXd& Param);
-RcppExport SEXP _cmpp_LogLike1(SEXP ParamSEXP) {
+// cpp_compute_grad
+SEXP cpp_compute_grad(SEXP paramSEXP);
+RcppExport SEXP _cmpp_cpp_compute_grad(SEXP paramSEXPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type Param(ParamSEXP);
-    rcpp_result_gen = Rcpp::wrap(LogLike1(Param));
+    Rcpp::traits::input_parameter< SEXP >::type paramSEXP(paramSEXPSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_compute_grad(paramSEXP));
     return rcpp_result_gen;
 END_RCPP
 }
-// GrLike
-double GrLike(const Eigen::VectorXd& Param, Eigen::VectorXd& grad);
-RcppExport SEXP _cmpp_GrLike(SEXP ParamSEXP, SEXP gradSEXP) {
+// cpp_makeMat
+Eigen::MatrixXd cpp_makeMat(int n, int m, double value);
+RcppExport SEXP _cmpp_cpp_makeMat(SEXP nSEXP, SEXP mSEXP, SEXP valueSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type Param(ParamSEXP);
-    Rcpp::traits::input_parameter< Eigen::VectorXd& >::type grad(gradSEXP);
-    rcpp_result_gen = Rcpp::wrap(GrLike(Param, grad));
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type m(mSEXP);
+    Rcpp::traits::input_parameter< double >::type value(valueSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_makeMat(n, m, value));
     return rcpp_result_gen;
 END_RCPP
 }
-// compute_grad
-Eigen::VectorXd compute_grad(const Eigen::VectorXd& Param);
-RcppExport SEXP _cmpp_compute_grad(SEXP ParamSEXP) {
+// cpp_Cleanup
+void cpp_Cleanup();
+RcppExport SEXP _cmpp_cpp_Cleanup() {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const Eigen::VectorXd& >::type Param(ParamSEXP);
-    rcpp_result_gen = Rcpp::wrap(compute_grad(Param));
-    return rcpp_result_gen;
+    cpp_Cleanup();
+    return R_NilValue;
 END_RCPP
 }
-
-RcppExport SEXP cdf_gomp(SEXP, SEXP, SEXP);
-RcppExport SEXP compute_grad(SEXP);
-RcppExport SEXP GrLike(SEXP);
-RcppExport SEXP Initialize(SEXP, SEXP, SEXP, SEXP, SEXP);
-RcppExport SEXP LogLike1(SEXP);
-RcppExport SEXP pdf_gomp(SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_cmpp_Initialize", (DL_FUNC) &_cmpp_Initialize, 5},
-    {"_cmpp_cdf_gomp", (DL_FUNC) &_cmpp_cdf_gomp, 3},
-    {"_cmpp_pdf_gomp", (DL_FUNC) &_cmpp_pdf_gomp, 3},
-    {"_cmpp_GetDim", (DL_FUNC) &_cmpp_GetDim, 0},
-    {"_cmpp_LogLike1", (DL_FUNC) &_cmpp_LogLike1, 1},
-    {"_cmpp_GrLike", (DL_FUNC) &_cmpp_GrLike, 2},
-    {"_cmpp_compute_grad", (DL_FUNC) &_cmpp_compute_grad, 1},
-    {"cdf_gomp",     (DL_FUNC) &cdf_gomp,     3},
-    {"compute_grad", (DL_FUNC) &compute_grad, 1},
-    {"GrLike",       (DL_FUNC) &GrLike,       1},
-    {"Initialize",   (DL_FUNC) &Initialize,   5},
-    {"LogLike1",     (DL_FUNC) &LogLike1,     1},
-    {"pdf_gomp",     (DL_FUNC) &pdf_gomp,     3},
+    {"_cmpp_cpp_Initialize", (DL_FUNC) &_cmpp_cpp_Initialize, 5},
+    {"_cmpp_cpp_cdf_gomp", (DL_FUNC) &_cmpp_cpp_cdf_gomp, 3},
+    {"_cmpp_cpp_pdf_gomp", (DL_FUNC) &_cmpp_cpp_pdf_gomp, 3},
+    {"_cmpp_cpp_GetDim", (DL_FUNC) &_cmpp_cpp_GetDim, 0},
+    {"_cmpp_cpp_LogLike1", (DL_FUNC) &_cmpp_cpp_LogLike1, 1},
+    {"_cmpp_cpp_compute_grad", (DL_FUNC) &_cmpp_cpp_compute_grad, 1},
+    {"_cmpp_cpp_makeMat", (DL_FUNC) &_cmpp_cpp_makeMat, 3},
+    {"_cmpp_cpp_Cleanup", (DL_FUNC) &_cmpp_cpp_Cleanup, 0},
     {NULL, NULL, 0}
 };
 

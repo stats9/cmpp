@@ -12,7 +12,9 @@ Description: Implements parametric modeling and regression methods for cumulativ
         and goodness-of-fit evaluation for competing risks data, 
         with applications to clinical trials and survival analysis. 
 License: GPL (>= 2)
-Imports: Rcpp (>= 1.0.13)
+Imports: 
+    Rcpp (>= 1.0.13), 
+    RcppEigen
 LinkingTo: Rcpp, RcppEigen
 Depends: 
     R (>= 2.10)

@@ -3,6 +3,7 @@
 #include <RcppEigen.h>
 #include <cmath>
 
+
 using namespace Rcpp;
 using namespace Eigen;
 
@@ -37,11 +38,11 @@ public:
         return x;
     }
 
-     F_Gomp(double x, double alpha, double beta) {
+    double F_Gomp(double x, double alpha, double beta) {
         return 1 - std::exp(beta * (1 - std::exp(alpha * x)) / alpha); 
     }
 
-     double f_Gomp(double x, double alpha, double beta) {
+    double f_Gomp(double x, double alpha, double beta) {
         return beta * std::exp(alpha * x + (beta / alpha) * (1 - std::exp(alpha * x)));
     }
 
@@ -108,12 +109,40 @@ public:
     Rcpp::List get_censoring_indicators() {
         return Rcpp::List::create(Named("delta1") = delta1, Named("delta2") = delta2);
     }
+
+    // Method to compute the Hessian matrix
+    Eigen::MatrixXd compute_numeric_hessian(const Eigen::VectorXd& Param) {
+        int n = Param.size();
+        Eigen::MatrixXd hessian = Eigen::MatrixXd::Zero(n, n);
+
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                Eigen::VectorXd Param_ij = Param;
+                Param_ij[i] += h;
+                Param_ij[j] += h;
+                double f_ij = LogLike1_method(Param_ij);
+
+                Param_ij[j] -= 2 * h;
+                double f_i_j = LogLike1_method(Param_ij);
+
+                Param_ij[i] -= 2 * h;
+                double f_ij_ = LogLike1_method(Param_ij);
+
+                Param_ij[j] += 2 * h;
+                double f_i_j_ = LogLike1_method(Param_ij);
+
+                hessian(i, j) = (f_ij - f_i_j - f_ij_ + f_i_j_) / (4 * h * h);
+            }
+        }
+
+        return hessian;
+    }
 };
 
 Cmpp* cmpp = nullptr; // Define a pointer to Cmpp class instance
 
 // [[Rcpp::export]]
-void cpp_Initialize(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, double h) {
+void Initialize(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, double h) {
     // Convert Rcpp types to Eigen types
     Eigen::Map<Eigen::MatrixXd> feature_matrix(Rcpp::as<Eigen::Map<Eigen::MatrixXd>>(features));  // Convert R matrix to Eigen matrix
     Eigen::Map<Eigen::VectorXd> x_vector(Rcpp::as<Eigen::Map<Eigen::VectorXd>>(x));                // Convert R vector to Eigen vector
@@ -129,7 +158,7 @@ void cpp_Initialize(NumericMatrix features, NumericVector x, IntegerVector delta
 }
 
 // [[Rcpp::export]]
-double cpp_cdf_gomp(double time, double shape, double scale) {
+double cdf_gomp(double time, double shape, double scale) {
     if (cmpp == nullptr) {
         Rcpp::stop("The Cmpp object has not been initialized.");
     }
@@ -137,7 +166,7 @@ double cpp_cdf_gomp(double time, double shape, double scale) {
 }
 
 // [[Rcpp::export]]
-double cpp_pdf_gomp(double x, double alpha, double beta) {
+double pdf_gomp(double x, double alpha, double beta) {
     if (cmpp == nullptr) {
         Rcpp::stop("The Cmpp object has not been initialized.");
     }
@@ -145,7 +174,7 @@ double cpp_pdf_gomp(double x, double alpha, double beta) {
 }
 
 // [[Rcpp::export]]
-Rcpp::List cpp_GetDim() {
+Rcpp::List GetDim() {
     if (cmpp == nullptr) {
         Rcpp::stop("The Cmpp object has not been initialized.");
     }
@@ -153,7 +182,7 @@ Rcpp::List cpp_GetDim() {
 }
 
 // [[Rcpp::export]]
-SEXP cpp_LogLike1(SEXP paramSEXP) {
+SEXP LogLike1(SEXP paramSEXP) {
     if (cmpp == nullptr) {
         Rcpp::stop("The Cmpp object has not been initialized.");
     }
@@ -163,10 +192,8 @@ SEXP cpp_LogLike1(SEXP paramSEXP) {
     return Rcpp::wrap(result);
 }
 
-
-
 // [[Rcpp::export]]
-SEXP cpp_compute_grad(SEXP paramSEXP) {
+SEXP compute_grad(SEXP paramSEXP) {
     if (cmpp == nullptr) {
         Rcpp::stop("The Cmpp object has not been initialized.");
     }
@@ -176,18 +203,80 @@ SEXP cpp_compute_grad(SEXP paramSEXP) {
     return Rcpp::wrap(grad);
 }
 
+// [[Rcpp::export]]
+SEXP compute_hessian(SEXP paramSEXP) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+
+    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(paramSEXP));
+    Eigen::MatrixXd hessian = cmpp->compute_numeric_hessian(Param);
+    return Rcpp::wrap(hessian);
+}
 
 // [[Rcpp::export]]
-Eigen::MatrixXd cpp_makeMat(int n, int m, double value){
+Eigen::MatrixXd makeMat(int n, int m, double value){
     Eigen::MatrixXd mat = Eigen::MatrixXd::Constant(n, m, value);
     return mat; 
 }
 
 // Clean up memory by deleting the pointer when done
 // [[Rcpp::export]]
-void cpp_Cleanup() {
+void Cleanup() {
     if (cmpp != nullptr) {
         delete cmpp;
         cmpp = nullptr;
     }
+}
+
+// [[Rcpp::export]]
+List bootstrap_variance(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, NumericVector initial_params, int n_bootstrap, std::string optimMethod) {
+  int n = features.nrow();  // Number of rows in features
+  int p = initial_params.size();  // Number of parameters
+  Eigen::MatrixXd bootstrap_estimates(n_bootstrap, p);
+
+  for (int i = 0; i < n_bootstrap; ++i) {
+    // Sample with replacement (adjust for 0-based indexing)
+    IntegerVector indices = sample(n, n, true) - 1;  // Subtract 1 to convert to 0-based indexing
+    NumericMatrix features_boot(n, features.ncol());
+    NumericVector x_boot(n);
+    IntegerVector delta1_boot(n);
+    IntegerVector delta2_boot(n);
+
+    // Create bootstrap samples
+    for (int j = 0; j < n; ++j) {
+      features_boot(j, _) = features(indices[j], _);  // Access rows using adjusted indices
+      x_boot[j] = x[indices[j]];
+      delta1_boot[j] = delta1[indices[j]];
+      delta2_boot[j] = delta2[indices[j]];
+    }
+
+    // Initialize with bootstrap sample
+    Initialize(features_boot, x_boot, delta1_boot, delta2_boot, 1e-5);
+
+    // Estimate parameters using optim from stats package
+    Environment stats = Environment::namespace_env("stats");
+    Function optim = stats["optim"];
+    List optim_result = optim(
+      Named("par") = initial_params,
+      Named("fn") = Rcpp::InternalFunction(&LogLike1),
+      Named("gr") = Rcpp::InternalFunction(&compute_grad),
+      Named("method") = optimMethod
+    );
+
+    // Store the results in the bootstrap estimates matrix
+    Eigen::VectorXd par = as<Eigen::VectorXd>(optim_result["par"]);
+    bootstrap_estimates.row(i) = par;
+  }
+
+  // Compute variance of the bootstrap estimates
+  Eigen::VectorXd variances(p);
+  for (int j = 0; j < p; ++j) {
+    variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+  }
+
+  return List::create(
+    Named("variances") = variances,
+    Named("bootstrap_estimates") = bootstrap_estimates
+  );
 }

@@ -14,10 +14,17 @@ Description: Implements parametric modeling and regression methods for cumulativ
 License: GPL (>= 2)
 Imports: 
     Rcpp (>= 1.0.13), 
+    RcppEigen, 
+    ggplot2, 
+    dplyr, 
+    tidyr
+LinkingTo: 
+    Rcpp, 
     RcppEigen
-LinkingTo: Rcpp, RcppEigen
 Depends: 
-    R (>= 2.10)
+    R (>= 4.1.2)
 LazyData: true
 Encoding: UTF-8
 RoxygenNote: 7.3.2
+Suggests: roxygen2
+Roxygen: list(markdown = TRUE)

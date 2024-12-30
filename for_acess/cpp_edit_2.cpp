@@ -113,7 +113,7 @@ public:
 Cmpp* cmpp = nullptr; // Define a pointer to Cmpp class instance
 
 // [[Rcpp::export]]
-void cpp_Initialize(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, double h) {
+void Initialize(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, double h) {
     // Convert Rcpp types to Eigen types
     Eigen::Map<Eigen::MatrixXd> feature_matrix(Rcpp::as<Eigen::Map<Eigen::MatrixXd>>(features));  // Convert R matrix to Eigen matrix
     Eigen::Map<Eigen::VectorXd> x_vector(Rcpp::as<Eigen::Map<Eigen::VectorXd>>(x));                // Convert R vector to Eigen vector
@@ -129,54 +129,63 @@ void cpp_Initialize(NumericMatrix features, NumericVector x, IntegerVector delta
 }
 
 // [[Rcpp::export]]
-double cpp_cdf_gomp(double time, double shape, double scale) {
+double cdf_gomp(double time, double shape, double scale) {
     if (cmpp == nullptr) {
-        stop("The Cmpp object has not been initialized.");
+        Rcpp::stop("The Cmpp object has not been initialized.");
     }
     return cmpp->F_Gomp(time, shape, scale); 
 }
 
 // [[Rcpp::export]]
-double cpp_pdf_gomp(double x, double alpha, double beta) {
+double pdf_gomp(double x, double alpha, double beta) {
     if (cmpp == nullptr) {
-        stop("The Cmpp object has not been initialized.");
+        Rcpp::stop("The Cmpp object has not been initialized.");
     }
     return cmpp->f_Gomp(x, alpha, beta); 
 }
 
 // [[Rcpp::export]]
-Rcpp::List cpp_GetDim() {
+Rcpp::List GetDim() {
     if (cmpp == nullptr) {
-        stop("The Cmpp object has not been initialized.");
+        Rcpp::stop("The Cmpp object has not been initialized.");
     }
     return cmpp->GetNum_method();
 }
 
 // [[Rcpp::export]]
-double cpp_LogLike1(Eigen::VectorXd& Param) {
+SEXP LogLike1(SEXP paramSEXP) {
     if (cmpp == nullptr) {
-        stop("The Cmpp object has not been initialized.");
+        Rcpp::stop("The Cmpp object has not been initialized.");
     }
-    return cmpp->LogLike1_method(Param); 
+
+    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(paramSEXP));
+    double result = cmpp->LogLike1_method(Param);
+    return Rcpp::wrap(result);
 }
 
-// [[Rcpp::export]]
-Eigen::VectorXd cpp_compute_grad(const Eigen::VectorXd& Param) {
-    if (cmpp == nullptr) {
-        stop("The Cmpp object has not been initialized.");
-    }
-    return cmpp->compute_numeric_gradient(Param);
-}
+
 
 // [[Rcpp::export]]
-Eigen::MatrixXd cpp_makeMat(int n, int m, double value){
+SEXP compute_grad(SEXP paramSEXP) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+
+    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(paramSEXP));
+    Eigen::VectorXd grad = cmpp->compute_numeric_gradient(Param);
+    return Rcpp::wrap(grad);
+}
+
+
+// [[Rcpp::export]]
+Eigen::MatrixXd makeMat(int n, int m, double value){
     Eigen::MatrixXd mat = Eigen::MatrixXd::Constant(n, m, value);
     return mat; 
 }
 
 // Clean up memory by deleting the pointer when done
 // [[Rcpp::export]]
-void cpp_Cleanup() {
+void Cleanup() {
     if (cmpp != nullptr) {
         delete cmpp;
         cmpp = nullptr;

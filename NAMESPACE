@@ -2,4 +2,16 @@
 useDynLib(cmpp, .registration = TRUE)
 
 # Export C++ functions that you want to make available in R
-export(cpp_Initialize, cpp_cdf_gomp, cpp_pdf_gomp, cpp_GetDim, cpp_LogLike1, cpp_compute_grad, cpp_makeMat, cpp_Cleanup)
+export(Initialize)
+export(cdf_gomp)
+export(pdf_gomp) 
+export(GetDim)
+export(LogLike1)
+export(compute_grad)
+export(makeMat)
+export(Cleanup)
+export(compute_hessian)
+export(estimate_parameters)
+export(bootstrap_variance)
+export(CIF_res1)
+export(CIF_Figs)

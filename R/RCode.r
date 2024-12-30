@@ -358,7 +358,6 @@ NULL
 #' @return A data frame containing:
 #' \item{Params}{The parameter names ("alpha1", "beta1", "alpha2", "beta2").}
 #' \item{STD}{The standard deviations of the parameters.}
-#' \item{pvalue}{The p-values for the parameters.}
 #'
 #' @examples
 #' \dontrun{
@@ -388,26 +387,10 @@ CIF_res1 <- function(initial_params = rep(0.001, 4)) {
   pnorm(Params[1], mean = 0, sd = sqrt(var_alpha1), lower.tail = FALSE)
   ))
 
-  pval_beta1 <- 2 * min(c(
-  pnorm(Params[2], mean = 0, sd = sqrt(var_beta1)), 
-  pnorm(Params[2], mean = 0, sd = sqrt(var_beta1), lower.tail = FALSE)
-  ))
-
-  pval_alpha2 <- 2 * min(c(
-  pnorm(Params[3], mean = 0, sd = sqrt(var_alpha2)), 
-  pnorm(Params[3], mean = 0, sd = sqrt(var_alpha2), lower.tail = FALSE)
-  ))
-
-  pval_beta2 <- 2 * min(c(
-  pnorm(Params[4], mean = 0, sd = sqrt(var_beta2)), 
-  pnorm(Params[4], mean = 0, sd = sqrt(var_beta2), lower.tail = FALSE)
-  ))
-
 result <- data.frame(
 Params = c("alpha1", "beta1", "alpha2", "beta2"), 
 Estimation = Params, 
-STD = c(sqrt(var_alpha1), sqrt(var_beta1), sqrt(var_alpha2), sqrt(var_beta2)), 
-pvalue = c(pval_alpha1, pval_beta1, pval_alpha2, pval_beta2)
+STD = c(sqrt(var_alpha1), sqrt(var_beta1), sqrt(var_alpha2), sqrt(var_beta2))
 )
 
 return (result)

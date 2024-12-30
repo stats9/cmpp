@@ -13,7 +13,6 @@ CIF_res1(initial_params = rep(0.001, 4))
 A data frame containing:
 \item{Params}{The parameter names ("alpha1", "beta1", "alpha2", "beta2").}
 \item{STD}{The standard deviations of the parameters.}
-\item{pvalue}{The p-values for the parameters.}
 }
 \description{
 This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive.

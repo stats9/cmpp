@@ -42,12 +42,39 @@ devtools::install_github("stats9/cmpp")
 ```R
 library(cmpp)
 
-# Example: Fitting a Gompertz model for cumulative incidence
-fit <- gompertz_cif(time = time, event = event, covariates = ~ age + treatment)
-summary(fit)
+# Load example data
+data(dat)
+names(dat)
+feat <- dat[, -c(match(c('id', 'time', 'event', 'cause_burn', 'd1', 'd2', 'cause_hotObject3'), names(dat)))]  
+timee <- dat[['time']]
+d1 <- dat[['d1']]
+d2 <- dat[['d2']]
+feat2 <- feat |> data.matrix()
 
-# Predict cumulative incidence
-predict(fit, newdata = data.frame(age = 50, treatment = "A"), time = 5)
+# Initialize the Cmpp model
+Initialize(feat2, timee, d1, d2, 1e-10)
+
+# Estimate parameters using LBFGS++
+initial_params <- c(0.001, 0.001, 0.001, 0.001)
+params <- estimate_parameters(initial_params)
+print(params)
+
+# Compute Hessian and other metrics
+hessian <- compute_hessian(params$par)
+print(hessian)
+
+# Bootstrap variance estimation
+results <- bootstrap_variance(feat2, timee, d1, d2, initial_params, n_bootstrap = 500)
+print(results$variances)
+print(results$bootstrap_estimates)
+
+# Compute CIF results
+cif_results <- CIF_res1(initial_params)
+print(cif_results)
+
+# Plot CIFs with confidence intervals
+plot <- CIF_Figs(initial_params, timee)
+print(plot)
 ```
 
 ## References

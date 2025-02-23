@@ -41,3 +41,23 @@ bootstrap_variance <- function(features, x, delta1, delta2, initial_params, n_bo
     .Call(`_cmpp_bootstrap_variance`, features, x, delta1, delta2, initial_params, n_bootstrap, optimMethod)
 }
 
+F_cdf_rcpp <- function(Params, Z, x) {
+    .Call(`_cmpp_F_cdf_rcpp`, Params, Z, x)
+}
+
+f_pdf_rcpp <- function(Params, Z, x) {
+    .Call(`_cmpp_f_pdf_rcpp`, Params, Z, x)
+}
+
+log_f_rcpp <- function(Params) {
+    .Call(`_cmpp_log_f_rcpp`, Params)
+}
+
+compute_log_f_gradient_rcpp <- function(Params) {
+    .Call(`_cmpp_compute_log_f_gradient_rcpp`, Params)
+}
+
+compute_log_f_hessian_rcpp <- function(Params) {
+    .Call(`_cmpp_compute_log_f_hessian_rcpp`, Params)
+}
+

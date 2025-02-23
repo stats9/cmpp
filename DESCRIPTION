@@ -1,7 +1,7 @@
 Package: cmpp
 Type: Package
 Title: Parametric Methods for Cumulative Incidence Functions in Competing Risks
-Version: 1.0
+Version: 1.1
 Date: 2024-12-08
 Author: Habib Ezzat Abadi Pour (Stats9)
 Maintainer: Habib Ezzat Abadi Pour <habibezati@outlook.com>
@@ -17,7 +17,8 @@ Imports:
     RcppEigen, 
     ggplot2, 
     dplyr, 
-    tidyr
+    tidyr, 
+    numDeriv
 LinkingTo: 
     Rcpp, 
     RcppEigen
@@ -26,5 +27,7 @@ Depends:
 LazyData: true
 Encoding: UTF-8
 RoxygenNote: 7.3.2
-Suggests: roxygen2
+Suggests: 
+    roxygen2, 
+    numDeriv
 Roxygen: list(markdown = TRUE)

@@ -133,6 +133,65 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// F_cdf_rcpp
+double F_cdf_rcpp(NumericVector Params, NumericVector Z, double x);
+RcppExport SEXP _cmpp_F_cdf_rcpp(SEXP ParamsSEXP, SEXP ZSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type Params(ParamsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Z(ZSEXP);
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(F_cdf_rcpp(Params, Z, x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// f_pdf_rcpp
+double f_pdf_rcpp(NumericVector Params, NumericVector Z, double x);
+RcppExport SEXP _cmpp_f_pdf_rcpp(SEXP ParamsSEXP, SEXP ZSEXP, SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type Params(ParamsSEXP);
+    Rcpp::traits::input_parameter< NumericVector >::type Z(ZSEXP);
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(f_pdf_rcpp(Params, Z, x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// log_f_rcpp
+double log_f_rcpp(NumericVector Params);
+RcppExport SEXP _cmpp_log_f_rcpp(SEXP ParamsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type Params(ParamsSEXP);
+    rcpp_result_gen = Rcpp::wrap(log_f_rcpp(Params));
+    return rcpp_result_gen;
+END_RCPP
+}
+// compute_log_f_gradient_rcpp
+NumericVector compute_log_f_gradient_rcpp(NumericVector Params);
+RcppExport SEXP _cmpp_compute_log_f_gradient_rcpp(SEXP ParamsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type Params(ParamsSEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_log_f_gradient_rcpp(Params));
+    return rcpp_result_gen;
+END_RCPP
+}
+// compute_log_f_hessian_rcpp
+NumericMatrix compute_log_f_hessian_rcpp(NumericVector Params);
+RcppExport SEXP _cmpp_compute_log_f_hessian_rcpp(SEXP ParamsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type Params(ParamsSEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_log_f_hessian_rcpp(Params));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_cmpp_Initialize", (DL_FUNC) &_cmpp_Initialize, 5},
@@ -145,6 +204,11 @@ static const R_CallMethodDef CallEntries[] = {
     {"_cmpp_makeMat", (DL_FUNC) &_cmpp_makeMat, 3},
     {"_cmpp_Cleanup", (DL_FUNC) &_cmpp_Cleanup, 0},
     {"_cmpp_bootstrap_variance", (DL_FUNC) &_cmpp_bootstrap_variance, 7},
+    {"_cmpp_F_cdf_rcpp", (DL_FUNC) &_cmpp_F_cdf_rcpp, 3},
+    {"_cmpp_f_pdf_rcpp", (DL_FUNC) &_cmpp_f_pdf_rcpp, 3},
+    {"_cmpp_log_f_rcpp", (DL_FUNC) &_cmpp_log_f_rcpp, 1},
+    {"_cmpp_compute_log_f_gradient_rcpp", (DL_FUNC) &_cmpp_compute_log_f_gradient_rcpp, 1},
+    {"_cmpp_compute_log_f_hessian_rcpp", (DL_FUNC) &_cmpp_compute_log_f_hessian_rcpp, 1},
     {NULL, NULL, 0}
 };
 

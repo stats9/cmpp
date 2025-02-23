@@ -538,3 +538,233 @@ CIF_Figs <- function(initial_params, TimeFailure, OrderType = c(2, 1), RiskNames
 
   return(plot)
 }
+
+#' ################## add 2025-2-22 %%%%%%%%%%%%%%%%%%%%%%%%
+
+#' Create Dummy Variables
+#'
+#' This function creates dummy variables for specified features in a dataset.
+#'
+#' @param Data A data frame containing the data.
+#' @param features A character vector of feature names for which dummy variables are to be created.
+#' @param reff A character string indicating the reference level. It can be either "first" or "last".
+#' @return A list containing two elements: 
+#' \item{New_Data}{A data frame with the original data and the newly created dummy variables.}
+#' \item{Original_Data}{The original data frame.}
+#' @examples
+#' dat <- data.frame(sex = c('M', 'F', 'M'), cause_burn = c('A', 'B', 'A'))
+#' result <- make_Dummy(Data = dat, features = c('sex', 'cause_burn'), reff = "first")
+#' print(result$New_Data)
+#' @export
+make_Dummy <- function(Data = dat, features = c('sex', 'cause_burn'), reff = "first") {
+    tempDat <- data.frame(Temp_column = rep(NA, nrow(Data)))
+    for (j in features) {
+        temp <- Data[[j]]
+        temp2 <- as.factor(temp) |> levels()
+        index <- ifelse(reff == "last", length(temp2), 1)
+        for(h in temp2[-index]) {
+            temp3 <- 1 * (as.factor(temp) == h)
+            index2 <- which(as.factor(temp2) == h)
+            name_temp <- paste(j, index2, sep = ":")
+            tempDat[[name_temp]] <- temp3
+        }
+    }
+    f_dat <- tempDat[, -1]
+    index_name <- match(features, names(Data))
+    dat2 <- Data |> 
+        subset(select = -index_name)
+    return_data <- cbind(dat2, f_dat) |> as.data.frame() 
+    return(list(New_Data = return_data, Original_Data = Data))
+}
+
+#' @name f_pdf_rcpp
+#' @title Compute the PDF of the Parametric Model
+#' @description This function computes the probability density function (PDF) of the parametric model.
+#' @param Params A numeric vector of parameters.
+#' @param Z A numeric vector of covariates.
+#' @param x A numeric value representing the time point.
+#' @return A numeric value representing the PDF.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 3))
+#' pdf_value <- f_pdf_rcpp(params, Z[1, ], x[3])
+#' print(pdf_value)
+#' }
+NULL
+
+#' @name F_cdf_rcpp
+#' @title Compute the CDF of the Parametric Model
+#' @description This function computes the cumulative distribution function (CDF) of the parametric model.
+#' @param Params A numeric vector of parameters.
+#' @param Z A numeric vector of covariates.
+#' @param x A numeric value representing the time point.
+#' @return A numeric value representing the CDF.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 3))
+#' x <- 5
+#' cdf_value <- F_cdf_rcpp(params, features[1, ], x)
+#' print(cdf_value)
+#' }
+NULL
+
+#' @name log_f_rcpp
+#' @title Compute the Log-Likelihood Function
+#' @description This function computes the log-likelihood function for the parametric model.
+#' @param Params A numeric vector of parameters.
+#' @return A numeric value representing the log-likelihood.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 3))
+#' log_likelihood <- log_f_rcpp(params)
+#' print(log_likelihood)
+#' }
+NULL
+
+#' @name compute_log_f_gradient_rcpp
+#' @title Compute the Gradient of the Log-Likelihood Function
+#' @description This function computes the gradient of the log-likelihood function for the parametric model.
+#' @param Params A numeric vector of parameters.
+#' @return A numeric vector representing the gradient of the log-likelihood.
+#' @export
+#' @examples
+#' \dontrun{
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 3))
+#' gradient <- compute_log_f_gradient_rcpp(params)
+#' print(gradient)
+#' }
+NULL
+
+#' @name compute_log_f_hessian_rcpp
+#' @title Compute the Hessian Matrix of the Log-Likelihood Function
+#' @description This function computes the Hessian matrix of the log-likelihood function for the parametric model.
+#' @param Params A numeric vector of parameters.
+#' @return A numeric matrix representing the Hessian matrix of the log-likelihood.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 3))
+#' hessian <- compute_log_f_hessian_rcpp(params)
+#' print(hessian)
+#' }
+NULL
+
+
+#' @name estimate_parameters2
+#' @title Compute Cumulative Incidence Regression Results
+#'
+#' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive.
+#'
+#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (3 + ncol(covars)))`.
+#'
+#' @details This function performs the following steps:
+#' \itemize{
+#'   \item Estimates the model parameters using the `optim` function and `log_f_rcpp` and `compute_log_f_gradient_rcpp`, `compute_log_f_hessian_rcpp`
+#'   \item Computes the Hessian matrix using the `` function.
+#'   \item Ensures that the diagonal elements of the covariance matrix are positive.
+#'   \item Calculates the variances and p-values for the parameters.
+#' }
+#'
+#' @return A data frame containing:
+#' \item{Params}{The parameter names ('alpha1', "beta1", 'rho1', 'alpha2', 'beta2', 'rho2', 'beta11', ..., 'beta1k', 'beta21', ..., 'beta2k').}
+#' \item{STD}{The standard deviations of the parameters.}
+#' \item{Pvalue}{p-values.}
+#'
+#' @seealso \link{optim}, \link{compute_log_f_gradient_rcpp}, \link{log_f_rcpp}, \link{compute_log_f_hessian_rcpp}.
+#'
+#' @importFrom numDeriv hessian
+#'
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' initial_params <- rep(0.001, 2 * (ncol(features) + 3))
+#' result <- estimate_parameters2(initial_params)
+#' print(result)
+#' }
+#'
+#' @export
+estimate_parameters2 <- function(initial_params) {
+  # Optimize the log-likelihood function to estimate parameters
+  tempk <- length(initial_params) - 6
+  tempk <- tempk/2
+  optim_result <- optim(
+    par = initial_params,
+    fn = log_f_rcpp,
+    gr = compute_log_f_gradient_rcpp,
+    method = "BFGS",
+    control = list(fnscale = -1)
+  )
+  
+  # Extract estimated parameters
+  estimated_params <- optim_result$par
+  
+  # Compute the Hessian matrix at the estimated parameters
+  # Define the objective function
+  objective_function <- function(Params) {
+    log_f_rcpp(Params)  # Call the Rcpp function that computes the log-likelihood
+  }
+
+  # Compute Hessian numerically
+  compute_hessian_r <- function(Params) {
+  hessian_matrix <- numDeriv :: hessian(func = objective_function, x = Params)
+  return(hessian_matrix)
+}
+
+  hessian_matrix <- compute_hessian_r(initial_params)
+
+  # Compute the standard deviations of the parameters
+  std_devs <- diag(solve(-hessian_matrix)) |> abs() |> sqrt()
+  
+  # Compute the p-values for the parameters
+  p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))
+  
+  # Create a data frame with parameter names, estimates, standard deviations, and p-values
+  param_names <- c('alpha1', 'beta1', 'rho1', paste("beta1", 1:tempk, sep = ":"), 
+  'alpha2', 'beta2', 'rho2', paste("beta2", 1:tempk, sep = ":"))
+  result_df <- data.frame(
+    Parameter = param_names,
+    Estimate = estimated_params,
+    StdDev = std_devs,
+    PValue = p_values
+  )
+  
+  return(result_df)
+}
+NULL

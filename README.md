@@ -75,6 +75,18 @@ print(cif_results)
 # Plot CIFs with confidence intervals
 plot <- CIF_Figs(initial_params, timee)
 print(plot)
+
+## Regression Model 
+
+library(cmpp)
+features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+delta1 <- sample(c(0, 1), 100, replace = TRUE)
+delta2 <- 1 - delta1
+x <- rexp(100, rate = 1/10)
+Initialize(features, x, delta1, delta2, h = 1e-5)
+initial_params <- rep(0.001, 2 * (ncol(features) + 3))
+result <- estimate_parameters2(initial_params)
+print(result)
 ```
 
 ## References

@@ -2,7 +2,7 @@
 % Please edit documentation in R/RCode.r
 \name{compute_log_f_gradient_rcpp}
 \alias{compute_log_f_gradient_rcpp}
-\title{Compute the Gradient of the Log-Likelihood Function}
+\title{Compute the Gradient of the Log-Likelihood Function Generalized Chance Model (GCM)}
 \arguments{
 \item{Params}{A numeric vector of parameters.}
 }
@@ -10,7 +10,7 @@
 A numeric vector representing the gradient of the log-likelihood.
 }
 \description{
-This function computes the gradient of the log-likelihood function for the parametric model.
+This function computes the gradient of the log-likelihood function for the parametric model (GCM Approach).
 }
 \examples{
 \dontrun{

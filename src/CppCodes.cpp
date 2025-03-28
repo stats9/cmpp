@@ -158,7 +158,6 @@ public:
         double temp1 = 1 - std::pow(1 + alpha * std::exp(tempval) * tau * (std::exp(rho * x) - 1) / rho, -1 / alpha);
         return temp1;
     }
-
     // Method to compute f_pdf
     double f_pdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) {
         double alpha = Params[0];
@@ -253,6 +252,166 @@ public:
 
         return hessian;
     }
+
+// add 2025-03-27 
+    double F_cdf2(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x){
+        double tau = Params[0];
+        double rho = Params[1];
+        rho = (rho < 0) * rho - (rho > 0) * rho;
+        Eigen::VectorXd Beta = Params.tail(Params.size() - 2);
+        double tempval = Z.dot(Beta);
+        double temp1 = tau * (std::exp(rho * x) - 1) * std::exp(tempval) / (tau * (std::exp(rho * x) - 1) * std::exp(tempval) + rho);
+        return temp1;
+    }
+
+    double F_cdf3(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x){
+        double tau = Params[0];
+        double rho = Params[1];
+        rho = (rho < 0) * rho - (rho > 0) * rho;
+        Eigen::VectorXd Beta = Params.tail(Params.size() - 2);
+        double tempval = Z.dot(Beta);
+        double temp1 = 1 - std::exp(-(tau * (std::exp(rho * x) - 1) * std::exp(tempval))/rho);
+        return temp1;
+    }
+
+    double f_pdf2(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) {
+        double tau = Params[0];
+        double rho = Params[1];
+        rho = (rho < 0) * rho - (rho > 0) * rho;
+        Eigen::VectorXd Beta = Params.tail(Params.size() - 2);
+        double tempval = Z.dot(Beta);
+        double result1n = -std::pow(tau, 2)*(std::exp(rho * x)-1)*std::exp(rho*x)*std::exp(2 * tempval);
+        double result1d = rho * std::pow(tau *(std::exp(rho*x)-1)*std::exp(tempval)/rho + 1, 2);
+        double result2n = tau * std::exp(rho * x) * std::exp(tempval);
+        double result2d = tau * (std::exp(rho * x) - 1)*std::exp(tempval)/rho + 1;
+        return result1n/result1d + result2n/result2d;
+    }
+    double f_pdf3(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) {
+        double tau = Params[0];
+        double rho = Params[1];
+        rho = (rho < 0) * rho - (rho > 0) * rho;
+        Eigen::VectorXd Beta = Params.tail(Params.size() - 2);
+        double tempval = Z.dot(Beta);
+        double result = tau * std::exp(rho * x) * (std::exp(-tau *(std::exp(rho * x) - 1)*std::exp(tempval)/rho)) * std::exp(tempval);
+        return result;
+    }
+// end add 2025-03-27
+
+// add in 2025-03-28
+  double log_f2(const Eigen::VectorXd& Params, const Eigen::MatrixXd& covars, const Eigen::VectorXd& x, const Eigen::MatrixXi& dData, int nk) {
+        int n = covars.rows();
+        int P = covars.cols();
+        int ind = 2 + P;
+        double s = 0.0;
+        double Ftemp = 0.0;
+        double fTemp = 0.0;
+        for (int j = 0; j < n; ++j) {
+            Ftemp = 0.0;
+            fTemp = 0.0;
+            for (int k = 0; k < nk; ++k) {
+                Eigen::VectorXd parr = Params.segment(k * ind, ind);
+                int delta = dData(j, k);
+                fTemp += delta * std::log(f_pdf2(parr, covars.row(j), x[j]));
+                Ftemp += F_cdf2(parr, covars.row(j), x[j]);
+            }
+            double Delta_Temp = 1.0 - dData.row(j).sum();
+            if (Ftemp >= 1.0) {
+                Ftemp = 0.5;
+            }
+            double F_final_Temp = Delta_Temp * std::log(1.0 - Ftemp);
+            s += fTemp + F_final_Temp;
+        }
+        double tempres1 = s * s;
+        return tempres1;
+    }
+
+    double log_f_single2(const Eigen::VectorXd& Params) {
+        int Len = 2 * (nfeatures + 2);
+        check_params_length(Params, Len);
+        Eigen::MatrixXi dData(nsamp, 2);
+        dData.col(0) = delta1;
+        dData.col(1) = delta2;
+        return log_f2(Params, features, x, dData, 2);
+    }
+
+    Eigen::VectorXd compute_log_f_gradient2(const Eigen::VectorXd& Params) {
+        Eigen::VectorXd grad = Eigen::VectorXd::Zero(Params.size());
+
+        for (int i = 0; i < Params.size(); ++i) {
+            Eigen::VectorXd Params_plus = Params;
+            Eigen::VectorXd Params_minus = Params;
+
+            Params_plus[i] += h;
+            Params_minus[i] -= h;
+
+            double log_f_plus = log_f_single2(Params_plus);
+            double log_f_minus = log_f_single2(Params_minus);
+
+            grad[i] = (log_f_plus - log_f_minus) / (2 * h);
+        }
+
+        return grad;
+    }
+
+
+
+  double log_f3(const Eigen::VectorXd& Params, const Eigen::MatrixXd& covars, const Eigen::VectorXd& x, const Eigen::MatrixXi& dData, int nk) {
+        int n = covars.rows();
+        int P = covars.cols();
+        int ind = 2 + P;
+        double s = 0.0;
+        double Ftemp = 0.0;
+        double fTemp = 0.0;
+        for (int j = 0; j < n; ++j) {
+            Ftemp = 0.0;
+            fTemp = 0.0;
+            for (int k = 0; k < nk; ++k) {
+                Eigen::VectorXd parr = Params.segment(k * ind, ind);
+                int delta = dData(j, k);
+                fTemp += delta * std::log(f_pdf3(parr, covars.row(j), x[j]));
+                Ftemp += F_cdf3(parr, covars.row(j), x[j]);
+            }
+            double Delta_Temp = 1.0 - dData.row(j).sum();
+            if (Ftemp >= 1.0) {
+                Ftemp = 0.5;
+            }
+            double F_final_Temp = Delta_Temp * std::log(1.0 - Ftemp);
+            s += fTemp + F_final_Temp;
+        }
+        double tempres1 = s * s;
+        return tempres1;
+    }
+
+    double log_f_single3(const Eigen::VectorXd& Params) {
+        int Len = 2 * (nfeatures + 2);
+        check_params_length(Params, Len);
+        Eigen::MatrixXi dData(nsamp, 2);
+        dData.col(0) = delta1;
+        dData.col(1) = delta2;
+        return log_f3(Params, features, x, dData, 2);
+    }
+
+    Eigen::VectorXd compute_log_f_gradient3(const Eigen::VectorXd& Params) {
+        Eigen::VectorXd grad = Eigen::VectorXd::Zero(Params.size());
+
+        for (int i = 0; i < Params.size(); ++i) {
+            Eigen::VectorXd Params_plus = Params;
+            Eigen::VectorXd Params_minus = Params;
+
+            Params_plus[i] += h;
+            Params_minus[i] -= h;
+
+            double log_f_plus = log_f_single3(Params_plus);
+            double log_f_minus = log_f_single3(Params_minus);
+
+            grad[i] = (log_f_plus - log_f_minus) / (2 * h);
+        }
+
+        return grad;
+    }
+
+// end add in 2025-03-28
+
 };
 
 Cmpp* cmpp = nullptr; // Define a pointer to Cmpp class instance
@@ -446,3 +605,87 @@ NumericMatrix compute_log_f_hessian_rcpp(NumericVector Params) {
     Eigen::MatrixXd hessian = cmpp->compute_log_f_hessian(Params_eigen);
     return wrap(hessian);
 }
+
+// add in 2025-03-28
+
+
+// [[Rcpp::export]]
+double F_cdf_rcpp2(NumericVector Params, NumericVector Z, double x) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    Eigen::VectorXd Params_eigen = as<Eigen::VectorXd>(Params);
+    Eigen::VectorXd Z_eigen = as<Eigen::VectorXd>(Z);
+    return cmpp->F_cdf2(Params_eigen, Z_eigen, x);
+}
+
+// [[Rcpp::export]]
+double f_pdf_rcpp2(NumericVector Params, NumericVector Z, double x) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    Eigen::VectorXd Params_eigen = as<Eigen::VectorXd>(Params);
+    Eigen::VectorXd Z_eigen = as<Eigen::VectorXd>(Z);
+    return cmpp->f_pdf2(Params_eigen, Z_eigen, x);
+}
+
+// [[Rcpp::export]]
+double log_f_rcpp2(NumericVector Params) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    Eigen::VectorXd Params_eigen = as<Eigen::VectorXd>(Params);
+    return cmpp->log_f_single2(Params_eigen);
+}
+
+// [[Rcpp::export]]
+NumericVector compute_log_f_gradient_rcpp2(NumericVector Params) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    Eigen::VectorXd Params_eigen = as<Eigen::VectorXd>(Params);
+    Eigen::VectorXd grad = cmpp->compute_log_f_gradient2(Params_eigen);
+    return wrap(grad);
+}
+
+// [[Rcpp::export]]
+double F_cdf_rcpp3(NumericVector Params, NumericVector Z, double x) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    Eigen::VectorXd Params_eigen = as<Eigen::VectorXd>(Params);
+    Eigen::VectorXd Z_eigen = as<Eigen::VectorXd>(Z);
+    return cmpp->F_cdf3(Params_eigen, Z_eigen, x);
+}
+
+// [[Rcpp::export]]
+double f_pdf_rcpp3(NumericVector Params, NumericVector Z, double x) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    Eigen::VectorXd Params_eigen = as<Eigen::VectorXd>(Params);
+    Eigen::VectorXd Z_eigen = as<Eigen::VectorXd>(Z);
+    return cmpp->f_pdf3(Params_eigen, Z_eigen, x);
+}
+
+// [[Rcpp::export]]
+double log_f_rcpp3(NumericVector Params) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    Eigen::VectorXd Params_eigen = as<Eigen::VectorXd>(Params);
+    return cmpp->log_f_single3(Params_eigen);
+}
+
+// [[Rcpp::export]]
+NumericVector compute_log_f_gradient_rcpp3(NumericVector Params) {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    Eigen::VectorXd Params_eigen = as<Eigen::VectorXd>(Params);
+    Eigen::VectorXd grad = cmpp->compute_log_f_gradient3(Params_eigen);
+    return wrap(grad);
+}
+
+
+// end in 2025-03-28

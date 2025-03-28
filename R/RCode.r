@@ -578,8 +578,8 @@ make_Dummy <- function(Data = dat, features = c('sex', 'cause_burn'), reff = "fi
 }
 
 #' @name f_pdf_rcpp
-#' @title Compute the PDF of the Parametric Model
-#' @description This function computes the probability density function (PDF) of the parametric model.
+#' @title Compute the PDF of the Parametric Generalized Chance Model (GCM)
+#' @description This function computes the probability density function (PDF) of the parametric model (GCM Approach).
 #' @param Params A numeric vector of parameters.
 #' @param Z A numeric vector of covariates.
 #' @param x A numeric value representing the time point.
@@ -600,8 +600,8 @@ make_Dummy <- function(Data = dat, features = c('sex', 'cause_burn'), reff = "fi
 NULL
 
 #' @name F_cdf_rcpp
-#' @title Compute the CDF of the Parametric Model
-#' @description This function computes the cumulative distribution function (CDF) of the parametric model.
+#' @title Compute the CDF of the Parametric Generalized Chance Model (GCM)
+#' @description This function computes the cumulative distribution function (CDF) of the parametric model (GCM Approach).
 #' @param Params A numeric vector of parameters.
 #' @param Z A numeric vector of covariates.
 #' @param x A numeric value representing the time point.
@@ -623,8 +623,8 @@ NULL
 NULL
 
 #' @name log_f_rcpp
-#' @title Compute the Log-Likelihood Function
-#' @description This function computes the log-likelihood function for the parametric model.
+#' @title Compute the Log-Likelihood Function Generalized Chance Model (GCM)
+#' @description This function computes the log-likelihood function for the parametric model (GCM Approach).
 #' @param Params A numeric vector of parameters.
 #' @return A numeric value representing the log-likelihood.
 #' @export
@@ -642,9 +642,9 @@ NULL
 #' }
 NULL
 
-#' @name compute_log_f_gradient_rcpp
-#' @title Compute the Gradient of the Log-Likelihood Function
-#' @description This function computes the gradient of the log-likelihood function for the parametric model.
+#' @name compute_log_f_gradient_rcpp 
+#' @title Compute the Gradient of the Log-Likelihood Function Generalized Chance Model (GCM)
+#' @description This function computes the gradient of the log-likelihood function for the parametric model (GCM Approach).
 #' @param Params A numeric vector of parameters.
 #' @return A numeric vector representing the gradient of the log-likelihood.
 #' @export
@@ -662,8 +662,8 @@ NULL
 NULL
 
 #' @name compute_log_f_hessian_rcpp
-#' @title Compute the Hessian Matrix of the Log-Likelihood Function
-#' @description This function computes the Hessian matrix of the log-likelihood function for the parametric model.
+#' @title Compute the Hessian Matrix of the Log-Likelihood Function Generalized Chance Model (GCM)
+#' @description This function computes the Hessian matrix of the log-likelihood function for the parametric model (GCM Approach).
 #' @param Params A numeric vector of parameters.
 #' @return A numeric matrix representing the Hessian matrix of the log-likelihood.
 #' @export
@@ -682,24 +682,24 @@ NULL
 NULL
 
 
-#' @name estimate_parameters2
-#' @title Compute Cumulative Incidence Regression Results
+#' @name estimate_parameters_GCM
+#' @title Compute Cumulative Incidence Regression Results Generalized Chance Model (GCM)
 #'
-#' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive.
+#' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive (GCM Approach).
 #'
 #' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (3 + ncol(covars)))`.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
 #'   \item Estimates the model parameters using the `optim` function and `log_f_rcpp` and `compute_log_f_gradient_rcpp`, `compute_log_f_hessian_rcpp`
-#'   \item Computes the Hessian matrix using the `` function.
+#'   \item Computes the Hessian matrix using the `hessian` function in `numDeriv` package.
 #'   \item Ensures that the diagonal elements of the covariance matrix are positive.
 #'   \item Calculates the variances and p-values for the parameters.
 #' }
 #'
 #' @return A data frame containing:
-#' \item{Params}{The parameter names ('alpha1', "beta1", 'rho1', 'alpha2', 'beta2', 'rho2', 'beta11', ..., 'beta1k', 'beta21', ..., 'beta2k').}
-#' \item{STD}{The standard deviations of the parameters.}
+#' \item{Params}{The parameter names ('alpha1', "tau1", 'rho1', 'alpha2', 'tau2', 'rho2', 'beta11', ..., 'beta1k', 'beta21', ..., 'beta2k').}
+#' \item{S.E}{The standard deviations of the mean parameters.}
 #' \item{Pvalue}{p-values.}
 #'
 #' @seealso \link{optim}, \link{compute_log_f_gradient_rcpp}, \link{log_f_rcpp}, \link{compute_log_f_hessian_rcpp}.
@@ -715,12 +715,12 @@ NULL
 #' x <- rexp(100, rate = 1/10)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' initial_params <- rep(0.001, 2 * (ncol(features) + 3))
-#' result <- estimate_parameters2(initial_params)
+#' result <- estimate_parameters_GCM(initial_params)
 #' print(result)
 #' }
 #'
 #' @export
-estimate_parameters2 <- function(initial_params) {
+estimate_parameters_GCM <- function(initial_params, FeaturesNames = NULL) {
   # Optimize the log-likelihood function to estimate parameters
   tempk <- length(initial_params) - 6
   tempk <- tempk/2
@@ -731,6 +731,13 @@ estimate_parameters2 <- function(initial_params) {
     method = "BFGS",
     control = list(fnscale = -1)
   )
+  if(!is.null(FeaturesNames)) {
+    varNames <- c('alpha1', 'tau1', 'rho1', paste("Risk1", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"),
+      'alpha2', 'tau2', 'rho2', paste("Risk2", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"))
+  } else{
+      varNames <- c('alpha1', 'tau1', 'rho1', paste("beta1", 1:tempk, sep = ":"),
+        'alpha2', 'tau2', 'rho2', paste("beta2", 1:tempk, sep = ":"))
+    }
   
   # Extract estimated parameters
   estimated_params <- optim_result$par
@@ -756,12 +763,362 @@ estimate_parameters2 <- function(initial_params) {
   p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))
   
   # Create a data frame with parameter names, estimates, standard deviations, and p-values
-  param_names <- c('alpha1', 'beta1', 'rho1', paste("beta1", 1:tempk, sep = ":"), 
-  'alpha2', 'beta2', 'rho2', paste("beta2", 1:tempk, sep = ":"))
   result_df <- data.frame(
-    Parameter = param_names,
+    Parameter = varNames,
     Estimate = estimated_params,
-    StdDev = std_devs,
+    S.E = std_devs/sqrt(GetDim()$Nsamp),
+    # Adjust standard errors by the square root of the sample size
+    PValue = p_values
+  )
+  
+  return(result_df)
+}
+NULL
+
+
+###################### add 2025-03-28 #####################################
+
+#' @name f_pdf_rcpp2
+#' @title Compute the PDF of the Parametric Proportional Odds Model (POM)
+#' @description This function computes the probability density function (PDF) of the parametric model (POM Approach).
+#' @param Params A numeric vector of parameters.
+#' @param Z A numeric vector of covariates.
+#' @param x A numeric value representing the time point.
+#' @return A numeric value representing the PDF.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 2))
+#' pdf_value <- f_pdf_rcpp2(params, Z[1, ], x[3])
+#' print(pdf_value)
+#' }
+NULL
+
+#' @name F_cdf_rcpp2
+#' @title Compute the CDF of the Parametric Proportional Odds Model (POM)
+#' @description This function computes the cumulative distribution function (CDF) of the parametric model (POM Approach).
+#' @param Params A numeric vector of parameters.
+#' @param Z A numeric vector of covariates.
+#' @param x A numeric value representing the time point.
+#' @return A numeric value representing the CDF.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 2))
+#' x <- 5
+#' cdf_value <- F_cdf_rcpp2(params, features[1, ], x)
+#' print(cdf_value)
+#' }
+NULL
+
+#' @name log_f_rcpp2
+#' @title Compute the Log-Likelihood Function Proportional Odds Model (POM)
+#' @description This function computes the log-likelihood function for the parametric model (POM Approach).
+#' @param Params A numeric vector of parameters.
+#' @return A numeric value representing the log-likelihood.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 2))
+#' log_likelihood <- log_f_rcpp2(params)
+#' print(log_likelihood)
+#' }
+NULL
+
+#' @name compute_log_f_gradient_rcpp2
+#' @title Compute the Gradient of the Log-Likelihood Function Proportional Odds Model (POM)
+#' @description This function computes the gradient of the log-likelihood function for the parametric model (POM Approach).
+#' @param Params A numeric vector of parameters.
+#' @return A numeric vector representing the gradient of the log-likelihood.
+#' @export
+#' @examples
+#' \dontrun{
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 2))
+#' gradient <- compute_log_f_gradient_rcpp2(params)
+#' print(gradient)
+#' }
+NULL
+
+
+#' @name estimate_parameters_POM
+#' @title Compute Cumulative Incidence Regression Results Proportional Odds Model (POM)
+#'
+#' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive (POM Approach).
+#'
+#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (3 + ncol(covars)))`.
+#'
+#' @details This function performs the following steps:
+#' \itemize{
+#'   \item Estimates the model parameters using the `optim` function and `log_f_rcpp2` and `compute_log_f_gradient_rcpp`, `compute_log_f_hessian_rcpp`
+#'   \item Computes the Hessian matrix using the `hessian` function in `numDeriv`` package.
+#'   \item Ensures that the diagonal elements of the covariance matrix are positive.
+#'   \item Calculates the variances and p-values for the parameters.
+#' }
+#'
+#' @return A data frame containing:
+#' \item{Params}{The parameter names ("tau1", 'rho1', 'tau2', 'rho2', 'beta11', ..., 'beta1k', 'beta21', ..., 'beta2k').}
+#' \item{S.E}{The standard deviations of the mean parameters.}
+#' \item{Pvalue}{p-values.}
+#'
+#' @seealso \link{optim}, \link{compute_log_f_gradient_rcpp}, \link{log_f_rcpp}, \link{compute_log_f_hessian_rcpp}.
+#'
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' initial_params <- rep(0.001, 2 * (ncol(features) + 2))
+#' result <- estimate_parameters_POM(initial_params)
+#' print(result)
+#' }
+#'
+#' @export
+estimate_parameters_POM <- function(initial_params, FeaturesNames = NULL) {
+  # Optimize the log-likelihood function to estimate parameters
+  tempk <- length(initial_params) - 4
+  tempk <- tempk/2
+  optim_result <- optim(
+    par = initial_params,
+    fn = log_f_rcpp2,
+    gr = compute_log_f_gradient_rcpp2,
+    method = "BFGS",
+    control = list(fnscale = -1)
+  )
+    if(!is.null(FeaturesNames)) {
+    varNames <- c('tau1', 'rho1', paste("Risk1", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"),
+      'tau2', 'rho2', paste("Risk2", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"))
+  } else{
+      varNames <- c('tau1', 'rho1', paste("beta1", 1:tempk, sep = ":"),
+        'tau2', 'rho2', paste("beta2", 1:tempk, sep = ":"))
+    }
+  # Extract estimated parameters
+  estimated_params <- optim_result$par
+  
+  # Compute the Hessian matrix at the estimated parameters
+  # Define the objective function
+  objective_function <- function(Params) {
+    log_f_rcpp2(Params)  # Call the Rcpp function that computes the log-likelihood
+  }
+
+  # Compute Hessian numerically
+  compute_hessian_r <- function(Params) {
+  hessian_matrix <- numDeriv :: hessian(func = objective_function, x = Params)
+  return(hessian_matrix)
+}
+
+  hessian_matrix <- compute_hessian_r(initial_params)
+
+  # Compute the standard deviations of the parameters
+  std_devs <- diag(solve(-hessian_matrix)) |> abs() |> sqrt()
+  
+  # Compute the p-values for the parameters
+  p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))
+  
+  # Create a data frame with parameter names, estimates, standard deviations, and p-values
+  result_df <- data.frame(
+    Parameter = varNames,
+    Estimate = estimated_params,
+    S.E = std_devs/sqrt(GetDim()$Nsamp),
+    PValue = p_values
+  )
+  
+  return(result_df)
+}
+NULL
+
+#' @name f_pdf_rcpp3
+#' @title Compute the PDF of the Parametric Proportional Hazards Model (PHM)
+#' @description This function computes the probability density function (PDF) of the parametric model (PHM Approach).
+#' @param Params A numeric vector of parameters.
+#' @param Z A numeric vector of covariates.
+#' @param x A numeric value representing the time point.
+#' @return A numeric value representing the PDF.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 2))
+#' pdf_value <- f_pdf_rcpp2(params, Z[1, ], x[3])
+#' print(pdf_value)
+#' }
+NULL
+
+#' @name F_cdf_rcpp3
+#' @title Compute the CDF of the Parametric Proportional Hazards Model (PHM)
+#' @description This function computes the cumulative distribution function (CDF) of the parametric model (PHM Approach).
+#' @param Params A numeric vector of parameters.
+#' @param Z A numeric vector of covariates.
+#' @param x A numeric value representing the time point.
+#' @return A numeric value representing the CDF.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 2))
+#' x <- 5
+#' cdf_value <- F_cdf_rcpp2(params, features[1, ], x)
+#' print(cdf_value)
+#' }
+NULL
+
+#' @name log_f_rcpp3
+#' @title Compute the Log-Likelihood Function Proportional Hazards Model (PHM)
+#' @description This function computes the log-likelihood function for the parametric model (PHM Approach).
+#' @param Params A numeric vector of parameters.
+#' @return A numeric value representing the log-likelihood.
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 2))
+#' log_likelihood <- log_f_rcpp2(params)
+#' print(log_likelihood)
+#' }
+NULL
+
+#' @name compute_log_f_gradient_rcpp3
+#' @title Compute the Gradient of the Log-Likelihood Function Proportional Hazards Model (PHM)
+#' @description This function computes the gradient of the log-likelihood function for the parametric model (PHM Approach).
+#' @param Params A numeric vector of parameters.
+#' @return A numeric vector representing the gradient of the log-likelihood.
+#' @export
+#' @examples
+#' \dontrun{
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' params <- rep(0.001, 2 * (ncol(features) + 2))
+#' gradient <- compute_log_f_gradient_rcpp2(params)
+#' print(gradient)
+#' }
+NULL
+
+
+#' @name estimate_parameters_PHM
+#' @title Compute Cumulative Incidence Regression Results Proportional Hazards Model (PHM)
+#'
+#' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive (PHM Approach).
+#'
+#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (3 + ncol(covars)))`.
+#'
+#' @details This function performs the following steps:
+#' \itemize{
+#'   \item Estimates the model parameters using the `optim` function and `log_f_rcpp2` and `compute_log_f_gradient_rcpp`, `compute_log_f_hessian_rcpp`
+#'   \item Computes the Hessian matrix using the `hessian` function in `numDeriv`` package.
+#'   \item Ensures that the diagonal elements of the covariance matrix are positive.
+#'   \item Calculates the variances and p-values for the parameters.
+#' }
+#'
+#' @return A data frame containing:
+#' \item{Params}{The parameter names ("tau1", 'rho1', 'tau2', 'rho2', 'beta11', ..., 'beta1k', 'beta21', ..., 'beta2k').}
+#' \item{S.E}{The standard deviations of the mean parameters.}
+#' \item{Pvalue}{p-values.}
+#'
+#' @seealso \link{optim}, \link{compute_log_f_gradient_rcpp}, \link{log_f_rcpp}, \link{compute_log_f_hessian_rcpp}.
+#'
+#' @examples
+#' \dontrun{
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
+#' delta2 <- 1 - delta1
+#' x <- rexp(100, rate = 1/10)
+#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' initial_params <- rep(0.001, 2 * (ncol(features) + 2))
+#' result <- estimate_parameters_PHM(initial_params)
+#' print(result)
+#' }
+#'
+#' @export
+estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL) {
+  # Optimize the log-likelihood function to estimate parameters
+  tempk <- length(initial_params) - 4
+  tempk <- tempk/2
+  optim_result <- optim(
+    par = initial_params,
+    fn = log_f_rcpp3,
+    gr = compute_log_f_gradient_rcpp3,
+    method = "BFGS",
+    control = list(fnscale = -1)
+  )
+  if(!is.null(FeaturesNames)) {
+    varNames <- c('tau1', 'rho1', paste("Risk1", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"),
+      'tau2', 'rho2', paste("Risk2", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"))
+  } else{
+      varNames <- c('tau1', 'rho1', paste("beta1", 1:tempk, sep = ":"),
+        'tau2', 'rho2', paste("beta2", 1:tempk, sep = ":"))
+    }
+  
+  # Extract estimated parameters
+  estimated_params <- optim_result$par
+  # Compute the Hessian matrix at the estimated parameters
+  # Define the objective function
+  objective_function <- function(Params) {
+    log_f_rcpp3(Params)  # Call the Rcpp function that computes the log-likelihood
+  }
+
+  # Compute Hessian numerically
+  compute_hessian_r <- function(Params) {
+  hessian_matrix <- numDeriv :: hessian(func = objective_function, x = Params)
+  return(hessian_matrix)
+}
+
+  hessian_matrix <- compute_hessian_r(initial_params)
+
+  # Compute the standard deviations of the parameters
+  std_devs <- diag(solve(-hessian_matrix)) |> abs() |> sqrt()
+  
+  # Compute the p-values for the parameters
+  p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))
+  
+  # Create a data frame with parameter names, estimates, standard deviations, and p-values
+  result_df <- data.frame(
+    Parameter = varNames,
+    Estimate = estimated_params,
+    S.E = std_devs/sqrt(GetDim()$Nsamp),
     PValue = p_values
   )
   

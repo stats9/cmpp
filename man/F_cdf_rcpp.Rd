@@ -2,7 +2,7 @@
 % Please edit documentation in R/RCode.r
 \name{F_cdf_rcpp}
 \alias{F_cdf_rcpp}
-\title{Compute the CDF of the Parametric Model}
+\title{Compute the CDF of the Parametric Generalized Chance Model (GCM)}
 \arguments{
 \item{Params}{A numeric vector of parameters.}
 
@@ -14,7 +14,7 @@
 A numeric value representing the CDF.
 }
 \description{
-This function computes the cumulative distribution function (CDF) of the parametric model.
+This function computes the cumulative distribution function (CDF) of the parametric model (GCM Approach).
 }
 \examples{
 \dontrun{

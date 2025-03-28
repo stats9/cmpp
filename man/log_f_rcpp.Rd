@@ -2,7 +2,7 @@
 % Please edit documentation in R/RCode.r
 \name{log_f_rcpp}
 \alias{log_f_rcpp}
-\title{Compute the Log-Likelihood Function}
+\title{Compute the Log-Likelihood Function Generalized Chance Model (GCM)}
 \arguments{
 \item{Params}{A numeric vector of parameters.}
 }
@@ -10,7 +10,7 @@
 A numeric value representing the log-likelihood.
 }
 \description{
-This function computes the log-likelihood function for the parametric model.
+This function computes the log-likelihood function for the parametric model (GCM Approach).
 }
 \examples{
 \dontrun{

@@ -61,3 +61,35 @@ compute_log_f_hessian_rcpp <- function(Params) {
     .Call(`_cmpp_compute_log_f_hessian_rcpp`, Params)
 }
 
+F_cdf_rcpp2 <- function(Params, Z, x) {
+    .Call(`_cmpp_F_cdf_rcpp2`, Params, Z, x)
+}
+
+f_pdf_rcpp2 <- function(Params, Z, x) {
+    .Call(`_cmpp_f_pdf_rcpp2`, Params, Z, x)
+}
+
+log_f_rcpp2 <- function(Params) {
+    .Call(`_cmpp_log_f_rcpp2`, Params)
+}
+
+compute_log_f_gradient_rcpp2 <- function(Params) {
+    .Call(`_cmpp_compute_log_f_gradient_rcpp2`, Params)
+}
+
+F_cdf_rcpp3 <- function(Params, Z, x) {
+    .Call(`_cmpp_F_cdf_rcpp3`, Params, Z, x)
+}
+
+f_pdf_rcpp3 <- function(Params, Z, x) {
+    .Call(`_cmpp_f_pdf_rcpp3`, Params, Z, x)
+}
+
+log_f_rcpp3 <- function(Params) {
+    .Call(`_cmpp_log_f_rcpp3`, Params)
+}
+
+compute_log_f_gradient_rcpp3 <- function(Params) {
+    .Call(`_cmpp_compute_log_f_gradient_rcpp3`, Params)
+}
+

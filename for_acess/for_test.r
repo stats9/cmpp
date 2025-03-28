@@ -72,8 +72,15 @@ initial_params <- rep(0.001, 34)
     control = list(fnscale = -1)
 ))
 log_f_rcpp(rep(0.001, 34))
-estimate_parameters2(initial_params)
-# Load necessary package
+estimate_parameters_GCM(initial_params)
+
+initial_params <- rep(0.001, 32)
+estimate_parameters_POM(initial_params)
+
+log_f_rcpp(rep(0.001, 32))
+estimate_parameters_PHM(initial_params)
+library(cmpp)
+help(package = "cmpp")# Load necessary package
 if (!requireNamespace("numDeriv", quietly = TRUE)) {
   install.packages("numDeriv")
 }
@@ -174,3 +181,6 @@ F_cdf(tempPar, feat2, 21)
 F_cdf_rcpp(tempPar, feat2[1, ], 21)
 f_pdf_rcpp(tempPar, feat2[1, ], 21)
 feat2 |> dim()
+
+
+####### Add two other log-likelihood functions

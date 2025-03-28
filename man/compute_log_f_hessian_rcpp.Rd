@@ -2,7 +2,7 @@
 % Please edit documentation in R/RCode.r
 \name{compute_log_f_hessian_rcpp}
 \alias{compute_log_f_hessian_rcpp}
-\title{Compute the Hessian Matrix of the Log-Likelihood Function}
+\title{Compute the Hessian Matrix of the Log-Likelihood Function Generalized Chance Model (GCM)}
 \arguments{
 \item{Params}{A numeric vector of parameters.}
 }
@@ -10,7 +10,7 @@
 A numeric matrix representing the Hessian matrix of the log-likelihood.
 }
 \description{
-This function computes the Hessian matrix of the log-likelihood function for the parametric model.
+This function computes the Hessian matrix of the log-likelihood function for the parametric model (GCM Approach).
 }
 \examples{
 \dontrun{

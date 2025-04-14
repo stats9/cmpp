@@ -18,7 +18,9 @@ Imports:
     ggplot2, 
     dplyr, 
     tidyr, 
-    numDeriv
+    numDeriv, 
+    survival,
+    cmprsk
 LinkingTo: 
     Rcpp, 
     RcppEigen

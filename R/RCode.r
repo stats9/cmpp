@@ -1125,3 +1125,21 @@ estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL) {
   return(result_df)
 }
 NULL
+
+############## Edit 2025-04-13 ############################
+###########################################################
+
+NULL
+
+
+
+#' importFrom
+
+FineGray_Model <- function(
+  Time, Status, Covars, FailCode, CenCode, plot = NULL, 
+  newData
+) {
+
+
+}
+NULL

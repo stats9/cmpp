@@ -8,7 +8,7 @@ Cmpp_CIF(
   featureID = NULL,
   featureValue = NULL,
   RiskNames = NULL,
-  TypeMethod = "GOM",
+  TypeMethod = "GCM",
   predTime = NULL
 )
 }
@@ -19,7 +19,7 @@ Cmpp_CIF(
 
 \item{RiskNames}{A character vector specifying the names of the competing risks. Default is \code{NULL}, which assigns names as "Risk1" and "Risk2".}
 
-\item{TypeMethod}{A character string specifying the model to use for plotting. Must be one of \code{"GOM"}, \code{"POM"}, or \code{"PHM"}. Default is \code{"GOM"}.}
+\item{TypeMethod}{A character string specifying the model to use for plotting. Must be one of \code{"GCM"}, \code{"POM"}, or \code{"PHM"}. Default is \code{"GCM"}.}
 
 \item{predTime}{A numeric vector of time points for which CIFs are computed. Default is \code{NULL}, which uses the failure times from the initialized data.}
 }
@@ -42,13 +42,13 @@ A list containing:
 }
 \description{
 This function computes and plots the cumulative incidence functions (CIF) for competing risks using three parametric models:
-Generalized Chance Model (GOM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM).
+Generalized Chance Model (GCM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM).
 It allows for adjusted CIFs based on specific covariate values and provides visualizations for all models.
 }
 \details{
 This function performs the following steps:
 \itemize{
-\item Estimates the model parameters for GOM, POM, and PHM using the \code{estimate_parameters_GCM}, \code{estimate_parameters_POM}, and \code{estimate_parameters_PHM} functions.
+\item Estimates the model parameters for GCM, POM, and PHM using the \code{estimate_parameters_GCM}, \code{estimate_parameters_POM}, and \code{estimate_parameters_PHM} functions.
 \item Computes the CIFs for the specified time points and covariate values.
 \item Generates plots for the CIFs, including adjusted CIFs based on specific covariate values.
 \item Provides separate plots for each model and a combined plot for all models.
@@ -65,7 +65,7 @@ result <- Cmpp_CIF(
   featureID = c(1, 2),
   featureValue = c(0.5, 1.2),
   RiskNames = c("Event1", "Event2"),
-  TypeMethod = "GOM",
+  TypeMethod = "GCM",
   predTime = seq(0, 10, by = 0.5)
 )
 print(result$Plot$Plot_InputModel)  # Plot for the specified model

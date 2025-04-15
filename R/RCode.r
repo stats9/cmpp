@@ -1249,18 +1249,18 @@ NULL
 #' @title Compute and Plot Cumulative Incidence Functions (CIF) for Competing Risks
 #'
 #' @description This function computes and plots the cumulative incidence functions (CIF) for competing risks using three parametric models: 
-#' Generalized Chance Model (GOM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM). 
+#' Generalized Chance Model (GCM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM). 
 #' It allows for adjusted CIFs based on specific covariate values and provides visualizations for all models.
 #'
 #' @param featureID A numeric vector of indices specifying the features to adjust. Default is `NULL`.
 #' @param featureValue A numeric vector of values corresponding to the features specified in `featureID`. Default is `NULL`.
 #' @param RiskNames A character vector specifying the names of the competing risks. Default is `NULL`, which assigns names as "Risk1" and "Risk2".
-#' @param TypeMethod A character string specifying the model to use for plotting. Must be one of `"GOM"`, `"POM"`, or `"PHM"`. Default is `"GOM"`.
+#' @param TypeMethod A character string specifying the model to use for plotting. Must be one of `"GCM"`, `"POM"`, or `"PHM"`. Default is `"GCM"`.
 #' @param predTime A numeric vector of time points for which CIFs are computed. Default is `NULL`, which uses the failure times from the initialized data.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
-#'   \item Estimates the model parameters for GOM, POM, and PHM using the `estimate_parameters_GCM`, `estimate_parameters_POM`, and `estimate_parameters_PHM` functions.
+#'   \item Estimates the model parameters for GCM, POM, and PHM using the `estimate_parameters_GCM`, `estimate_parameters_POM`, and `estimate_parameters_PHM` functions.
 #'   \item Computes the CIFs for the specified time points and covariate values.
 #'   \item Generates plots for the CIFs, including adjusted CIFs based on specific covariate values.
 #'   \item Provides separate plots for each model and a combined plot for all models.
@@ -1296,7 +1296,7 @@ NULL
 #'   featureID = c(1, 2),
 #'   featureValue = c(0.5, 1.2),
 #'   RiskNames = c("Event1", "Event2"),
-#'   TypeMethod = "GOM",
+#'   TypeMethod = "GCM",
 #'   predTime = seq(0, 10, by = 0.5)
 #' )
 #' print(result$Plot$Plot_InputModel)  # Plot for the specified model
@@ -1304,10 +1304,10 @@ NULL
 #' print(result$CIF$CIFAdjusted)  # Adjusted CIF values
 #' }
 Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL, 
-    TypeMethod = "GOM", predTime = NULL) {
+    TypeMethod = "GCM", predTime = NULL) {
     
-    if(!TypeMethod %in% c("GOM", "POM", "PHM")) {
-      stop("TypeMethod must be one of `GOM` or `POM` or `PHM`.")    
+    if(!TypeMethod %in% c("GCM", "POM", "PHM")) {
+      stop("TypeMethod must be one of `GCM` or `POM` or `PHM`.")    
     }
     if(is.null(featureValue)) {
        Features <- GetData()$features
@@ -1380,14 +1380,14 @@ Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL,
   CIF32Val <- lapply(predTime, \(timeVal) F_cdf_rcpp3(Params = Par32, Z = z, x = timeVal)) |> unlist()
 
   CIFnull <- data.frame(
-    Model = rep(c("GOM", "POM", "PHM"), each = 2*length(timexNull)),
+    Model = rep(c("GCM", "POM", "PHM"), each = 2*length(timexNull)),
     CIF = c(CIF11Null, CIF12Null, CIF21Null, CIF22Null, CIF31Null, CIF32Null),
     Time = rep(timexNull, 6),
     Risk = rep(rep(RiskNames, each = length(timexNull)), 3)
   )
 
   CIFAdjustedFig <- data.frame(
-    Model = rep(c("GOM", "POM", "PHM"), each = 2*length(timexNull)),
+    Model = rep(c("GCM", "POM", "PHM"), each = 2*length(timexNull)),
     CIFAdjusted = c(CIF11Fig, CIF12Fig, CIF21Fig, CIF22Fig, CIF31Fig, CIF32Fig), 
     Time = rep(timex, 6),
     Risk = rep(rep(RiskNames, each = length(timexNull)), 3)
@@ -1395,16 +1395,16 @@ Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL,
   )
 
   CIFAdjustedVal <- data.frame(
-    Model = rep(c("GOM", "POM", "PHM"), each = 2*length(predTime)),
+    Model = rep(c("GCM", "POM", "PHM"), each = 2*length(predTime)),
     Time = rep(predTime, 6),
     CIFAdjusted = c(CIF11Val, CIF12Val, CIF21Val, CIF22Val, CIF31Val, CIF32Val),
     Risk = rep(rep(RiskNames, each = length(time)), 3) 
   )
-  CIFnull <- CIFnull |> within(Model <- factor(Model, levels = c("GOM", "POM", "PHM")))
+  CIFnull <- CIFnull |> within(Model <- factor(Model, levels = c("GCM", "POM", "PHM")))
   CIFnull <- CIFnull |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
-  CIFAdjustedFig <- CIFAdjustedFig |> within(Model <- factor(Model, levels = c("GOM", "POM", "PHM")))
+  CIFAdjustedFig <- CIFAdjustedFig |> within(Model <- factor(Model, levels = c("GCM", "POM", "PHM")))
   CIFAdjustedFig <- CIFAdjustedFig |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
-  CIFAdjustedVal <- CIFAdjustedVal |> within(Model <- factor(Model, levels = c("GOM", "POM", "PHM")))
+  CIFAdjustedVal <- CIFAdjustedVal |> within(Model <- factor(Model, levels = c("GCM", "POM", "PHM")))
   CIFAdjustedVal <- CIFAdjustedVal |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
 
 Plot_Adjusted <- CIFAdjustedFig |> 
@@ -1425,14 +1425,14 @@ Plot_NULL <- CIFnull |>
     ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks", 
     caption = "All Models | Not Adjusted")
 
-Plot_GOM <- CIFAdjustedFig |> 
-    subset(subset = Model == "GOM") |> 
+Plot_GCM <- CIFAdjustedFig |> 
+    subset(subset = Model == "GCM") |> 
     ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) +
     ggplot2::geom_line(linewidth = 1) +
     ggplot2::ylim(c(0, 1)) +
     ggplot2::theme_bw() + 
-    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | GOM Model",
-    caption = "Adjusted by covariates | GOM Model")
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | GCM Model",
+    caption = "Adjusted by covariates | GCM Model")
 
 Plot_POM <- CIFAdjustedFig |> 
     subset(subset = Model == "POM") |> 
@@ -1453,7 +1453,7 @@ Plot_PHM <- CIFAdjustedFig |>
     caption = "Adjusted by covariates | PHM Model")
 
 PlotType = switch(TypeMethod, 
-  "GOM" = Plot_GOM, 
+  "GCM" = Plot_GCM, 
   "POM" = Plot_POM,
   "PHM" = Plot_PHM)
 

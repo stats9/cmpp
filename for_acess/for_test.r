@@ -14,14 +14,19 @@ d1 = dat[['d1']]
 d2 = dat[['d2']]
 feat2 = feat |> data.matrix()
 Initialize(feat2, timee, d1, d2, 1e-10)
+library(httpgd); hgd(); hgd_browse()
 FineGray_Model()
-Res <- Cmpp_CIF()
+(Res <- Cmpp_CIF())
 Res$Plot$PlotNull_AllModels
 Res$Plot$Plot_InputModel
 Res$Plot$PlotAdjusted_AllModels
-Res2 <- Cmpp_CIF(, )
-GetData()
 
+Res2 <- Cmpp_CIF(predTime = c(1, 2, 3), TypeMethod = "POM")
+Res2$CIF
+Res2$Plot$PlotAdjusted_AllModels
+GetData()
+Res2$Plot$PlotNull_AllModels
+Res2$Plot$Plot_InputModel
 optim(par = c(0.001, 0.001, 0.001, 0.001), 
     fn = LogLike1, 
     gr = compute_grad, 

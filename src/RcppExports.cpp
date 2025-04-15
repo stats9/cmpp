@@ -288,6 +288,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// GetData
+Rcpp::List GetData();
+RcppExport SEXP _cmpp_GetData() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(GetData());
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_cmpp_Initialize", (DL_FUNC) &_cmpp_Initialize, 5},
@@ -313,6 +323,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_cmpp_f_pdf_rcpp3", (DL_FUNC) &_cmpp_f_pdf_rcpp3, 3},
     {"_cmpp_log_f_rcpp3", (DL_FUNC) &_cmpp_log_f_rcpp3, 1},
     {"_cmpp_compute_log_f_gradient_rcpp3", (DL_FUNC) &_cmpp_compute_log_f_gradient_rcpp3, 1},
+    {"_cmpp_GetData", (DL_FUNC) &_cmpp_GetData, 0},
     {NULL, NULL, 0}
 };
 

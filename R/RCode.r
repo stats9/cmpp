@@ -868,7 +868,7 @@ NULL
 #'
 #' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive (POM Approach).
 #'
-#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (3 + ncol(covars)))`.
+#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (2 + ncol(covars)))`.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
@@ -1042,7 +1042,7 @@ NULL
 #'
 #' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive (PHM Approach).
 #'
-#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (3 + ncol(covars)))`.
+#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (2 + ncol(covars)))`.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
@@ -1133,13 +1133,349 @@ NULL
 
 
 
-#' importFrom
+#' @name GetData
+#' @title Retrieve Initialized Data from the Cmpp Model
+#'
+#' @description This function retrieves the data initialized in the Cmpp model, including the feature matrix, failure times, 
+#' and competing risks indicators (`delta1` and `delta2`).
+#'
+#' @details This function requires the Cmpp model to be initialized using the `Initialize` function. It retrieves the 
+#' data stored in the Cmpp object, which includes the feature matrix, failure times, and the binary indicators for 
+#' competing risks. If the Cmpp object is not initialized, the function will throw an error.
+#'
+#' @return A list containing:
+#' \item{features}{A numeric matrix of predictor variables. Each row corresponds to an observation.}
+#' \item{time}{A numeric vector of failure times corresponding to observations.}
+#' \item{delta1}{A binary vector indicating the occurrence of the first competing event (1 for observed).}
+#' \item{delta2}{A binary vector indicating the occurrence of the second competing event (1 for observed).}
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Assuming the Cmpp model has been initialized
+#' data <- GetData()
+#' print(data$features)  # Feature matrix
+#' print(data$time)      # Failure times
+#' print(data$delta1)    # Indicator for the first competing event
+#' print(data$delta2)    # Indicator for the second competing event
+#' }
+NULL
 
-FineGray_Model <- function(
-  Time, Status, Covars, FailCode, CenCode, plot = NULL, 
-  newData
+#' @name FineGray_Model
+#' @title Fine-Gray Model for Competing Risks Data
+#'
+#' @description This function fits a Fine-Gray model for competing risks data using the `cmprsk` package. 
+#' It estimates the subdistribution hazard model parameters, computes cumulative incidence functions (CIFs), 
+#' and provides a summary of the results along with a plot of the CIFs.
+#'
+#' @param featureNames A character vector of feature names for the covariates. If `NULL`, default names will be generated.
+#' @param CovarNames A character vector of names for the covariates. If `NULL`, default names will be generated.
+#' @param Failcode An integer specifying the event of interest (default is `1`).
+#' @param RiskNames A character vector specifying the names of the competing risks. If `NULL`, default names ("Risk1" and "Risk2") will be used.
+#'
+#' @details This function retrieves the data initialized in the Cmpp model using the `GetData` function. 
+#' It uses the `crr` function from the `cmprsk` package to fit the Fine-Gray model for competing risks. 
+#' The function also computes cumulative incidence functions (CIFs) using the `cuminc` function and 
+#' generates a plot of the CIFs for the competing risks.
+#'
+#' @return A list containing:
+#' \item{Results}{A summary of the Fine-Gray model fit.}
+#' \item{Plot}{A ggplot object showing the cumulative incidence functions (CIFs) for the competing risks.}
+#' \item{CIF_Results}{A data frame containing the CIFs for the competing risks, along with their corresponding time points.}
+#'
+#' @import cmprsk
+#' @import ggplot2
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Assuming the Cmpp model has been initialized
+#' result <- FineGray_Model(
+#'   featureNames = c("Feature1", "Feature2"),
+#'   CovarNames = c("Covar1", "Covar2"),
+#'   Failcode = 1,
+#'   RiskNames = c("Event1", "Event2")
+#' )
+#' print(result$Results)  # Summary of the Fine-Gray model
+#' print(result$Plot)     # Plot of the CIFs
+#' print(result$CIF_Results)  # CIF data
+#' }
+FineGray_Model <- function(featureNames = NULL, 
+  CovarNames = NULL, Failcode = 1, RiskNames = NULL
 ) {
+  Features <- GetData()$features 
+  Time <- GetData()$time
+  delta1 <- GetData()$delta1
+  delta2 <- GetData()$delta2
+  Risk1 <- lapply(delta1, \(x) ifelse(x == 1, 1, 0)) |> unlist()
+  Risk2 <- lapply(delta2, \(x) ifelse(x == 1, 2, 0)) |> unlist()
+  status <- (Risk1 + Risk2)
+  if(is.null(CovarNames)) {
+    CovarNames <- paste("beta", 1:ncol(Features), sep = "")
+  }
+  colnames(Features) <- CovarNames
+  model <- cmprsk::crr(ftime = Time, fstatus = status, cov1 = Features,
+            failcode = Failcode, cencode = 0)
+  result1 <- model |> summary()
+  CIFModel <- cmprsk::cuminc(ftime = Time, fstatus = status, cencode = 0)
+  CIFRisk1 <- CIFModel[[1]]$est
+  TimeRisk1 <- CIFModel[[1]]$time 
+  CIFRisk2 <- CIFModel[[2]]$est
+  TimeRisk2 <- CIFModel[[2]]$time 
+  n1 <- length(TimeRisk1) 
+  n2 <- length(TimeRisk2)
+  if(!is.null(RiskNames)) {
+    RiskGroup <- rep(c(RiskNames[1], RiskNames[2]), c(n1, n2))
+  } else {
+    RiskGroup <- rep(c("Risk1", "Risk2"), c(n1, n2))
+  }
+  tempData <- data.frame(Risk = RiskGroup, 
+    Time = c(TimeRisk1, TimeRisk2), 
+    CIF = c(CIFRisk1, CIFRisk2))
+  Plot <- tempData |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIF, group = Risk, color = Risk)) + 
+    ggplot2::geom_line(linewidth = 1) + 
+    ggplot2::ylim(c(0, 1)) + 
+    ggplot2::theme_bw()
 
+  OutPut <- list(Results = result1, Plot = Plot, 
+    CIF_Results = tempData)
+  return(OutPut)
+}
+NULL
 
+#' @name Cmpp_CIF
+#' @title Compute and Plot Cumulative Incidence Functions (CIF) for Competing Risks
+#'
+#' @description This function computes and plots the cumulative incidence functions (CIF) for competing risks using three parametric models: 
+#' Generalized Chance Model (GOM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM). 
+#' It allows for adjusted CIFs based on specific covariate values and provides visualizations for all models.
+#'
+#' @param featureID A numeric vector of indices specifying the features to adjust. Default is `NULL`.
+#' @param featureValue A numeric vector of values corresponding to the features specified in `featureID`. Default is `NULL`.
+#' @param RiskNames A character vector specifying the names of the competing risks. Default is `NULL`, which assigns names as "Risk1" and "Risk2".
+#' @param TypeMethod A character string specifying the model to use for plotting. Must be one of `"GOM"`, `"POM"`, or `"PHM"`. Default is `"GOM"`.
+#' @param predTime A numeric vector of time points for which CIFs are computed. Default is `NULL`, which uses the failure times from the initialized data.
+#'
+#' @details This function performs the following steps:
+#' \itemize{
+#'   \item Estimates the model parameters for GOM, POM, and PHM using the `estimate_parameters_GCM`, `estimate_parameters_POM`, and `estimate_parameters_PHM` functions.
+#'   \item Computes the CIFs for the specified time points and covariate values.
+#'   \item Generates plots for the CIFs, including adjusted CIFs based on specific covariate values.
+#'   \item Provides separate plots for each model and a combined plot for all models.
+#' }
+#'
+#' If `featureID` and `featureValue` are provided, the function adjusts the CIFs based on the specified covariate values. 
+#' If `RiskNames` is not provided, the default names "Risk1" and "Risk2" are used. The `TypeMethod` parameter determines 
+#' which model's CIF plot is returned in the output.
+#'
+#' @return A list containing:
+#' \item{Time}{A list with the input time points, time points for adjusted plots, and time points for null plots.}
+#' \item{CIF}{A list with the following elements:
+#'   \itemize{
+#'     \item `CIFNULL`: A data frame containing the CIFs for the null model (not adjusted by covariates).
+#'     \item `CIFAdjusted`: A data frame containing the CIFs adjusted by covariates.
+#'   }
+#' }
+#' \item{Plot}{A list with the following elements:
+#'   \itemize{
+#'     \item `PlotNull_AllModels`: A ggplot object showing the CIFs for all models (not adjusted by covariates).
+#'     \item `PlotAdjusted_AllModels`: A ggplot object showing the adjusted CIFs for all models.
+#'     \item `Plot_InputModel`: A ggplot object showing the CIFs for the specified model (`TypeMethod`).
+#'   }
+#' }
+#'
+#' @import ggplot2
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' # Assuming the Cmpp model has been initialized
+#' result <- Cmpp_CIF(
+#'   featureID = c(1, 2),
+#'   featureValue = c(0.5, 1.2),
+#'   RiskNames = c("Event1", "Event2"),
+#'   TypeMethod = "GOM",
+#'   predTime = seq(0, 10, by = 0.5)
+#' )
+#' print(result$Plot$Plot_InputModel)  # Plot for the specified model
+#' print(result$Plot$PlotAdjusted_AllModels)  # Adjusted CIFs for all models
+#' print(result$CIF$CIFAdjusted)  # Adjusted CIF values
+#' }
+Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL, 
+    TypeMethod = "GOM", predTime = NULL) {
+    
+    if(!TypeMethod %in% c("GOM", "POM", "PHM")) {
+      stop("TypeMethod must be one of `GOM` or `POM` or `PHM`.")    
+    }
+    if(is.null(featureValue)) {
+       Features <- GetData()$features
+      z <- colMeans(Features)
+    } else {
+  if(is.null(featureID)) {
+  stop("To compute the CIF for specific values of certain features, include their indices in the featureID argument!")
+  } else {
+    if(length(featureID) != length(featureValue)) {
+      stop("The length of featureID and featureValue must be the same!")
+    } else {
+      Features <- GetData()$features
+      z <- colMeans(Features)
+      for(i in 1:length(featureID)) {
+        z[featureID[i]] <- featureValue[i]
+      }
+    }
+  }
+}
+  if(is.null(RiskNames)) {
+    RiskNames <- c("Risk1", "Risk2")
+  } else {
+    if(length(RiskNames) != 2) {
+      stop("RiskNames must be a vector of length 2!")
+    }
+  }
+
+  Par1 <- estimate_parameters_GCM(rep(0.01, 2*(3 + GetDim()$Nfeature)))
+  Par2 <- estimate_parameters_POM(rep(0.01, 2*(2 + GetDim()$Nfeature)))
+  Par3 <- estimate_parameters_PHM(rep(0.01, 2*(2 + GetDim()$Nfeature)))
+  Par11 <- Par1[1:3, 2]
+  Par12 <- Par1[(4 + GetDim()$Nfeature):(4 + GetDim()$Nfeature + 2), 2] 
+  Par21 <- Par2[1:2, 2]
+  Par22 <- Par2[(3 + GetDim()$Nfeature):(3 + GetDim()$Nfeature + 1), 2]
+  Par31 <- Par3[1:2, 2]
+  Par32 <- Par3[(3 + GetDim()$Nfeature):(3 + GetDim()$Nfeature + 1), 2]
+  StoreTime <- predTime
+  if(is.null(predTime)) {
+    predTime <- GetData()$time  
+  } 
+  if(length(predTime) == 1) {
+    tempTime <- GetData()$time 
+    SD <- sd(tempTime)
+    rangeTemp <- c(max(c(0, Time - 2*SD)), Time + 2*SD)
+    timex <- seq(rangeTemp[1], rangeTemp[2], length.out = 100)
+  } else {
+    timex <- seq(min(predTime), max(predTime), length.out = 100)
+  }
+  timexNull <- seq(min(GetData()$time), max(GetData()$time), length.out = 100)
+  zNull <- colMeans(GetData()$features)
+  CIF11Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp(Params = Par11, Z = zNull, x = timeVal)) |> unlist()
+  CIF12Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp(Params = Par12, Z = zNull, x = timeVal)) |> unlist()
+  CIF21Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp2(Params = Par21, Z = zNull, x = timeVal)) |> unlist()
+  CIF22Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp2(Params = Par22, Z = zNull, x = timeVal)) |> unlist()
+  CIF31Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp3(Params = Par31, Z = zNull, x = timeVal)) |> unlist()
+  CIF32Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp3(Params = Par32, Z = zNull, x = timeVal)) |> unlist()
+
+  CIF11Fig <- lapply(timex, \(timeVal) F_cdf_rcpp(Params = Par11, Z = z, x = timeVal)) |> unlist()
+  CIF12Fig <- lapply(timex, \(timeVal) F_cdf_rcpp(Params = Par12, Z = z, x = timeVal)) |> unlist()
+  CIF21Fig <- lapply(timex, \(timeVal) F_cdf_rcpp2(Params = Par21, Z = z, x = timeVal)) |> unlist()
+  CIF22Fig <- lapply(timex, \(timeVal) F_cdf_rcpp2(Params = Par22, Z = z, x = timeVal)) |> unlist()
+  CIF31Fig <- lapply(timex, \(timeVal) F_cdf_rcpp3(Params = Par31, Z = z, x = timeVal)) |> unlist()
+  CIF32Fig <- lapply(timex, \(timeVal) F_cdf_rcpp3(Params = Par32, Z = z, x = timeVal)) |> unlist()
+
+  CIF11Val <- lapply(predTime, \(timeVal) F_cdf_rcpp(Params = Par11, Z = z, x = timeVal)) |> unlist()
+  CIF12Val <- lapply(predTime, \(timeVal) F_cdf_rcpp(Params = Par12, Z = z, x = timeVal)) |> unlist()
+  CIF21Val <- lapply(predTime, \(timeVal) F_cdf_rcpp2(Params = Par21, Z = z, x = timeVal)) |> unlist()
+  CIF22Val <- lapply(predTime, \(timeVal) F_cdf_rcpp2(Params = Par22, Z = z, x = timeVal)) |> unlist()
+  CIF31Val <- lapply(predTime, \(timeVal) F_cdf_rcpp3(Params = Par31, Z = z, x = timeVal)) |> unlist()
+  CIF32Val <- lapply(predTime, \(timeVal) F_cdf_rcpp3(Params = Par32, Z = z, x = timeVal)) |> unlist()
+
+  CIFnull <- data.frame(
+    Model = rep(c("GOM", "POM", "PHM"), each = 2*length(timexNull)),
+    CIF = c(CIF11Null, CIF12Null, CIF21Null, CIF22Null, CIF31Null, CIF32Null),
+    Time = rep(timexNull, 6),
+    Risk = rep(rep(RiskNames, each = length(timexNull)), 3)
+  )
+
+  CIFAdjustedFig <- data.frame(
+    Model = rep(c("GOM", "POM", "PHM"), each = 2*length(timexNull)),
+    CIFAdjusted = c(CIF11Fig, CIF12Fig, CIF21Fig, CIF22Fig, CIF31Fig, CIF32Fig), 
+    Time = rep(timex, 6),
+    Risk = rep(rep(RiskNames, each = length(timexNull)), 3)
+    
+  )
+
+  CIFAdjustedVal <- data.frame(
+    Model = rep(c("GOM", "POM", "PHM"), each = 2*length(predTime)),
+    Time = rep(predTime, 6),
+    CIFAdjusted = c(CIF11Val, CIF12Val, CIF21Val, CIF22Val, CIF31Val, CIF32Val),
+    Risk = rep(rep(RiskNames, each = length(time)), 3) 
+  )
+  CIFnull <- CIFnull |> within(Model <- factor(Model, levels = c("GOM", "POM", "PHM")))
+  CIFnull <- CIFnull |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
+  CIFAdjustedFig <- CIFAdjustedFig |> within(Model <- factor(Model, levels = c("GOM", "POM", "PHM")))
+  CIFAdjustedFig <- CIFAdjustedFig |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
+  CIFAdjustedVal <- CIFAdjustedVal |> within(Model <- factor(Model, levels = c("GOM", "POM", "PHM")))
+  CIFAdjustedVal <- CIFAdjustedVal |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
+
+Plot_Adjusted <- CIFAdjustedFig |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) + 
+    ggplot2::geom_line(linewidth = 1) + 
+    ggplot2::ylim(c(0, 1)) + 
+    ggplot2::theme_bw() + 
+    ggplot2::facet_wrap(~Model, scales = "fixed") + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks", 
+    caption = "All Models | Adjusted by covariates")
+
+Plot_NULL <- CIFnull |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIF, group = Risk, color = Risk)) + 
+    ggplot2::geom_line(linewidth = 1) + 
+    ggplot2::ylim(c(0, 1)) + 
+    ggplot2::theme_bw() + 
+    ggplot2::facet_wrap(~Model, scales = "fixed") + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks", 
+    caption = "All Models | Not Adjusted")
+
+Plot_GOM <- CIFAdjustedFig |> 
+    subset(subset = Model == "GOM") |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) +
+    ggplot2::geom_line(linewidth = 1) +
+    ggplot2::ylim(c(0, 1)) +
+    ggplot2::theme_bw() + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | GOM Model",
+    caption = "Adjusted by covariates | GOM Model")
+
+Plot_POM <- CIFAdjustedFig |> 
+    subset(subset = Model == "POM") |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) +
+    ggplot2::geom_line(linewidth = 1) +
+    ggplot2::ylim(c(0, 1)) +
+    ggplot2::theme_bw() + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | POM Model",
+    caption = "Adjusted by covariates | POM Model")
+
+Plot_PHM <- CIFAdjustedFig |> 
+    subset(subset = Model == "PHM") |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) +
+    ggplot2::geom_line(linewidth = 1) +
+    ggplot2::ylim(c(0, 1)) +
+    ggplot2::theme_bw() + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | PHM Model",
+    caption = "Adjusted by covariates | PHM Model")
+
+PlotType = switch(TypeMethod, 
+  "GOM" = Plot_GOM, 
+  "POM" = Plot_POM,
+  "PHM" = Plot_PHM)
+
+  OutPut <- list(Time = list(
+  InputTime = StoreTime, 
+  TimeForPlotAdjusted = timex, 
+  TimeForPlotnull = timexNull
+  ), 
+  CIF = list(
+  CIFNULL = CIFnull |> subset(subset = Model == TypeMethod) |> 
+            subset(select = -c(Model)), 
+  CIFAdjusted = CIFAdjustedVal |> 
+      subset(subset = Model == TypeMethod) |> 
+        subset(select = -c(Model))
+  ),
+  Plot = list(
+    PlotNull_AllModels = Plot_NULL,
+    PlotAdjusted_AllModels = Plot_Adjusted,
+    Plot_InputModel = PlotType
+  )
+  )
+
+  return(OutPut)
 }
 NULL

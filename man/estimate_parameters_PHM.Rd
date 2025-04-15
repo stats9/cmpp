@@ -7,7 +7,7 @@
 estimate_parameters_PHM(initial_params, FeaturesNames = NULL)
 }
 \arguments{
-\item{initial_params}{A numeric vector of initial parameter values to start the optimization. Default is \code{rep(0.001, 2 * (3 + ncol(covars)))}.}
+\item{initial_params}{A numeric vector of initial parameter values to start the optimization. Default is \code{rep(0.001, 2 * (2 + ncol(covars)))}.}
 }
 \value{
 A data frame containing:

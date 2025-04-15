@@ -689,3 +689,18 @@ NumericVector compute_log_f_gradient_rcpp3(NumericVector Params) {
 
 
 // end in 2025-03-28
+
+
+// Start in 2025-04-14
+// [[Rcpp::export]]
+Rcpp::List GetData() {
+    if (cmpp == nullptr) {
+        Rcpp::stop("The Cmpp object has not been initialized.");
+    }
+    return Rcpp::List::create(
+        Rcpp::Named("features") = cmpp->get_features(),
+        Rcpp::Named("time") = cmpp->get_failure_times(),
+        Rcpp::Named("delta1") = cmpp->get_censoring_indicators()["delta1"],
+        Rcpp::Named("delta2") = cmpp->get_censoring_indicators()["delta2"]
+    );
+}

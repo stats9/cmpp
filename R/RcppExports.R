@@ -93,3 +93,7 @@ compute_log_f_gradient_rcpp3 <- function(Params) {
     .Call(`_cmpp_compute_log_f_gradient_rcpp3`, Params)
 }
 
+GetData <- function() {
+    .Call(`_cmpp_GetData`)
+}
+

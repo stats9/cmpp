@@ -3,7 +3,7 @@ remove.packages('cmpp')
 devtools :: document()
 devtools :: install()
 library(cmpp)
-help(package = 'cmpp')
+# help(package = 'cmpp')
 
 
 data(dat)
@@ -14,6 +14,14 @@ d1 = dat[['d1']]
 d2 = dat[['d2']]
 feat2 = feat |> data.matrix()
 Initialize(feat2, timee, d1, d2, 1e-10)
+FineGray_Model()
+Res <- Cmpp_CIF()
+Res$Plot$PlotNull_AllModels
+Res$Plot$Plot_InputModel
+Res$Plot$PlotAdjusted_AllModels
+Res2 <- Cmpp_CIF(, )
+GetData()
+
 optim(par = c(0.001, 0.001, 0.001, 0.001), 
     fn = LogLike1, 
     gr = compute_grad, 
@@ -184,3 +192,185 @@ feat2 |> dim()
 
 
 ####### Add two other log-likelihood functions
+
+
+############## add 2025-04-15 ############
+Cmpp_CIF <- function(featureID = NULL, featreValue = NULL, RiskNames = NULL, 
+    TypeMethod = "GOM", predTime = NULL) {
+    
+    if(!TypeMethod %in% c("GOM", "POM", "PHM")) {
+      stop("TypeMethod must be one of `GOM` or `POM` or `PHM`.")    
+    }
+    if(is.null(featreValue)) {
+       Features <- GetData()$features
+      z <- colMeans(Features)
+    } else {
+  if(is.null(featureID)) {
+  stop("To compute the CIF for specific values of certain features, include their indices in the featureID argument!")
+  } else {
+    if(length(featureID) != length(featreValue)) {
+      stop("The length of featureID and featreValue must be the same!")
+    } else {
+      Features <- GetData()$features
+      z <- colMeans(Features)
+      for(i in 1:length(featureID)) {
+        z[featureID[i]] <- featreValue[i]
+      }
+    }
+  }
+}
+  if(is.null(RiskNames)) {
+    RiskNames <- c("Risk1", "Risk2")
+  } else {
+    if(length(RiskNames) != 2) {
+      stop("RiskNames must be a vector of length 2!")
+    }
+  }
+
+  Par1 <- estimate_parameters_GCM(rep(0.01, 2*(3 + GetDim()$Nfeature)))
+  Par2 <- estimate_parameters_POM(rep(0.01, 2*(2 + GetDim()$Nfeature)))
+  Par3 <- estimate_parameters_PHM(rep(0.01, 2*(2 + GetDim()$Nfeature)))
+  Par11 <- Par1[1:3, 2]
+  Par12 <- Par1[(4 + GetDim()$Nfeature):(4 + GetDim()$Nfeature + 2), 2] 
+  Par21 <- Par2[1:2, 2]
+  Par22 <- Par2[(3 + GetDim()$Nfeature):(3 + GetDim()$Nfeature + 1), 2]
+  Par31 <- Par3[1:2, 2]
+  Par32 <- Par3[(3 + GetDim()$Nfeature):(3 + GetDim()$Nfeature + 1), 2]
+  StoreTime <- predTime
+  if(is.null(predTime)) {
+    predTime <- GetData()$time  
+  } 
+  if(length(predTime) == 1) {
+    tempTime <- GetData()$time 
+    SD <- sd(tempTime)
+    rangeTemp <- c(max(c(0, Time - 2*SD)), Time + 2*SD)
+    timex <- seq(rangeTemp[1], rangeTemp[2], length.out = 100)
+  } else {
+    timex <- seq(min(preTime), max(preTime), length.out = 100)
+  }
+  timexNull <- seq(min(GetData()$time), max(GetData()$time), length.out = 100)
+  zNull <- colMeans(GetData()$features)
+  CIF11Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp(Params = Par11, Z = zNull, x = timeVal)) |> unlist()
+  CIF12Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp(Params = Par12, Z = zNull, x = timeVal)) |> unlist()
+  CIF21Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp2(Params = Par21, Z = zNull, x = timeVal)) |> unlist()
+  CIF22Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp2(Params = Par22, Z = zNull, x = timeVal)) |> unlist()
+  CIF31Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp3(Params = Par31, Z = zNull, x = timeVal)) |> unlist()
+  CIF32Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp3(Params = Par32, Z = zNull, x = timeVal)) |> unlist()
+
+  CIF11Fig <- lapply(timex, \(timeVal) F_cdf_rcpp(Params = Par11, Z = z, x = timeVal)) |> unlist()
+  CIF12Fig <- lapply(timex, \(timeVal) F_cdf_rcpp(Params = Par12, Z = z, x = timeVal)) |> unlist()
+  CIF21Fig <- lapply(timex, \(timeVal) F_cdf_rcpp2(Params = Par21, Z = z, x = timeVal)) |> unlist()
+  CIF22Fig <- lapply(timex, \(timeVal) F_cdf_rcpp2(Params = Par22, Z = z, x = timeVal)) |> unlist()
+  CIF31Fig <- lapply(timex, \(timeVal) F_cdf_rcpp3(Params = Par31, Z = z, x = timeVal)) |> unlist()
+  CIF32Fig <- lapply(timex, \(timeVal) F_cdf_rcpp3(Params = Par32, Z = z, x = timeVal)) |> unlist()
+
+  CIF11Val <- lapply(predTime, \(timeVal) F_cdf_rcpp(Params = Par11, Z = z, x = timeVal)) |> unlist()
+  CIF12Val <- lapply(predTime, \(timeVal) F_cdf_rcpp(Params = Par12, Z = z, x = timeVal)) |> unlist()
+  CIF21Val <- lapply(predTime, \(timeVal) F_cdf_rcpp2(Params = Par21, Z = z, x = timeVal)) |> unlist()
+  CIF22Val <- lapply(predTime, \(timeVal) F_cdf_rcpp2(Params = Par22, Z = z, x = timeVal)) |> unlist()
+  CIF31Val <- lapply(predTime, \(timeVal) F_cdf_rcpp3(Params = Par31, Z = z, x = timeVal)) |> unlist()
+  CIF32Val <- lapply(predTime, \(timeVal) F_cdf_rcpp3(Params = Par32, Z = z, x = timeVal)) |> unlist()
+
+  CIFnull <- data.frame(
+    Model = rep(c("GOM", "POM", "PHM"), each = 2*length(timexNull)),
+    CIF = c(CIF11Null, CIF12Null, CIF21Null, CIF22Null, CIF31Null, CIF32Null),
+    Time = rep(timexNull, 6),
+    Risk = rep(rep(RiskNames, each = length(timexNull)), 3)
+  )
+
+  CIFAdjustedFig <- data.frame(
+    Model = rep(c("GOM", "POM", "PHM"), each = 2*length(timexNull)),
+    CIFAdjusted = c(CIF11Fig, CIF12Fig, CIF21Fig, CIF22Fig, CIF31Fig, CIF32Fig), 
+    Time = rep(timex, 6),
+    Risk = rep(rep(RiskNames, each = length(timexNull)), 3)
+    
+  )
+
+  CIFAdjustedVal <- data.frame(
+    Model = rep(c("GOM", "POM", "PHM"), each = 2*length(predTime)),
+    Time = rep(predTime, 6),
+    CIFAdjusted = c(CIF11Val, CIF12Val, CIF21Val, CIF22Val, CIF31Val, CIF32Val),
+    Risk = rep(rep(RiskNames, each = length(time)), 3) 
+  )
+  CIFnull <- CIFnull |> within(Model <- factor(Model, levels = c("GOM", "POM", "PHM")))
+  CIFnull <- CIFnull |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
+  CIFAdjustedFig <- CIFAdjustedFig |> within(Model <- factor(Model, levels = c("GOM", "POM", "PHM")))
+  CIFAdjustedFig <- CIFAdjustedFig |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
+  CIFAdjustedVal <- CIFAdjustedVal |> within(Model <- factor(Model, levels = c("GOM", "POM", "PHM")))
+  CIFAdjustedVal <- CIFAdjustedVal |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
+
+Plot_Adjusted <- CIFAdjustedFig |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) + 
+    ggplot2::geom_line(linewidth = 1) + 
+    ggplot2::ylim(c(0, 1)) + 
+    ggplot2::theme_bw() + 
+    ggplot2::facet_wrap(~Model, scales = "fixed") + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks", 
+    caption = "All Models | Adjusted by covariates")
+
+Plot_NULL <- CIFnull |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIF, group = Risk, color = Risk)) + 
+    ggplot2::geom_line(linewidth = 1) + 
+    ggplot2::ylim(c(0, 1)) + 
+    ggplot2::theme_bw() + 
+    ggplot2::facet_wrap(~Model, scales = "fixed") + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks", 
+    caption = "All Models | Not Adjusted")
+
+Plot_GOM <- CIFAdjustedFig |> 
+    subset(subset = Model == "GOM") |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) +
+    ggplot2::geom_line(linewidth = 1) +
+    ggplot2::ylim(c(0, 1)) +
+    ggplot2::theme_bw() + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | GOM Model",
+    caption = "Adjusted by covariates | GOM Model")
+
+Plot_POM <- CIFAdjustedFig |> 
+    subset(subset = Model == "POM") |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) +
+    ggplot2::geom_line(linewidth = 1) +
+    ggplot2::ylim(c(0, 1)) +
+    ggplot2::theme_bw() + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | POM Model",
+    caption = "Adjusted by covariates | POM Model")
+
+Plot_PHM <- CIFAdjustedFig |> 
+    subset(subset = Model == "PHM") |> 
+    ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) +
+    ggplot2::geom_line(linewidth = 1) +
+    ggplot2::ylim(c(0, 1)) +
+    ggplot2::theme_bw() + 
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | PHM Model",
+    caption = "Adjusted by covariates | PHM Model")
+
+PlotType = switch(TypeMethod, 
+  "GOM" = Plot_GOM, 
+  "POM" = Plot_POM,
+  "PHM" = Plot_PHM)
+
+  OutPut <- list(Time = list(
+  InputTime = StoreTime, 
+  TimeForPlotAdjusted = timex, 
+  TimeForPlotnull = timexNull
+  ), 
+  CIF = list(
+  CIFNULL = CIFnull |> subset(subset = Model == TypeMethod) |> 
+            subset(select = -c(Model)), 
+  CIFAdjusted = CIFAdjustedVal |> 
+      subset(subset = Model == TypeMethod) |> 
+        subset(select = -c(Model))
+  ),
+  Plot = list(
+    PlotNull_AllModels = Plot_NULL,
+    PlotAdjusted_AllModels = Plot_Adjusted,
+    Plot_InputModel = PlotType
+  )
+  )
+
+  return(OutPut)
+}
+
+
+FineGray_Model()
+cmpp_CIF()

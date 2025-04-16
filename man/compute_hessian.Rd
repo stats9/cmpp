@@ -4,10 +4,10 @@
 \alias{compute_hessian}
 \title{Compute the Hessian Matrix of the Log-Likelihood}
 \usage{
-compute_hessian(Param)
+compute_hessian(param)
 }
 \arguments{
-\item{Param}{A numeric vector of parameters for which the Hessian matrix is calculated.}
+\item{param}{A numeric vector of parameters for which the Hessian matrix is calculated.}
 }
 \value{
 A numeric matrix representing the Hessian matrix at the specified parameters.
@@ -23,8 +23,8 @@ The function requires the data to be initialized using \code{Initialize} before 
 }
 \examples{
 \dontrun{
-Param <- c(0.5, 0.1, 0.6, 0.2)
-hessian <- compute_hessian(Param)
+param <- c(0.5, 0.1, 0.6, 0.2)
+hessian <- compute_hessian(param)
 print(hessian)
 }
 }

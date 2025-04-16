@@ -433,11 +433,11 @@ void Initialize(NumericMatrix features, NumericVector x, IntegerVector delta1, I
 }
 
 // [[Rcpp::export]]
-double cdf_gomp(double time, double shape, double scale) {
+double cdf_gomp(double x, double alpha, double beta) {
     if (cmpp == nullptr) {
         Rcpp::stop("The Cmpp object has not been initialized.");
     }
-    return cmpp->F_Gomp(time, shape, scale); 
+    return cmpp->F_Gomp(x, alpha, beta); 
 }
 
 // [[Rcpp::export]]
@@ -457,34 +457,34 @@ Rcpp::List GetDim() {
 }
 
 // [[Rcpp::export]]
-SEXP LogLike1(SEXP paramSEXP) {
+SEXP LogLike1(SEXP param) {
     if (cmpp == nullptr) {
         Rcpp::stop("The Cmpp object has not been initialized.");
     }
 
-    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(paramSEXP));
+    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(param));
     double result = cmpp->LogLike1_method(Param);
     return Rcpp::wrap(result);
 }
 
 // [[Rcpp::export]]
-SEXP compute_grad(SEXP paramSEXP) {
+SEXP compute_grad(SEXP param) {
     if (cmpp == nullptr) {
         Rcpp::stop("The Cmpp object has not been initialized.");
     }
 
-    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(paramSEXP));
+    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(param));
     Eigen::VectorXd grad = cmpp->compute_numeric_gradient(Param);
     return Rcpp::wrap(grad);
 }
 
 // [[Rcpp::export]]
-SEXP compute_hessian(SEXP paramSEXP) {
+SEXP compute_hessian(SEXP param) {
     if (cmpp == nullptr) {
         Rcpp::stop("The Cmpp object has not been initialized.");
     }
 
-    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(paramSEXP));
+    Eigen::Map<Eigen::VectorXd> Param(as<Eigen::Map<Eigen::VectorXd>>(param));
     Eigen::MatrixXd hessian = cmpp->compute_numeric_hessian(Param);
     return Rcpp::wrap(hessian);
 }

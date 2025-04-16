@@ -2,45 +2,66 @@
 % Please edit documentation in R/RCode.r
 \name{estimate_parameters_GCM}
 \alias{estimate_parameters_GCM}
-\title{Compute Cumulative Incidence Regression Results Generalized Chance Model (GCM)}
+\title{Estimate Parameters for the Generalized Chance Model (GCM)}
 \usage{
 estimate_parameters_GCM(initial_params, FeaturesNames = NULL)
 }
 \arguments{
-\item{initial_params}{A numeric vector of initial parameter values to start the optimization. Default is \code{rep(0.001, 2 * (3 + ncol(covars)))}.}
+\item{initial_params}{A numeric vector of initial parameter values to start the optimization.
+Default is \code{rep(0.001, 2 * (3 + ncol(features)))}, where \code{features} is the matrix of predictor variables.}
+
+\item{FeaturesNames}{A character vector specifying the names of the features (covariates).
+If \code{NULL}, default names (\code{beta1}, \code{beta2}, etc.) will be generated.}
 }
 \value{
 A data frame containing:
-\item{Params}{The parameter names ('alpha1', "tau1", 'rho1', 'alpha2', 'tau2', 'rho2', 'beta11', ..., 'beta1k', 'beta21', ..., 'beta2k').}
-\item{S.E}{The standard deviations of the mean parameters.}
-\item{Pvalue}{p-values.}
+\item{Parameter}{The parameter names, including \code{alpha1}, \code{tau1}, \code{rho1}, \code{alpha2}, \code{tau2}, \code{rho2}, and covariate coefficients (\code{beta1}, \code{beta2}, etc.).}
+\item{Estimate}{The estimated parameter values.}
+\item{S.E}{The standard errors of the estimated parameters.}
+\item{PValue}{The p-values for the estimated parameters.}
 }
 \description{
-This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive (GCM Approach).
+This function estimates the parameters of the Generalized Chance Model (GCM) using maximum likelihood estimation.
+It computes the Hessian matrix, calculates standard errors, and derives p-values for the estimated parameters.
+The function ensures that the diagonal elements of the covariance matrix are positive for valid variance estimates.
 }
 \details{
 This function performs the following steps:
 \itemize{
-\item Estimates the model parameters using the \code{optim} function and \code{log_f_rcpp} and \code{compute_log_f_gradient_rcpp}, \code{compute_log_f_hessian_rcpp}
-\item Computes the Hessian matrix using the \code{hessian} function in \code{numDeriv} package.
-\item Ensures that the diagonal elements of the covariance matrix are positive.
-\item Calculates the variances and p-values for the parameters.
+\item Estimates the model parameters using the \code{optim} function with the BFGS method.
+\item Computes the gradient of the log-likelihood using the \code{compute_log_f_gradient_rcpp} function.
+\item Computes the Hessian matrix numerically using the \code{hessian} function from the \code{numDeriv} package.
+\item Ensures that the diagonal elements of the covariance matrix are positive to avoid invalid variance estimates.
+\item Calculates standard errors and p-values for the estimated parameters.
 }
+
+The Generalized Chance Model (GCM) is a parametric model for cumulative incidence functions in competing risks analysis.
+It uses Gompertz distributions to model the failure times for competing events.
 }
 \examples{
 \dontrun{
 library(cmpp)
+# Example data
 features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
 delta1 <- sample(c(0, 1), 100, replace = TRUE)
 delta2 <- 1 - delta1
 x <- rexp(100, rate = 1/10)
+
+# Initialize the Cmpp model
 Initialize(features, x, delta1, delta2, h = 1e-5)
+
+# Define initial parameter values
 initial_params <- rep(0.001, 2 * (ncol(features) + 3))
+
+# Estimate parameters using the GCM
 result <- estimate_parameters_GCM(initial_params)
 print(result)
 }
 
 }
 \seealso{
-\link{optim}, \link{compute_log_f_gradient_rcpp}, \link{log_f_rcpp}, \link{compute_log_f_hessian_rcpp}.
+\link[stats:optim]{stats::optim},
+\link{compute_log_f_gradient_rcpp},
+\link{log_f_rcpp},
+\link{compute_log_f_hessian_rcpp}.
 }

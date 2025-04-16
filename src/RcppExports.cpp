@@ -26,15 +26,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // cdf_gomp
-double cdf_gomp(double time, double shape, double scale);
-RcppExport SEXP _cmpp_cdf_gomp(SEXP timeSEXP, SEXP shapeSEXP, SEXP scaleSEXP) {
+double cdf_gomp(double x, double alpha, double beta);
+RcppExport SEXP _cmpp_cdf_gomp(SEXP xSEXP, SEXP alphaSEXP, SEXP betaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< double >::type time(timeSEXP);
-    Rcpp::traits::input_parameter< double >::type shape(shapeSEXP);
-    Rcpp::traits::input_parameter< double >::type scale(scaleSEXP);
-    rcpp_result_gen = Rcpp::wrap(cdf_gomp(time, shape, scale));
+    Rcpp::traits::input_parameter< double >::type x(xSEXP);
+    Rcpp::traits::input_parameter< double >::type alpha(alphaSEXP);
+    Rcpp::traits::input_parameter< double >::type beta(betaSEXP);
+    rcpp_result_gen = Rcpp::wrap(cdf_gomp(x, alpha, beta));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -62,35 +62,35 @@ BEGIN_RCPP
 END_RCPP
 }
 // LogLike1
-SEXP LogLike1(SEXP paramSEXP);
-RcppExport SEXP _cmpp_LogLike1(SEXP paramSEXPSEXP) {
+SEXP LogLike1(SEXP param);
+RcppExport SEXP _cmpp_LogLike1(SEXP paramSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type paramSEXP(paramSEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(LogLike1(paramSEXP));
+    Rcpp::traits::input_parameter< SEXP >::type param(paramSEXP);
+    rcpp_result_gen = Rcpp::wrap(LogLike1(param));
     return rcpp_result_gen;
 END_RCPP
 }
 // compute_grad
-SEXP compute_grad(SEXP paramSEXP);
-RcppExport SEXP _cmpp_compute_grad(SEXP paramSEXPSEXP) {
+SEXP compute_grad(SEXP param);
+RcppExport SEXP _cmpp_compute_grad(SEXP paramSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type paramSEXP(paramSEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(compute_grad(paramSEXP));
+    Rcpp::traits::input_parameter< SEXP >::type param(paramSEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_grad(param));
     return rcpp_result_gen;
 END_RCPP
 }
 // compute_hessian
-SEXP compute_hessian(SEXP paramSEXP);
-RcppExport SEXP _cmpp_compute_hessian(SEXP paramSEXPSEXP) {
+SEXP compute_hessian(SEXP param);
+RcppExport SEXP _cmpp_compute_hessian(SEXP paramSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type paramSEXP(paramSEXPSEXP);
-    rcpp_result_gen = Rcpp::wrap(compute_hessian(paramSEXP));
+    Rcpp::traits::input_parameter< SEXP >::type param(paramSEXP);
+    rcpp_result_gen = Rcpp::wrap(compute_hessian(param));
     return rcpp_result_gen;
 END_RCPP
 }

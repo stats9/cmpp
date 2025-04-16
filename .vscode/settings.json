@@ -17,6 +17,7 @@
         "cstddef": "cpp",
         "cstdint": "cpp",
         "cstdlib": "cpp",
-        "cstring": "cpp"
+        "cstring": "cpp",
+        "core": "cpp"
     }
 }

@@ -1,3 +1,6 @@
+#' @importFrom stats optim sd pnorm
+NULL
+
 #' @name Initialize
 #' @title Initialize Data for the Cmpp Model
 #'
@@ -94,13 +97,13 @@ NULL
 #' @description Computes the negative log-likelihood of the Cmpp model given parameters and the initialized data. 
 #'    The log-likelihood considers Gompertz distributions for competing risks.
 #'
-#' @param Param A numeric vector of model parameters: [alpha1, beta1, alpha2, beta2], where 
+#' @param param A numeric vector of model parameters: `alpha1`, `beta1`, `alpha2`, `beta2`, where 
 #' the first two are for the first event and the next two are for the second event.
 #'
 #' @details This function requires the data to be initialized using `Initialize` before being called. 
 #' The log-likelihood is based on survival probabilities derived from the Gompertz distributions.
 #'
-#' @usage LogLike1(Param)
+#' @usage LogLike1(param)
 #'
 #' @return A single numeric value representing the negative log-likelihood.
 #'
@@ -108,8 +111,8 @@ NULL
 #'
 #' @examples
 #' \dontrun{
-#' Param <- c(0.01, 0.01, 0.01, 0.01)
-#' LogLike1(Param)
+#' param <- c(0.01, 0.01, 0.01, 0.01)
+#' LogLike1(param)
 #' }
 NULL 
 
@@ -119,20 +122,20 @@ NULL
 #' @description Calculates the gradient of the negative log-likelihood using finite differences. 
 #'    The function uses a small step size (`h`) defined during initialization.
 #'
-#' @param Param A numeric vector of parameters for which the gradient is calculated.
+#' @param param A numeric vector of parameters for which the gradient is calculated.
 #'
 #' @details This function approximates the gradient using central finite differences.
 #' Ensure that `h` is appropriately set to avoid numerical instability.
 #'
-#' @usage compute_grad(Param)
+#' @usage compute_grad(param)
 #'
-#' @return A numeric vector of the same length as `Param`, representing the gradient at the specified parameters.
+#' @return A numeric vector of the same length as `param`, representing the gradient at the specified parameters.
 #'
 #' @export
 #' @examples
 #' \dontrun{
-#' Param <- c(0.5, 0.1, 0.6, 0.2)
-#' compute_grad(Param)
+#' param <- c(0.5, 0.1, 0.6, 0.2)
+#' compute_grad(param)
 #' }
 NULL 
 
@@ -253,7 +256,7 @@ NULL
 #' @return An `optim` object containing the optimization results, including the estimated
 #'         parameters, value of the objective function at the optimum, and other optimization details.
 #'
-#' @seealso \link{optim} for more details on optimization methods and usage.
+#' @seealso \link[stats:optim]{stats::optim} for more details on optimization methods and usage.
 #'
 #' @examples
 #'
@@ -282,21 +285,21 @@ estimate_parameters <- function(initial_params = rep(0.01, 4), optimMethod = 'BF
 #' @description Calculates the Hessian matrix of the negative log-likelihood function using finite differences.
 #'    This function is useful for understanding the curvature of the log-likelihood surface and for optimization purposes.
 #'
-#' @param Param A numeric vector of parameters for which the Hessian matrix is calculated.
+#' @param param A numeric vector of parameters for which the Hessian matrix is calculated.
 #'
 #' @details This function approximates the Hessian matrix using central finite differences.
 #' Ensure that the step size `h` is appropriately set during initialization to avoid numerical instability.
 #' The function requires the data to be initialized using `Initialize` before being called.
 #'
-#' @usage compute_hessian(Param)
+#' @usage compute_hessian(param)
 #'
 #' @return A numeric matrix representing the Hessian matrix at the specified parameters.
 #'
 #' @export
 #' @examples
 #' \dontrun{
-#' Param <- c(0.5, 0.1, 0.6, 0.2)
-#' hessian <- compute_hessian(Param)
+#' param <- c(0.5, 0.1, 0.6, 0.2)
+#' hessian <- compute_hessian(param)
 #' print(hessian)
 #' }
 NULL
@@ -681,45 +684,66 @@ NULL
 #' }
 NULL
 
-
 #' @name estimate_parameters_GCM
-#' @title Compute Cumulative Incidence Regression Results Generalized Chance Model (GCM)
+#' @title Estimate Parameters for the Generalized Chance Model (GCM)
 #'
-#' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive (GCM Approach).
+#' @description This function estimates the parameters of the Generalized Chance Model (GCM) using maximum likelihood estimation. 
+#' It computes the Hessian matrix, calculates standard errors, and derives p-values for the estimated parameters. 
+#' The function ensures that the diagonal elements of the covariance matrix are positive for valid variance estimates.
 #'
-#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (3 + ncol(covars)))`.
+#' @param initial_params A numeric vector of initial parameter values to start the optimization. 
+#' Default is `rep(0.001, 2 * (3 + ncol(features)))`, where `features` is the matrix of predictor variables.
+#' @param FeaturesNames A character vector specifying the names of the features (covariates). 
+#' If `NULL`, default names (`beta1`, `beta2`, etc.) will be generated.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
-#'   \item Estimates the model parameters using the `optim` function and `log_f_rcpp` and `compute_log_f_gradient_rcpp`, `compute_log_f_hessian_rcpp`
-#'   \item Computes the Hessian matrix using the `hessian` function in `numDeriv` package.
-#'   \item Ensures that the diagonal elements of the covariance matrix are positive.
-#'   \item Calculates the variances and p-values for the parameters.
+#'   \item Estimates the model parameters using the `optim` function with the BFGS method.
+#'   \item Computes the gradient of the log-likelihood using the `compute_log_f_gradient_rcpp` function.
+#'   \item Computes the Hessian matrix numerically using the `hessian` function from the `numDeriv` package.
+#'   \item Ensures that the diagonal elements of the covariance matrix are positive to avoid invalid variance estimates.
+#'   \item Calculates standard errors and p-values for the estimated parameters.
 #' }
 #'
-#' @return A data frame containing:
-#' \item{Params}{The parameter names ('alpha1', "tau1", 'rho1', 'alpha2', 'tau2', 'rho2', 'beta11', ..., 'beta1k', 'beta21', ..., 'beta2k').}
-#' \item{S.E}{The standard deviations of the mean parameters.}
-#' \item{Pvalue}{p-values.}
+#' The Generalized Chance Model (GCM) is a parametric model for cumulative incidence functions in competing risks analysis. 
+#' It uses Gompertz distributions to model the failure times for competing events.
 #'
-#' @seealso \link{optim}, \link{compute_log_f_gradient_rcpp}, \link{log_f_rcpp}, \link{compute_log_f_hessian_rcpp}.
+#' @return A data frame containing:
+#' \item{Parameter}{The parameter names, including `alpha1`, `tau1`, `rho1`, `alpha2`, `tau2`, `rho2`, and covariate coefficients (`beta1`, `beta2`, etc.).}
+#' \item{Estimate}{The estimated parameter values.}
+#' \item{S.E}{The standard errors of the estimated parameters.}
+#' \item{PValue}{The p-values for the estimated parameters.}
+#'
+#' @seealso 
+#' \link[stats:optim]{stats::optim}, 
+#' \link{compute_log_f_gradient_rcpp}, 
+#' \link{log_f_rcpp}, 
+#' \link{compute_log_f_hessian_rcpp}.
 #'
 #' @importFrom numDeriv hessian
 #'
 #' @examples
 #' \dontrun{
 #' library(cmpp)
+#' # Example data
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
 #' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
 #' x <- rexp(100, rate = 1/10)
+#'
+#' # Initialize the Cmpp model
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
+#'
+#' # Define initial parameter values
 #' initial_params <- rep(0.001, 2 * (ncol(features) + 3))
+#'
+#' # Estimate parameters using the GCM
 #' result <- estimate_parameters_GCM(initial_params)
 #' print(result)
 #' }
 #'
 #' @export
+#'
 estimate_parameters_GCM <- function(initial_params, FeaturesNames = NULL) {
   # Optimize the log-likelihood function to estimate parameters
   tempk <- length(initial_params) - 6
@@ -774,9 +798,6 @@ estimate_parameters_GCM <- function(initial_params, FeaturesNames = NULL) {
   return(result_df)
 }
 NULL
-
-
-###################### add 2025-03-28 #####################################
 
 #' @name f_pdf_rcpp2
 #' @title Compute the PDF of the Parametric Proportional Odds Model (POM)
@@ -864,36 +885,58 @@ NULL
 
 
 #' @name estimate_parameters_POM
-#' @title Compute Cumulative Incidence Regression Results Proportional Odds Model (POM)
+#' @title Estimate Parameters for the Proportional Odds Model (POM)
 #'
-#' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive (POM Approach).
+#' @description This function estimates the parameters of the Proportional Odds Model (POM) using maximum likelihood estimation. 
+#' It computes the Hessian matrix, calculates standard errors, and derives p-values for the estimated parameters. 
+#' The function ensures that the diagonal elements of the covariance matrix are positive for valid variance estimates.
 #'
-#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (2 + ncol(covars)))`.
+#' @param initial_params A numeric vector of initial parameter values to start the optimization. 
+#' Default is `rep(0.001, 2 * (2 + ncol(features)))`, where `features` is the matrix of predictor variables.
+#' @param FeaturesNames A character vector specifying the names of the features (covariates). 
+#' If `NULL`, default names (`beta1`, `beta2`, etc.) will be generated.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
-#'   \item Estimates the model parameters using the `optim` function and `log_f_rcpp2` and `compute_log_f_gradient_rcpp`, `compute_log_f_hessian_rcpp`
-#'   \item Computes the Hessian matrix using the `hessian` function in `numDeriv`` package.
-#'   \item Ensures that the diagonal elements of the covariance matrix are positive.
-#'   \item Calculates the variances and p-values for the parameters.
+#'   \item Estimates the model parameters using the `optim` function with the BFGS method.
+#'   \item Computes the gradient of the log-likelihood using the `compute_log_f_gradient_rcpp2` function.
+#'   \item Computes the Hessian matrix numerically using the `hessian` function from the `numDeriv` package.
+#'   \item Ensures that the diagonal elements of the covariance matrix are positive to avoid invalid variance estimates.
+#'   \item Calculates standard errors and p-values for the estimated parameters.
 #' }
 #'
-#' @return A data frame containing:
-#' \item{Params}{The parameter names ("tau1", 'rho1', 'tau2', 'rho2', 'beta11', ..., 'beta1k', 'beta21', ..., 'beta2k').}
-#' \item{S.E}{The standard deviations of the mean parameters.}
-#' \item{Pvalue}{p-values.}
+#' The Proportional Odds Model (POM) is a parametric model for cumulative incidence functions in competing risks analysis. 
+#' It uses Gompertz distributions to model the failure times for competing events.
 #'
-#' @seealso \link{optim}, \link{compute_log_f_gradient_rcpp}, \link{log_f_rcpp}, \link{compute_log_f_hessian_rcpp}.
+#' @return A data frame containing:
+#' \item{Parameter}{The parameter names, including `tau1`, `rho1`, `tau2`, `rho2`, and covariate coefficients (`beta1`, `beta2`, etc.).}
+#' \item{Estimate}{The estimated parameter values.}
+#' \item{S.E}{The standard errors of the estimated parameters.}
+#' \item{PValue}{The p-values for the estimated parameters.}
+#'
+#' @seealso 
+#' \link[stats:optim]{stats::optim}, 
+#' \link{compute_log_f_gradient_rcpp2}, 
+#' \link{log_f_rcpp2}.
+#'
+#' @importFrom numDeriv hessian
 #'
 #' @examples
 #' \dontrun{
 #' library(cmpp)
+#' # Example data
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
 #' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
 #' x <- rexp(100, rate = 1/10)
+#'
+#' # Initialize the Cmpp model
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
+#'
+#' # Define initial parameter values
 #' initial_params <- rep(0.001, 2 * (ncol(features) + 2))
+#'
+#' # Estimate parameters using the POM
 #' result <- estimate_parameters_POM(initial_params)
 #' print(result)
 #' }
@@ -1036,38 +1079,59 @@ NULL
 #' }
 NULL
 
-
 #' @name estimate_parameters_PHM
-#' @title Compute Cumulative Incidence Regression Results Proportional Hazards Model (PHM)
+#' @title Estimate Parameters for the Proportional Hazards Model (PHM)
 #'
-#' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive (PHM Approach).
+#' @description This function estimates the parameters of the Proportional Hazards Model (PHM) using maximum likelihood estimation. 
+#' It computes the Hessian matrix, calculates standard errors, and derives p-values for the estimated parameters. 
+#' The function ensures that the diagonal elements of the covariance matrix are positive for valid variance estimates.
 #'
-#' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 2 * (2 + ncol(covars)))`.
+#' @param initial_params A numeric vector of initial parameter values to start the optimization. 
+#' Default is `rep(0.001, 2 * (2 + ncol(features)))`, where `features` is the matrix of predictor variables.
+#' @param FeaturesNames A character vector specifying the names of the features (covariates). 
+#' If `NULL`, default names (`beta1`, `beta2`, etc.) will be generated.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
-#'   \item Estimates the model parameters using the `optim` function and `log_f_rcpp2` and `compute_log_f_gradient_rcpp`, `compute_log_f_hessian_rcpp`
-#'   \item Computes the Hessian matrix using the `hessian` function in `numDeriv`` package.
-#'   \item Ensures that the diagonal elements of the covariance matrix are positive.
-#'   \item Calculates the variances and p-values for the parameters.
+#'   \item Estimates the model parameters using the `optim` function with the BFGS method.
+#'   \item Computes the gradient of the log-likelihood using the `compute_log_f_gradient_rcpp3` function.
+#'   \item Computes the Hessian matrix numerically using the `hessian` function from the `numDeriv` package.
+#'   \item Ensures that the diagonal elements of the covariance matrix are positive to avoid invalid variance estimates.
+#'   \item Calculates standard errors and p-values for the estimated parameters.
 #' }
 #'
-#' @return A data frame containing:
-#' \item{Params}{The parameter names ("tau1", 'rho1', 'tau2', 'rho2', 'beta11', ..., 'beta1k', 'beta21', ..., 'beta2k').}
-#' \item{S.E}{The standard deviations of the mean parameters.}
-#' \item{Pvalue}{p-values.}
+#' The Proportional Hazards Model (PHM) is a parametric model for cumulative incidence functions in competing risks analysis. 
+#' It uses Gompertz distributions to model the failure times for competing events.
 #'
-#' @seealso \link{optim}, \link{compute_log_f_gradient_rcpp}, \link{log_f_rcpp}, \link{compute_log_f_hessian_rcpp}.
+#' @return A data frame containing:
+#' \item{Parameter}{The parameter names, including `tau1`, `rho1`, `tau2`, `rho2`, and covariate coefficients (`beta1`, `beta2`, etc.).}
+#' \item{Estimate}{The estimated parameter values.}
+#' \item{S.E}{The standard errors of the estimated parameters.}
+#' \item{PValue}{The p-values for the estimated parameters.}
+#'
+#' @seealso 
+#' \link[stats:optim]{stats::optim}, 
+#' \link{compute_log_f_gradient_rcpp3}, 
+#' \link{log_f_rcpp3}.
+#'
+#' @importFrom numDeriv hessian
 #'
 #' @examples
 #' \dontrun{
 #' library(cmpp)
+#' # Example data
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
 #' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
 #' x <- rexp(100, rate = 1/10)
+#'
+#' # Initialize the Cmpp model
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
+#'
+#' # Define initial parameter values
 #' initial_params <- rep(0.001, 2 * (ncol(features) + 2))
+#'
+#' # Estimate parameters using the PHM
 #' result <- estimate_parameters_PHM(initial_params)
 #' print(result)
 #' }
@@ -1125,12 +1189,6 @@ estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL) {
   return(result_df)
 }
 NULL
-
-############## Edit 2025-04-13 ############################
-###########################################################
-
-NULL
-
 
 
 #' @name GetData

@@ -4,10 +4,10 @@
 \alias{LogLike1}
 \title{Compute the Log-Likelihood for the Model}
 \usage{
-LogLike1(Param)
+LogLike1(param)
 }
 \arguments{
-\item{Param}{A numeric vector of model parameters: \link{alpha1, beta1, alpha2, beta2}, where
+\item{param}{A numeric vector of model parameters: \code{alpha1}, \code{beta1}, \code{alpha2}, \code{beta2}, where
 the first two are for the first event and the next two are for the second event.}
 }
 \value{
@@ -23,7 +23,7 @@ The log-likelihood is based on survival probabilities derived from the Gompertz 
 }
 \examples{
 \dontrun{
-Param <- c(0.01, 0.01, 0.01, 0.01)
-LogLike1(Param)
+param <- c(0.01, 0.01, 0.01, 0.01)
+LogLike1(param)
 }
 }

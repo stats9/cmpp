@@ -47,5 +47,5 @@ print(result)
 
 }
 \seealso{
-\link{optim} for more details on optimization methods and usage.
+\link[stats:optim]{stats::optim} for more details on optimization methods and usage.
 }

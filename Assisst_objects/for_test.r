@@ -1,9 +1,12 @@
 packageVersion('cmpp')
 remove.packages('cmpp')
+roxygen2 :: roxygenize(clean = TRUE)
 devtools :: document()
 devtools :: install()
+devtools :: build()
+
 library(cmpp)
-help(package = 'cmpp')
+# help(package = 'cmpp')
 
 
 data(dat)
@@ -14,6 +17,8 @@ d1 = dat[['d1']]
 d2 = dat[['d2']]
 feat2 = feat |> data.matrix()
 Initialize(feat2, timee, d1, d2, 1e-10)
+Res <- Cmpp_CIF()
+Res$Plot
 optim(par = c(0.001, 0.001, 0.001, 0.001), 
     fn = LogLike1, 
     gr = compute_grad, 

@@ -4,13 +4,13 @@
 \alias{compute_grad}
 \title{Compute the Numerical Gradient of the Log-Likelihood}
 \usage{
-compute_grad(Param)
+compute_grad(param)
 }
 \arguments{
-\item{Param}{A numeric vector of parameters for which the gradient is calculated.}
+\item{param}{A numeric vector of parameters for which the gradient is calculated.}
 }
 \value{
-A numeric vector of the same length as \code{Param}, representing the gradient at the specified parameters.
+A numeric vector of the same length as \code{param}, representing the gradient at the specified parameters.
 }
 \description{
 Calculates the gradient of the negative log-likelihood using finite differences.
@@ -22,7 +22,7 @@ Ensure that \code{h} is appropriately set to avoid numerical instability.
 }
 \examples{
 \dontrun{
-Param <- c(0.5, 0.1, 0.6, 0.2)
-compute_grad(Param)
+param <- c(0.5, 0.1, 0.6, 0.2)
+compute_grad(param)
 }
 }

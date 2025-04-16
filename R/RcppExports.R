@@ -5,8 +5,8 @@ Initialize <- function(features, x, delta1, delta2, h) {
     invisible(.Call(`_cmpp_Initialize`, features, x, delta1, delta2, h))
 }
 
-cdf_gomp <- function(time, shape, scale) {
-    .Call(`_cmpp_cdf_gomp`, time, shape, scale)
+cdf_gomp <- function(x, alpha, beta) {
+    .Call(`_cmpp_cdf_gomp`, x, alpha, beta)
 }
 
 pdf_gomp <- function(x, alpha, beta) {
@@ -17,16 +17,16 @@ GetDim <- function() {
     .Call(`_cmpp_GetDim`)
 }
 
-LogLike1 <- function(paramSEXP) {
-    .Call(`_cmpp_LogLike1`, paramSEXP)
+LogLike1 <- function(param) {
+    .Call(`_cmpp_LogLike1`, param)
 }
 
-compute_grad <- function(paramSEXP) {
-    .Call(`_cmpp_compute_grad`, paramSEXP)
+compute_grad <- function(param) {
+    .Call(`_cmpp_compute_grad`, param)
 }
 
-compute_hessian <- function(paramSEXP) {
-    .Call(`_cmpp_compute_hessian`, paramSEXP)
+compute_hessian <- function(param) {
+    .Call(`_cmpp_compute_hessian`, param)
 }
 
 makeMat <- function(n, m, value) {

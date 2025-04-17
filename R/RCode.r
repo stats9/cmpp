@@ -1,5 +1,120 @@
-#' @importFrom stats optim sd pnorm
-NULL
+#' Parametric (Direct) Methods for Cumulative Incidence Functions in Competing Risks
+#'
+#' The \code{cmpp} package provides parametric (Direct) modeling methods for analyzing cumulative incidence functions (CIFs)
+#' in the context of competing risks. It includes Gompertz-based models, regression techniques, and parametric (Direct) approaches
+#' such as the Generalized Chance Model (GCM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM).
+#' The package enables users to estimate and compare CIFs using maximum likelihood estimation, perform regression analysis,
+#' and visualize CIFs with confidence intervals. It also supports covariate adjustment and bootstrap variance estimation.
+#'
+#' @details
+#' The \code{cmpp} package offers functions for modeling cumulative incidence functions (CIFs) Directly
+#' using the Gompertz distribution and generalized regression models.
+#'
+#' Key features include:
+#' \itemize{
+#'   \item Direct parametric modeling for cumulative incidence functions.
+#'   \item Maximum likelihood estimation of parameters.
+#'   \item Regression analysis with covariates, including treatment effects.
+#'   \item Visualization of CIFs with confidence intervals.
+#'   \item Covariate-adjusted CIF estimation.
+#'   \item Bootstrap variance estimation for model parameters.
+#' }
+#'
+#' Commonly used functions include:
+#' \itemize{
+#'   \item \code{\link{Initialize}}: Initializes the data for the Cmpp model.
+#'   \item \code{\link{LogLike1}}: Computes the negative log-likelihood for the model without covariate effect.
+#'   \item \code{\link{compute_grad}}: Computes the gradient of the log-likelihood.
+#'   \item \code{\link{compute_hessian}}: Computes the Hessian matrix of the log-likelihood.
+#'   \item \code{\link{estimate_parameters_GCM}}: Estimates parameters using the Generalized Chance Model (GCM).
+#'   \item \code{\link{estimate_parameters_POM}}: Estimates parameters using the Proportional Odds Model (POM).
+#'   \item \code{\link{estimate_parameters_PHM}}: Estimates parameters using the Proportional Hazards Model (PHM).
+#'   \item \code{\link{CIF_res1}}: Computes CIF results for competing risks without covariates.
+#'   \item \code{\link{CIF_Figs}}: Plots CIFs with confidence intervals (without covariate effect).
+#'   \item \code{\link{Cmpp_CIF}}: Computes and plots CIFs for competing risks using GCM, POM, and PHM.
+#'   \item \code{\link{FineGray_Model}}: Fits a Fine-Gray regression model for competing risks data and 
+#'      visualize CIF by Fine-Gray model result using \code{\link[cmprsk:cuminc]{cmprsk::cuminc}} and \code{\link[cmprsk:crr]{cmprsk::crr}}.
+#'  \item \code{\link{bootstrap_variance}}: Estimates variance of parameters using the bootstrap method.
+#'  \item \code{\link{GetData}}: Retrieves initialized data from the Cmpp model.
+#'  \item \code{\link{Cleanup}}: Cleans up memory by deleting the Cmpp instance.
+#' }
+#'
+#' @name cmpp
+#' @author
+#' Habib Ezzatabadipour \email{habibezati@outlook.com}
+#'
+#' @references
+#' \itemize{
+#' \item Jeong, J.-H., & Fine, J. (2006). Direct parametric inference for the cumulative incidence function. \emph{Applied Statistics}, 55(2), 187-200. \cr
+#' \item Jeong, J.-H., & Fine, J. (2007). Parametric regression on cumulative incidence function. \emph{Biostatistics}, 8(2), 184-196.
+#' }
+#'
+#' @keywords survival risks cumulative incidence regression parametric 
+#'
+#' @seealso \link{Initialize}, \link{LogLike1}, \link{compute_grad}, \link{compute_hessian}, \link{estimate_parameters_GCM},
+#'   \link{estimate_parameters_POM}, \link{estimate_parameters_PHM}, \link{CIF_res1}, \link{CIF_Figs},
+#'   \link{Cmpp_CIF}, \link{FineGray_Model}, \link{bootstrap_variance}, \link{GetData}, \link{Cleanup}
+#'
+#' @importFrom stats optim pnorm sd
+#' @importFrom dplyr mutate
+#' @importFrom tidyr pivot_longer
+#' @importFrom numDeriv hessian
+#' @import cmprsk
+#' @import ggplot2
+#' @import tidyselect
+#'
+#' @examples
+#'  \dontrun{
+#'    ## Example: Initialize the Cmpp model and compute CIFs
+#'    library(cmpp)
+#'    features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#'    delta1 <- sample(c(0, 1), 100, replace = TRUE)
+#'    delta2 <- 1 - delta1
+#'    timee <- rexp(100, rate = 1/10)
+#'
+#'    Initialize(features, timee, delta1, delta2, h = 1e-5)
+#'    # Initialize the Cmpp model
+#'
+#'    # Estimate parameters using the Generalized Chance Model (GCM)
+#'    initial_params <- rep(0.001, 2 * (ncol(features) + 3))
+#'    result <- estimate_parameters_GCM(initial_params)
+#'    print(result)
+#'
+#'    # Compute CIFs for competing risks (without covariate effect | Not Regression model)
+#'    cif_results <- CIF_res1(initial_params)
+#'    print(cif_results)
+#'
+#'    # Plot CIFs with confidence intervals
+#'    plot <- CIF_Figs(initial_params, timee)
+#'    print(plot)
+#'
+#'    # Compute and plot adjusted CIFs
+#'    result_cif <- Cmpp_CIF(
+#'      featureID = c(1, 2),
+#'      featureValue = c(0.5, 1.2),
+#'      RiskNames = c("Event1", "Event2"),
+#'      TypeMethod = "GCM",
+#'      predTime = seq(0, 10, by = 0.5)
+#'    )
+#'    print(result_cif$Plot$Plot_InputModel) # Plot for the specified model
+#'    print(result_cif$CIF$CIFAdjusted) # Adjusted CIF values
+#'
+#'    # Fit a Fine-Gray model for competing risks
+#'    result_fg <- FineGray_Model(
+#'      featureNames = c("Feature1", "Feature2"),
+#'      CovarNames = c("Covar1", "Covar2"),
+#'      Failcode = 1,
+#'      RiskNames = c("Event1", "Event2")
+#'    )
+#'    print(result_fg$Results)  # Summary of the Fine-Gray model
+#'    print(result_fg$Plot) # Plot of the CIFs
+#'
+#'    # Clean up memory
+#'    Cleanup()
+#'  }
+
+"_PACKAGE"
+
 
 #' @name Initialize
 #' @title Initialize Data for the Cmpp Model
@@ -256,8 +371,7 @@ NULL
 #' @return An `optim` object containing the optimization results, including the estimated
 #'         parameters, value of the objective function at the optimum, and other optimization details.
 #'
-#' @seealso \link[stats:optim]{stats::optim} for more details on optimization methods and usage.
-#'
+#' @seealso \link[stats:optim]{stats::optim} for more details on optimization methods and usage. 
 #' @examples
 #'
 #'\dontrun{
@@ -423,9 +537,6 @@ NULL
 #'
 #' @return A ggplot object showing the CIFs and their confidence intervals.
 #'
-#' @import ggplot2
-#' @importFrom dplyr mutate
-#' @importFrom tidyr pivot_longer
 #' @export
 #' @examples
 #' \dontrun{
@@ -521,12 +632,12 @@ CIF_Figs <- function(initial_params, TimeFailure, OrderType = c(2, 1), RiskNames
             dplyr::mutate(groups = rep(Levelnames, nrow(ldat1)/2))
 
   ldat2 <- dat22 |> 
-            tidyr::pivot_longer(cols = everything(), 
+            tidyr::pivot_longer(cols = tidyselect :: everything(), 
             values_to = 'Confidence_Lower', 
             names_to = "LBond") 
 
   ldat3 <- dat33 |> 
-            tidyr::pivot_longer(cols = everything(), 
+            tidyr::pivot_longer(cols = tidyselect :: everything(), 
             values_to = 'Confidence_Upper', 
             names_to = "UBond") 
 
@@ -719,8 +830,6 @@ NULL
 #' \link{compute_log_f_gradient_rcpp}, 
 #' \link{log_f_rcpp}, 
 #' \link{compute_log_f_hessian_rcpp}.
-#'
-#' @importFrom numDeriv hessian
 #'
 #' @examples
 #' \dontrun{
@@ -919,8 +1028,6 @@ NULL
 #' \link{compute_log_f_gradient_rcpp2}, 
 #' \link{log_f_rcpp2}.
 #'
-#' @importFrom numDeriv hessian
-#'
 #' @examples
 #' \dontrun{
 #' library(cmpp)
@@ -1114,8 +1221,6 @@ NULL
 #' \link{compute_log_f_gradient_rcpp3}, 
 #' \link{log_f_rcpp3}.
 #'
-#' @importFrom numDeriv hessian
-#'
 #' @examples
 #' \dontrun{
 #' library(cmpp)
@@ -1203,7 +1308,7 @@ NULL
 #'
 #' @return A list containing:
 #' \item{features}{A numeric matrix of predictor variables. Each row corresponds to an observation.}
-#' \item{time}{A numeric vector of failure times corresponding to observations.}
+#' \item{timee}{A numeric vector of failure times corresponding to observations.}
 #' \item{delta1}{A binary vector indicating the occurrence of the first competing event (1 for observed).}
 #' \item{delta2}{A binary vector indicating the occurrence of the second competing event (1 for observed).}
 #'
@@ -1214,7 +1319,7 @@ NULL
 #' # Assuming the Cmpp model has been initialized
 #' data <- GetData()
 #' print(data$features)  # Feature matrix
-#' print(data$time)      # Failure times
+#' print(data$timee)      # Failure times
 #' print(data$delta1)    # Indicator for the first competing event
 #' print(data$delta2)    # Indicator for the second competing event
 #' }
@@ -1241,9 +1346,7 @@ NULL
 #' \item{Results}{A summary of the Fine-Gray model fit.}
 #' \item{Plot}{A ggplot object showing the cumulative incidence functions (CIFs) for the competing risks.}
 #' \item{CIF_Results}{A data frame containing the CIFs for the competing risks, along with their corresponding time points.}
-#'
-#' @import cmprsk
-#' @import ggplot2
+#' 
 #' @export
 #'
 #' @examples
@@ -1263,7 +1366,7 @@ FineGray_Model <- function(featureNames = NULL,
   CovarNames = NULL, Failcode = 1, RiskNames = NULL
 ) {
   Features <- GetData()$features 
-  Time <- GetData()$time
+  Time <- GetData()$timee
   delta1 <- GetData()$delta1
   delta2 <- GetData()$delta2
   Risk1 <- lapply(delta1, \(x) ifelse(x == 1, 1, 0)) |> unlist()
@@ -1344,7 +1447,6 @@ NULL
 #'   }
 #' }
 #'
-#' @import ggplot2
 #' @export
 #'
 #' @examples
@@ -1404,17 +1506,17 @@ Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL,
   Par32 <- Par3[(3 + GetDim()$Nfeature):(3 + GetDim()$Nfeature + 1), 2]
   StoreTime <- predTime
   if(is.null(predTime)) {
-    predTime <- GetData()$time  
+    predTime <- GetData()$timee  
   } 
   if(length(predTime) == 1) {
-    tempTime <- GetData()$time 
+    tempTime <- GetData()$timee 
     SD <- sd(tempTime)
     rangeTemp <- c(max(c(0, Time - 2*SD)), Time + 2*SD)
     timex <- seq(rangeTemp[1], rangeTemp[2], length.out = 100)
   } else {
     timex <- seq(min(predTime), max(predTime), length.out = 100)
   }
-  timexNull <- seq(min(GetData()$time), max(GetData()$time), length.out = 100)
+  timexNull <- seq(min(GetData()$timee), max(GetData()$timee), length.out = 100)
   zNull <- colMeans(GetData()$features)
   CIF11Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp(Params = Par11, Z = zNull, x = timeVal)) |> unlist()
   CIF12Null <- lapply(timexNull, \(timeVal) F_cdf_rcpp(Params = Par12, Z = zNull, x = timeVal)) |> unlist()
@@ -1456,7 +1558,7 @@ Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL,
     Model = rep(c("GCM", "POM", "PHM"), each = 2*length(predTime)),
     Time = rep(predTime, 6),
     CIFAdjusted = c(CIF11Val, CIF12Val, CIF21Val, CIF22Val, CIF31Val, CIF32Val),
-    Risk = rep(rep(RiskNames, each = length(time)), 3) 
+    Risk = rep(rep(RiskNames, each = length(predTime)), 3) 
   )
   CIFnull <- CIFnull |> within(Model <- factor(Model, levels = c("GCM", "POM", "PHM")))
   CIFnull <- CIFnull |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))

@@ -2,98 +2,98 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 Initialize <- function(features, x, delta1, delta2, h) {
-    invisible(.Call(`_cmpp_Initialize`, features, x, delta1, delta2, h))
+    invisible(.Call('_cmpp_Initialize', PACKAGE = 'cmpp', features, x, delta1, delta2, h))
 }
 
 cdf_gomp <- function(x, alpha, beta) {
-    .Call(`_cmpp_cdf_gomp`, x, alpha, beta)
+    .Call('_cmpp_cdf_gomp', PACKAGE = 'cmpp', x, alpha, beta)
 }
 
 pdf_gomp <- function(x, alpha, beta) {
-    .Call(`_cmpp_pdf_gomp`, x, alpha, beta)
+    .Call('_cmpp_pdf_gomp', PACKAGE = 'cmpp', x, alpha, beta)
 }
 
 GetDim <- function() {
-    .Call(`_cmpp_GetDim`)
+    .Call('_cmpp_GetDim', PACKAGE = 'cmpp')
 }
 
 LogLike1 <- function(param) {
-    .Call(`_cmpp_LogLike1`, param)
+    .Call('_cmpp_LogLike1', PACKAGE = 'cmpp', param)
 }
 
 compute_grad <- function(param) {
-    .Call(`_cmpp_compute_grad`, param)
+    .Call('_cmpp_compute_grad', PACKAGE = 'cmpp', param)
 }
 
 compute_hessian <- function(param) {
-    .Call(`_cmpp_compute_hessian`, param)
+    .Call('_cmpp_compute_hessian', PACKAGE = 'cmpp', param)
 }
 
 makeMat <- function(n, m, value) {
-    .Call(`_cmpp_makeMat`, n, m, value)
+    .Call('_cmpp_makeMat', PACKAGE = 'cmpp', n, m, value)
 }
 
 Cleanup <- function() {
-    invisible(.Call(`_cmpp_Cleanup`))
+    invisible(.Call('_cmpp_Cleanup', PACKAGE = 'cmpp'))
 }
 
 bootstrap_variance <- function(features, x, delta1, delta2, initial_params, n_bootstrap, optimMethod) {
-    .Call(`_cmpp_bootstrap_variance`, features, x, delta1, delta2, initial_params, n_bootstrap, optimMethod)
+    .Call('_cmpp_bootstrap_variance', PACKAGE = 'cmpp', features, x, delta1, delta2, initial_params, n_bootstrap, optimMethod)
 }
 
 F_cdf_rcpp <- function(Params, Z, x) {
-    .Call(`_cmpp_F_cdf_rcpp`, Params, Z, x)
+    .Call('_cmpp_F_cdf_rcpp', PACKAGE = 'cmpp', Params, Z, x)
 }
 
 f_pdf_rcpp <- function(Params, Z, x) {
-    .Call(`_cmpp_f_pdf_rcpp`, Params, Z, x)
+    .Call('_cmpp_f_pdf_rcpp', PACKAGE = 'cmpp', Params, Z, x)
 }
 
 log_f_rcpp <- function(Params) {
-    .Call(`_cmpp_log_f_rcpp`, Params)
+    .Call('_cmpp_log_f_rcpp', PACKAGE = 'cmpp', Params)
 }
 
 compute_log_f_gradient_rcpp <- function(Params) {
-    .Call(`_cmpp_compute_log_f_gradient_rcpp`, Params)
+    .Call('_cmpp_compute_log_f_gradient_rcpp', PACKAGE = 'cmpp', Params)
 }
 
 compute_log_f_hessian_rcpp <- function(Params) {
-    .Call(`_cmpp_compute_log_f_hessian_rcpp`, Params)
+    .Call('_cmpp_compute_log_f_hessian_rcpp', PACKAGE = 'cmpp', Params)
 }
 
 F_cdf_rcpp2 <- function(Params, Z, x) {
-    .Call(`_cmpp_F_cdf_rcpp2`, Params, Z, x)
+    .Call('_cmpp_F_cdf_rcpp2', PACKAGE = 'cmpp', Params, Z, x)
 }
 
 f_pdf_rcpp2 <- function(Params, Z, x) {
-    .Call(`_cmpp_f_pdf_rcpp2`, Params, Z, x)
+    .Call('_cmpp_f_pdf_rcpp2', PACKAGE = 'cmpp', Params, Z, x)
 }
 
 log_f_rcpp2 <- function(Params) {
-    .Call(`_cmpp_log_f_rcpp2`, Params)
+    .Call('_cmpp_log_f_rcpp2', PACKAGE = 'cmpp', Params)
 }
 
 compute_log_f_gradient_rcpp2 <- function(Params) {
-    .Call(`_cmpp_compute_log_f_gradient_rcpp2`, Params)
+    .Call('_cmpp_compute_log_f_gradient_rcpp2', PACKAGE = 'cmpp', Params)
 }
 
 F_cdf_rcpp3 <- function(Params, Z, x) {
-    .Call(`_cmpp_F_cdf_rcpp3`, Params, Z, x)
+    .Call('_cmpp_F_cdf_rcpp3', PACKAGE = 'cmpp', Params, Z, x)
 }
 
 f_pdf_rcpp3 <- function(Params, Z, x) {
-    .Call(`_cmpp_f_pdf_rcpp3`, Params, Z, x)
+    .Call('_cmpp_f_pdf_rcpp3', PACKAGE = 'cmpp', Params, Z, x)
 }
 
 log_f_rcpp3 <- function(Params) {
-    .Call(`_cmpp_log_f_rcpp3`, Params)
+    .Call('_cmpp_log_f_rcpp3', PACKAGE = 'cmpp', Params)
 }
 
 compute_log_f_gradient_rcpp3 <- function(Params) {
-    .Call(`_cmpp_compute_log_f_gradient_rcpp3`, Params)
+    .Call('_cmpp_compute_log_f_gradient_rcpp3', PACKAGE = 'cmpp', Params)
 }
 
 GetData <- function() {
-    .Call(`_cmpp_GetData`)
+    .Call('_cmpp_GetData', PACKAGE = 'cmpp')
 }
 

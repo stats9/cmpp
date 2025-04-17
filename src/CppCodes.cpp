@@ -699,7 +699,7 @@ Rcpp::List GetData() {
     }
     return Rcpp::List::create(
         Rcpp::Named("features") = cmpp->get_features(),
-        Rcpp::Named("time") = cmpp->get_failure_times(),
+        Rcpp::Named("timee") = cmpp->get_failure_times(),
         Rcpp::Named("delta1") = cmpp->get_censoring_indicators()["delta1"],
         Rcpp::Named("delta2") = cmpp->get_censoring_indicators()["delta2"]
     );

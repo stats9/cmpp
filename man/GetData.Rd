@@ -6,7 +6,7 @@
 \value{
 A list containing:
 \item{features}{A numeric matrix of predictor variables. Each row corresponds to an observation.}
-\item{time}{A numeric vector of failure times corresponding to observations.}
+\item{timee}{A numeric vector of failure times corresponding to observations.}
 \item{delta1}{A binary vector indicating the occurrence of the first competing event (1 for observed).}
 \item{delta2}{A binary vector indicating the occurrence of the second competing event (1 for observed).}
 }
@@ -24,7 +24,7 @@ competing risks. If the Cmpp object is not initialized, the function will throw 
 # Assuming the Cmpp model has been initialized
 data <- GetData()
 print(data$features)  # Feature matrix
-print(data$time)      # Failure times
+print(data$timee)      # Failure times
 print(data$delta1)    # Indicator for the first competing event
 print(data$delta2)    # Indicator for the second competing event
 }

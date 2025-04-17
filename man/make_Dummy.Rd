@@ -2,8 +2,7 @@
 % Please edit documentation in R/RCode.r
 \name{make_Dummy}
 \alias{make_Dummy}
-\title{################## add 2025-2-22 \%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%\%
-Create Dummy Variables}
+\title{Create Dummy Variables}
 \usage{
 make_Dummy(Data = dat, features = c("sex", "cause_burn"), reff = "first")
 }

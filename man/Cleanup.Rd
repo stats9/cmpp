@@ -14,13 +14,13 @@ It is important to call this function after you are done with the \code{Cmpp} ob
 to ensure that no memory is leaked.
 }
 \details{
-The \code{cpp_Cleanup} function must be called after using the \code{Cmpp} object to clean up
+The \code{Cleanup} function must be called after using the \code{Cmpp} object to clean up
 the allocated memory in C++. Failure to call this function may result in memory
 leaks, as the memory allocated for the \code{Cmpp} object is not automatically freed.
 }
 \examples{
 \dontrun{
-# Assuming you have previously initialized the Cmpp object with cpp_Initialize()
+# Assuming you have previously initialized the Cmpp object with `Initialize()`
 Cleanup()
 }
 }

@@ -253,7 +253,7 @@ public:
         return hessian;
     }
 
-// add 2025-03-27 
+
     double F_cdf2(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x){
         double tau = Params[0];
         double rho = Params[1];
@@ -295,9 +295,8 @@ public:
         double result = tau * std::exp(rho * x) * (std::exp(-tau *(std::exp(rho * x) - 1)*std::exp(tempval)/rho)) * std::exp(tempval);
         return result;
     }
-// end add 2025-03-27
 
-// add in 2025-03-28
+
   double log_f2(const Eigen::VectorXd& Params, const Eigen::MatrixXd& covars, const Eigen::VectorXd& x, const Eigen::MatrixXi& dData, int nk) {
         int n = covars.rows();
         int P = covars.cols();
@@ -409,8 +408,6 @@ public:
 
         return grad;
     }
-
-// end add in 2025-03-28
 
 };
 
@@ -605,8 +602,6 @@ NumericMatrix compute_log_f_hessian_rcpp(NumericVector Params) {
     Eigen::MatrixXd hessian = cmpp->compute_log_f_hessian(Params_eigen);
     return wrap(hessian);
 }
-
-// add in 2025-03-28
 
 
 // [[Rcpp::export]]

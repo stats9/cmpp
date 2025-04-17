@@ -23,7 +23,7 @@ matrices with uniform values for testing, initialization, or other purposes in
 computational tasks where a matrix filled with a constant is needed.
 }
 \details{
-The \code{cpp_makeMat} function generates a matrix with the given dimensions \verb{n x m}
+The \code{makeMat} function generates a matrix with the given dimensions \verb{n x m}
 where all elements are initialized to the same constant value. It is useful
 in scenarios where a specific value needs to be assigned to all elements of the
 matrix, for example in machine learning algorithms, matrix manipulations, or tests.

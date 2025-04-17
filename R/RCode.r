@@ -145,9 +145,6 @@
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' }
 
-# Initialize <- function(features, x, delta1, delta2, h) {
-#   .Call('cpp_Initialize', as.matrix(features), as.numeric(x), as.integer(delta1), as.integer(delta2), as.numeric(h))
-# }
 NULL 
 
 #' @name cdf_gomp
@@ -266,7 +263,7 @@ NULL
 #' @usage Cleanup()
 #'
 #' @details
-#' The `cpp_Cleanup` function must be called after using the `Cmpp` object to clean up
+#' The `Cleanup` function must be called after using the `Cmpp` object to clean up
 #' the allocated memory in C++. Failure to call this function may result in memory 
 #' leaks, as the memory allocated for the `Cmpp` object is not automatically freed.
 #' 
@@ -274,7 +271,7 @@ NULL
 #' @export
 #' @examples
 #' \dontrun{
-#' # Assuming you have previously initialized the Cmpp object with cpp_Initialize()
+#' # Assuming you have previously initialized the Cmpp object with `Initialize()`
 #' Cleanup()
 #' }
 NULL 
@@ -290,7 +287,7 @@ NULL
 #' @usage makeMat(n, m, value)
 #'
 #' @details
-#' The `cpp_makeMat` function generates a matrix with the given dimensions `n x m`
+#' The `makeMat` function generates a matrix with the given dimensions `n x m`
 #' where all elements are initialized to the same constant value. It is useful
 #' in scenarios where a specific value needs to be assigned to all elements of the
 #' matrix, for example in machine learning algorithms, matrix manipulations, or tests.
@@ -652,8 +649,7 @@ CIF_Figs <- function(initial_params, TimeFailure, OrderType = c(2, 1), RiskNames
 
   return(plot)
 }
-
-#' ################## add 2025-2-22 %%%%%%%%%%%%%%%%%%%%%%%%
+NULL
 
 #' Create Dummy Variables
 #'

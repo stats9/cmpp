@@ -1,7 +1,8 @@
 # cmpp: Parametric Modeling for Competing Risks
 
 ![License](https://img.shields.io/badge/license-GPL%20(%3E%3D%202)-blue.svg)
-
+![GitHub Actions Status](https://github.com/stats9/cmpp/actions/workflows/R-CMD-check.yaml/badge.svg)
+![Platforms](https://img.shields.io/badge/tested%20on-Ubuntu%2C%20MacOS%2C%20Windows-blue)
 
 ## Overview
 `cmpp` is an R package designed to facilitate parametric modeling and inference for cumulative incidence functions (CIFs) in competing risks scenarios. The package implements methods discussed in seminal works by Jeong and Fine (2006, 2007), with efficient computation powered by Rcpp for high-performance applications.

@@ -10,7 +10,7 @@ jobs:
   install-test:
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
 
     runs-on: ${{ matrix.os }}
 
@@ -20,6 +20,14 @@ jobs:
 
       - name: Setup R
         uses: r-lib/actions/setup-r@v2
+
+      - name: Install Rtools on Windows
+        if: runner.os == 'Windows'
+        run: Invoke-WebRequest -Uri "https://cloud.r-project.org/bin/windows/Rtools/rtools45/files/rtools45-6536-6492.exe" -OutFile "rtools45-6536-6492.exe"
+
+      - name: Setup Rtools on Windows
+        if: runner.os == 'Windows'
+        run: Start-Process -Wait -FilePath .\rtools45-6536-6492.exe /VERYSILENT
 
 
       - name: Print R version

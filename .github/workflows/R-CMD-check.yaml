@@ -26,3 +26,16 @@ jobs:
 
       - name: Run R CMD check manually
         run: R CMD check .
+
+        
+      - name: Upload check results
+        uses: actions/upload-artifact@v4
+        with:
+          name: check-results
+          path: .Rcheck/*
+
+      - name: Upload installation log
+        uses: actions/upload-artifact@v4
+        with:
+          name: installation-log
+          path: /home/runner/work/cmpp/cmpp/..Rcheck/00install.out

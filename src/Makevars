@@ -1,2 +1,0 @@
-PKG_CPPFLAGS = -I../inst/include -I../inst/include/LBFGSpp -I../inst/include/Eigen
-PKG_LIBS =

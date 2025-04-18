@@ -19,6 +19,10 @@ jobs:
 
       - name: Install dependencies
         run: Rscript -e "install.packages(c('Rcpp', 'RcppEigen', 'cmprsk', 'survival', 'ggplot2', 'dplyr', 'tidyr', 'numDeriv', 'tidyselect'))"
+     
+      - name: Install roxygen2 manually
+        run: Rscript -e "install.packages('roxygen2', dependencies=TRUE)"
+
 
       - name: Run R CMD check manually
         run: R CMD check .

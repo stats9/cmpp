@@ -7,8 +7,6 @@ Authors@R: person(given = "Habib",
                  family = "Ezzatabadipour",
                  email = "habibezati@outlook.com",
                  role = c("aut", "cre"))
-Author: Habib Ezzatabadipour <habibezati@outlook.com>
-Maintainer: Habib Ezzatabadipour <habibezati@outlook.com>
 Description: Implements parametric modeling and regression methods for cumulative incidence functions in 
         the presence of competing risks. Methods include the direct Gompertz-based approach 
         and generalized regression models as described in Jeong and Fine (2006, 2007). 

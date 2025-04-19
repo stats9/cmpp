@@ -159,6 +159,33 @@ plot <- CIF_Figs(initial_params, time)
 print(plot)
 ```
 
+
+## Example Of Data Inside cmpp package 
+
+```R
+data(dat)
+names(dat)
+feat <- dat[, -c(match(c('id', 'time', 'event', 'cause_burn', 'd1', 'd2', 'cause_hotObject3'), names(dat)))]  
+timee <- dat[['time']]
+d1 = dat[['d1']]
+d2 = dat[['d2']]
+feat2 = feat |> data.matrix()
+Initialize(feat2, timee, d1, d2, 1e-10)
+
+FineGray_Model()
+(Res <- Cmpp_CIF())
+Res$Plot$PlotNull_AllModels
+Res$Plot$Plot_InputModel
+Res$Plot$PlotAdjusted_AllModels
+
+Res2 <- Cmpp_CIF(predTime = c(1, 2, 3), TypeMethod = "POM")
+Res2$CIF
+Res2$Plot$PlotAdjusted_AllModels
+GetData()
+Res2$Plot$PlotNull_AllModels
+Res2$Plot$Plot_InputModel
+```
+
 ## References
 1. Jeong, J.-H., & Fine, J. (2006). Direct parametric inference for the cumulative incidence function. *Applied Statistics*, 55(2), 187-200.
 2. Jeong, J.-H., & Fine, J. (2007). Parametric regression on cumulative incidence function. *Biostatistics*, 8(2), 184-196.

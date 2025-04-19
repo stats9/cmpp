@@ -1,7 +1,7 @@
 # cmpp: Parametric Modeling for Competing Risks
 
 ![License](https://img.shields.io/badge/license-GPL%20(%3E%3D%202)-blue.svg)
-![GitHub Actions Status](https://github.com/stats9/cmpp/actions/workflows/R-CMD-check.yaml/badge.svg)
+![GitHub Actions Status](https://github.com/stats9/cmpp/actions/workflows/R-Check-Install.yaml/badge.svg)
 ![Platforms](https://img.shields.io/badge/tested%20on-Ubuntu%2C%20MacOS%2C%20Windows-blue)
 
 ## Overview

@@ -21,7 +21,9 @@ Imports:
     numDeriv, 
     cmprsk, 
     tidyselect,
-    stats
+    stats, 
+    Rcpp, 
+    RcppEigen
 LinkingTo: 
     Rcpp, 
     RcppEigen

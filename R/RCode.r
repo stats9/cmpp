@@ -59,6 +59,7 @@
 #' @importFrom dplyr mutate
 #' @importFrom tidyr pivot_longer
 #' @importFrom numDeriv hessian
+#' @importFrom Rcpp evalCpp
 #' @import cmprsk
 #' @import ggplot2
 #' @import tidyselect

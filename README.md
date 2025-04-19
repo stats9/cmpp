@@ -51,7 +51,7 @@ Competing risks occur when multiple types of events prevent the observation of a
 To install the package:
 ```R
 # Install from GitHub
-devtools::install_github("your_github_username/cmpp")
+devtools::install_github("stats9/cmpp")
 
 # for windows 
 ## after download cmpp zip file 

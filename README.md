@@ -52,6 +52,12 @@ To install the package:
 ```R
 # Install from GitHub
 devtools::install_github("your_github_username/cmpp")
+
+# for windows 
+install.packages(https://github.com/user-attachments/files/19817773/cmpp_0.0.1.zip, repos = NULL, type = "win-binary")
+
+# for linux or mac
+install.packages(https://github.com/user-attachments/files/19817772/cmpp_0.0.1.tar.gz, repos = NULL, type = "source")
 ```
 
 ## Usage

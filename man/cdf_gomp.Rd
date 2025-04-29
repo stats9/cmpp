@@ -25,10 +25,24 @@ The Gompertz distribution is commonly used in survival analysis and reliability 
 Ensure that \code{alpha} and \code{beta} are positive for meaningful results.
 }
 \examples{
-\dontrun{
+library(cmpp)
+data("fertility_data")
+Nam <- names(fertility_data)
+fertility_data$Education
+datt <- make_Dummy(fertility_data, features = c("Education"))
+datt <- datt$New_Data 
+datt['Primary_Secondary'] <- datt$`Education:2`
+datt['Higher_Education'] <- datt$`Education:3`
+datt$`Education:2` <- datt$`Education:3` <- NULL
+datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+d1 <- datt2$`Event:2`
+d2 <- datt2$`Event:3`
+feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+   data.matrix()
+timee <- datt2[['time']]
+Initialize(feat, timee, d1, d2, 1e-10)
 x <- c(1, 2, 3)
 alpha <- 0.5
 beta <- 0.1
-cdf_gomp(x, alpha, beta)
-}
+lapply(x, cdf_gomp, alpha = alpha, beta = beta) |> unlist()
 }

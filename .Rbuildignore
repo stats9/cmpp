@@ -1,8 +1,9 @@
 ^README.md$ 
 ^\.gitignore$ 
-^\.github/$ 
-^downloads/$
+^\.github(/.*)?$
+^\.vscode(/.*)?$
+^downloads(/.*)?$
 ^src/.*\.o$
 ^src/.*\.dll$
 ^src/.*\.so$
-^AssistCode/$
+^AssistCode(/.*)?$

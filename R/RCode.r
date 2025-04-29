@@ -1,8 +1,8 @@
-#' Parametric (Direct) Methods for Cumulative Incidence Functions in Competing Risks
+#' Direct Parametric Inference for the Cumulative Incidence Function in Competing Risks
 #'
 #' The \code{cmpp} package provides parametric (Direct) modeling methods for analyzing cumulative incidence functions (CIFs)
 #' in the context of competing risks. It includes Gompertz-based models, regression techniques, and parametric (Direct) approaches
-#' such as the Generalized Chance Model (GCM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM).
+#' such as the Generalized odds rate (GOR), Proportional Odds Model (POM), and Proportional Hazards Model (PHM).
 #' The package enables users to estimate and compare CIFs using maximum likelihood estimation, perform regression analysis,
 #' and visualize CIFs with confidence intervals. It also supports covariate adjustment and bootstrap variance estimation.
 #'
@@ -26,12 +26,12 @@
 #'   \item \code{\link{LogLike1}}: Computes the negative log-likelihood for the model without covariate effect.
 #'   \item \code{\link{compute_grad}}: Computes the gradient of the log-likelihood.
 #'   \item \code{\link{compute_hessian}}: Computes the Hessian matrix of the log-likelihood.
-#'   \item \code{\link{estimate_parameters_GCM}}: Estimates parameters using the Generalized Chance Model (GCM).
+#'   \item \code{\link{estimate_parameters_GOR}}: Estimates parameters using the Generalized odds rate (GOR).
 #'   \item \code{\link{estimate_parameters_POM}}: Estimates parameters using the Proportional Odds Model (POM).
 #'   \item \code{\link{estimate_parameters_PHM}}: Estimates parameters using the Proportional Hazards Model (PHM).
 #'   \item \code{\link{CIF_res1}}: Computes CIF results for competing risks without covariates.
 #'   \item \code{\link{CIF_Figs}}: Plots CIFs with confidence intervals (without covariate effect).
-#'   \item \code{\link{Cmpp_CIF}}: Computes and plots CIFs for competing risks using GCM, POM, and PHM.
+#'   \item \code{\link{Cmpp_CIF}}: Computes and plots CIFs for competing risks using GOR, POM, and PHM.
 #'   \item \code{\link{FineGray_Model}}: Fits a Fine-Gray regression model for competing risks data and 
 #'      visualize CIF by Fine-Gray model result using \code{\link[cmprsk:cuminc]{cmprsk::cuminc}} and \code{\link[cmprsk:crr]{cmprsk::crr}}.
 #'  \item \code{\link{bootstrap_variance}}: Estimates variance of parameters using the bootstrap method.
@@ -51,7 +51,7 @@
 #'
 #' @keywords survival risks cumulative incidence regression parametric 
 #'
-#' @seealso \link{Initialize}, \link{LogLike1}, \link{compute_grad}, \link{compute_hessian}, \link{estimate_parameters_GCM},
+#' @seealso \link{Initialize}, \link{LogLike1}, \link{compute_grad}, \link{compute_hessian}, \link{estimate_parameters_GOR},
 #'   \link{estimate_parameters_POM}, \link{estimate_parameters_PHM}, \link{CIF_res1}, \link{CIF_Figs},
 #'   \link{Cmpp_CIF}, \link{FineGray_Model}, \link{bootstrap_variance}, \link{GetData}, \link{Cleanup}
 #'
@@ -65,55 +65,49 @@
 #' @import tidyselect
 #'
 #' @examples
-#'  \dontrun{
-#'    ## Example: Initialize the Cmpp model and compute CIFs
-#'    library(cmpp)
-#'    features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#'    delta1 <- sample(c(0, 1), 100, replace = TRUE)
-#'    delta2 <- 1 - delta1
-#'    timee <- rexp(100, rate = 1/10)
-#'
-#'    Initialize(features, timee, delta1, delta2, h = 1e-5)
-#'    # Initialize the Cmpp model
-#'
-#'    # Estimate parameters using the Generalized Chance Model (GCM)
-#'    initial_params <- rep(0.001, 2 * (ncol(features) + 3))
-#'    result <- estimate_parameters_GCM(initial_params)
-#'    print(result)
-#'
-#'    # Compute CIFs for competing risks (without covariate effect | Not Regression model)
-#'    cif_results <- CIF_res1(initial_params)
-#'    print(cif_results)
-#'
-#'    # Plot CIFs with confidence intervals
-#'    plot <- CIF_Figs(initial_params, timee)
-#'    print(plot)
-#'
-#'    # Compute and plot adjusted CIFs
-#'    result_cif <- Cmpp_CIF(
-#'      featureID = c(1, 2),
-#'      featureValue = c(0.5, 1.2),
-#'      RiskNames = c("Event1", "Event2"),
-#'      TypeMethod = "GCM",
-#'      predTime = seq(0, 10, by = 0.5)
-#'    )
-#'    print(result_cif$Plot$Plot_InputModel) # Plot for the specified model
-#'    print(result_cif$CIF$CIFAdjusted) # Adjusted CIF values
-#'
-#'    # Fit a Fine-Gray model for competing risks
-#'    result_fg <- FineGray_Model(
-#'      featureNames = c("Feature1", "Feature2"),
-#'      CovarNames = c("Covar1", "Covar2"),
-#'      Failcode = 1,
-#'      RiskNames = c("Event1", "Event2")
-#'    )
-#'    print(result_fg$Results)  # Summary of the Fine-Gray model
-#'    print(result_fg$Plot) # Plot of the CIFs
-#'
-#'    # Clean up memory
-#'    Cleanup()
-#'  }
+#' ## Example: Initialize the Cmpp model and compute CIFs
+#' library(cmpp)
+#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
+#' delta2 <- 1 - delta1
+#' timee <- rexp(100, rate = 1/10)
+#' Initialize(features, timee, delta1, delta2, h = 1e-5)
+#' # Initialize the Cmpp model
+#' # Estimate parameters using the Generalized odds rate (GOR)
+#' initial_params <- rep(0.001, 2 * (ncol(features) + 3))
+#' result <- estimate_parameters_GOR(initial_params)
+#' print(result)
 
+#' # Compute CIFs for competing risks (without covariate effect | Not Regression model)
+#' cif_results <- CIF_res1()
+#' print(cif_results)
+
+#' # Plot CIFs with confidence intervals
+#' plot <- CIF_Figs(rep(0.01, 4), timee)
+#' print(plot)
+
+#' # Compute and plot adjusted CIFs
+#' result_cif <- Cmpp_CIF(
+#' featureID = c(1, 2),
+#' featureValue = c(0.5, 1.2),
+#' RiskNames = c("Event1", "Event2"),
+#' TypeMethod = "GOR",
+#' predTime = seq(0, 10, by = 0.5)
+#' )
+#' print(result_cif$Plot$Plot_InputModel) # Plot for the specified model
+#' print(result_cif$CIF$CIFAdjusted) # Adjusted CIF values
+#' # Fit a Fine-Gray model for competing risks
+#' result_fg <- FineGray_Model(
+#' CovarNames = c("Covar1", "Covar2", 'Covar3'),
+#' Failcode = 1,
+#' RiskNames = c("Event1", "Event2")
+#' )
+#' print(result_fg$Results)  # Summary of the Fine-Gray model
+#' print(result_fg$Plot) # Plot of the CIFs
+#'
+#' # Clean up memory
+#' Cleanup()
+#' 
 "_PACKAGE"
 
 
@@ -138,14 +132,12 @@
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' library(cmpp)
 #' features <- matrix(rnorm(100), ncol = 5)
 #' x <- rnorm(20)
 #' delta1 <- sample(0:1, 20, replace = TRUE)
-#' delta2 <- sample(0:1, 20, replace = TRUE)
+#' delta2 <- 1 - delta1
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
-#' }
-
 NULL 
 
 #' @name cdf_gomp
@@ -168,12 +160,26 @@ NULL
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' x <- c(1, 2, 3)
 #' alpha <- 0.5
 #' beta <- 0.1
-#' cdf_gomp(x, alpha, beta)
-#' }
+#' lapply(x, cdf_gomp, alpha = alpha, beta = beta) |> unlist()
 NULL
 
 #' @name pdf_gomp
@@ -196,12 +202,26 @@ NULL
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' x <- c(1, 2, 3)
 #' alpha <- 0.5
 #' beta <- 0.1
-#' pdf_gomp(x, alpha, beta)
-#' }
+#' lapply(x, pdf_gomp, alpha = alpha, beta = beta) |> unlist()
 NULL 
 
 #' @name LogLike1
@@ -223,10 +243,24 @@ NULL
 #' @export
 #'
 #' @examples
-#' \dontrun{
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' param <- c(0.01, 0.01, 0.01, 0.01)
 #' LogLike1(param)
-#' }
 NULL 
 
 #' @name compute_grad
@@ -246,10 +280,24 @@ NULL
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' param <- c(0.5, 0.1, 0.6, 0.2)
 #' compute_grad(param)
-#' }
 NULL 
 
 #' @name Cleanup
@@ -268,13 +316,11 @@ NULL
 #' the allocated memory in C++. Failure to call this function may result in memory 
 #' leaks, as the memory allocated for the `Cmpp` object is not automatically freed.
 #' 
-#' @return NULL
+#' @return No return value. Called for side effects.
 #' @export
 #' @examples
-#' \dontrun{
 #' # Assuming you have previously initialized the Cmpp object with `Initialize()`
 #' Cleanup()
-#' }
 NULL 
 
 #' @name makeMat
@@ -300,11 +346,10 @@ NULL
 #' @return A numeric matrix of dimensions `n x m` filled with the specified value.
 #' @export
 #' @examples
-#' \dontrun{
+#' library(cmpp)
 #' # Create a 3x3 matrix filled with 5
 #' mat <- makeMat(3, 3, 5)
 #' print(mat)
-#' }
 NULL
 
 #' @name GetDim
@@ -326,16 +371,28 @@ NULL
 #' checking the size of the data without needing to manually access the underlying `Eigen::MatrixXd`
 #' or `Eigen::VectorXd` objects directly.
 #'
-#' @examples
-#' 
-#' \dontrun{
+#' @examples 
 #' # Initialize Cmpp object
-#' Initialize(features, x, delta1, delta2, h)
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' # Get dimensions
 #' dims <- GetDim()
 #' dims$Nsamp    # Number of samples
 #' dims$Nfeature # Number of features
-#'}
 NULL 
 
 #' @name estimate_parameters
@@ -371,13 +428,26 @@ NULL
 #'
 #' @seealso \link[stats:optim]{stats::optim} for more details on optimization methods and usage. 
 #' @examples
-#'
-#'\dontrun{
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' # Estimate model parameters using default initial values and the BFGS method
 #' result <- estimate_parameters()
 #' print(result)
-#' }
-#' 
+#'
 #' @export
 #'
 estimate_parameters <- function(initial_params = rep(0.01, 4), optimMethod = 'BFGS') { 
@@ -389,6 +459,7 @@ estimate_parameters <- function(initial_params = rep(0.01, 4), optimMethod = 'BF
   )
   return(optim_result)
 }
+NULL 
 
 
 #' @name compute_hessian
@@ -409,11 +480,28 @@ estimate_parameters <- function(initial_params = rep(0.01, 4), optimMethod = 'BF
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
+#' # Estimate model parameters using default initial values and the BFGS method
+#' result <- estimate_parameters()
+#' print(result)
 #' param <- c(0.5, 0.1, 0.6, 0.2)
 #' hessian <- compute_hessian(param)
 #' print(hessian)
-#' }
 NULL
 
 #' @name bootstrap_variance
@@ -442,17 +530,17 @@ NULL
 #'
 #' @export
 #' @examples
-#' \dontrun{
+#' library(cmpp)
 #' features <- matrix(rnorm(100), ncol = 5)
 #' x <- rnorm(20)
 #' delta1 <- sample(0:1, 20, replace = TRUE)
-#' delta2 <- sample(0:1, 20, replace = TRUE)
+#' delta2 <- 1 - delta1
 #' initial_params <- c(0.01, 0.01, 0.01, 0.01)
-#' n_bootstrap <- 1000
-#' results <- bootstrap_variance(features, x, delta1, delta2, initial_params, n_bootstrap)
+#' n_bootstrap <- 100
+#' results <- bootstrap_variance(features, x, delta1, delta2, 
+#' initial_params, n_bootstrap, optimMethod = "BFGS")
 #' print(results$variances)
 #' print(results$bootstrap_estimates)
-#' }
 NULL
 
 #' @name CIF_res1
@@ -475,11 +563,25 @@ NULL
 #' \item{STD}{The standard deviations of the parameters.}
 #'
 #' @examples
-#' \dontrun{
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' initial_params <- c(0.001, 0.001, 0.001, 0.001)
 #' result <- CIF_res1(initial_params)
 #' print(result)
-#' }
 #'
 #' @export
 #'
@@ -535,15 +637,33 @@ NULL
 #'
 #' @return A ggplot object showing the CIFs and their confidence intervals.
 #'
-#' @export
 #' @examples
-#' \dontrun{
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
+#' initial_params <- c(0.001, 0.001, 0.001, 0.001)
+#' result <- CIF_res1(initial_params)
+#' print(result)
 #' initial_params <- c(0.01, 0.01, 0.01, 0.01)
 #' TimeFailure <- seq(0, 10, by = 0.1)
 #' plot <- CIF_Figs(initial_params, TimeFailure)
 #' print(plot)
-#' }
-
+#'
+#' @export
+#'
 CIF_Figs <- function(initial_params, TimeFailure, OrderType = c(2, 1), RiskNames = NULL) {
   Params = estimate_parameters(initial_params = initial_params)$par
   hessian_mat <- compute_hessian(Params)
@@ -689,113 +809,112 @@ make_Dummy <- function(Data = dat, features = c('sex', 'cause_burn'), reff = "fi
 }
 
 #' @name f_pdf_rcpp
-#' @title Compute the PDF of the Parametric Generalized Chance Model (GCM)
-#' @description This function computes the probability density function (PDF) of the parametric model (GCM Approach).
+#' @title Compute the PDF of the Parametric Generalized odds rate (GOR)
+#' @description This function computes the probability density function (PDF) of the parametric model (GOR Approach).
 #' @param Params A numeric vector of parameters.
 #' @param Z A numeric vector of covariates.
 #' @param x A numeric value representing the time point.
 #' @return A numeric value representing the PDF.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
 #' x <- rexp(100, rate = 1/10)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' params <- rep(0.001, 2 * (ncol(features) + 3))
-#' pdf_value <- f_pdf_rcpp(params, Z[1, ], x[3])
+#' pdf_value <- f_pdf_rcpp(params, features[1, ], x[3])
 #' print(pdf_value)
-#' }
+#'
 NULL
 
 #' @name F_cdf_rcpp
-#' @title Compute the CDF of the Parametric Generalized Chance Model (GCM)
-#' @description This function computes the cumulative distribution function (CDF) of the parametric model (GCM Approach).
+#' @title Compute the CDF of the Parametric Generalized odds rate (GOR)
+#' @description This function computes the cumulative distribution function (CDF) of the parametric model (GOR Approach).
 #' @param Params A numeric vector of parameters.
 #' @param Z A numeric vector of covariates.
 #' @param x A numeric value representing the time point.
 #' @return A numeric value representing the CDF.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(321)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
-#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' x <- rexp(100, rate = 1/2)
+#' Initialize(features, x, delta1, delta2, h = 1e-3)
 #' params <- rep(0.001, 2 * (ncol(features) + 3))
-#' x <- 5
-#' cdf_value <- F_cdf_rcpp(params, features[1, ], x)
-#' print(cdf_value)
-#' }
+#' y <- 0.07
+#' z <- features[1, ]
+#' (cdf_value <- F_cdf_rcpp(params, z, y))
 NULL
 
 #' @name log_f_rcpp
-#' @title Compute the Log-Likelihood Function Generalized Chance Model (GCM)
-#' @description This function computes the log-likelihood function for the parametric model (GCM Approach).
+#' @title Compute the Log-Likelihood Function Generalized odds rate (GOR)
+#' @description This function computes the log-likelihood function for the parametric model (GOR Approach).
 #' @param Params A numeric vector of parameters.
 #' @return A numeric value representing the log-likelihood.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(1984)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
+#' x <- rexp(100, rate = 1/4)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' params <- rep(0.001, 2 * (ncol(features) + 3))
 #' log_likelihood <- log_f_rcpp(params)
 #' print(log_likelihood)
-#' }
+#'
 NULL
 
 #' @name compute_log_f_gradient_rcpp 
-#' @title Compute the Gradient of the Log-Likelihood Function Generalized Chance Model (GCM)
-#' @description This function computes the gradient of the log-likelihood function for the parametric model (GCM Approach).
+#' @title Compute the Gradient of the Log-Likelihood Function Generalized odds rate (GOR)
+#' @description This function computes the gradient of the log-likelihood function for the parametric model (GOR Approach).
 #' @param Params A numeric vector of parameters.
 #' @return A numeric vector representing the gradient of the log-likelihood.
 #' @export
 #' @examples
-#' \dontrun{
+#' library(cmpp)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' set.seed(1984)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
+#' x <- rexp(100, rate = 1/3)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' params <- rep(0.001, 2 * (ncol(features) + 3))
 #' gradient <- compute_log_f_gradient_rcpp(params)
 #' print(gradient)
-#' }
+#'
 NULL
 
 #' @name compute_log_f_hessian_rcpp
-#' @title Compute the Hessian Matrix of the Log-Likelihood Function Generalized Chance Model (GCM)
-#' @description This function computes the Hessian matrix of the log-likelihood function for the parametric model (GCM Approach).
+#' @title Compute the Hessian Matrix of the Log-Likelihood Function Generalized odds rate (GOR)
+#' @description This function computes the Hessian matrix of the log-likelihood function for the parametric model (GOR Approach).
 #' @param Params A numeric vector of parameters.
 #' @return A numeric matrix representing the Hessian matrix of the log-likelihood.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(1984)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
-#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' x <- rexp(100, rate = 1/7)
+#' Initialize(features, x, delta1, delta2, h = 1e-4)
 #' params <- rep(0.001, 2 * (ncol(features) + 3))
 #' hessian <- compute_log_f_hessian_rcpp(params)
 #' print(hessian)
-#' }
+#'
 NULL
 
-#' @name estimate_parameters_GCM
-#' @title Estimate Parameters for the Generalized Chance Model (GCM)
+#' @name estimate_parameters_GOR
+#' @title Estimate Parameters for the Generalized odds rate (GOR)
 #'
-#' @description This function estimates the parameters of the Generalized Chance Model (GCM) using maximum likelihood estimation. 
+#' @description This function estimates the parameters of the Generalized odds rate (GOR) using maximum likelihood estimation. 
 #' It computes the Hessian matrix, calculates standard errors, and derives p-values for the estimated parameters. 
 #' The function ensures that the diagonal elements of the covariance matrix are positive for valid variance estimates.
 #'
@@ -813,7 +932,7 @@ NULL
 #'   \item Calculates standard errors and p-values for the estimated parameters.
 #' }
 #'
-#' The Generalized Chance Model (GCM) is a parametric model for cumulative incidence functions in competing risks analysis. 
+#' The Generalized odds rate (GOR) is a parametric model for cumulative incidence functions in competing risks analysis. 
 #' It uses Gompertz distributions to model the failure times for competing events.
 #'
 #' @return A data frame containing:
@@ -829,28 +948,24 @@ NULL
 #' \link{compute_log_f_hessian_rcpp}.
 #'
 #' @examples
-#' \dontrun{
 #' library(cmpp)
 #' # Example data
+#' set.seed(371)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
 #' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
-#'
+#' x <- rexp(100, rate = 1/4)
 #' # Initialize the Cmpp model
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
-#'
 #' # Define initial parameter values
 #' initial_params <- rep(0.001, 2 * (ncol(features) + 3))
-#'
-#' # Estimate parameters using the GCM
-#' result <- estimate_parameters_GCM(initial_params)
+#' # Estimate parameters using the GOR
+#' result <- estimate_parameters_GOR(initial_params)
 #' print(result)
-#' }
 #'
 #' @export
 #'
-estimate_parameters_GCM <- function(initial_params, FeaturesNames = NULL) {
+estimate_parameters_GOR <- function(initial_params, FeaturesNames = NULL) {
   # Optimize the log-likelihood function to estimate parameters
   tempk <- length(initial_params) - 6
   tempk <- tempk/2
@@ -914,17 +1029,17 @@ NULL
 #' @return A numeric value representing the PDF.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(1984)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
-#' Initialize(features, x, delta1, delta2, h = 1e-5)
+#' x <- rexp(100, rate = 1/9)
+#' Initialize(features, x, delta1, delta2, h = 1e-4)
 #' params <- rep(0.001, 2 * (ncol(features) + 2))
-#' pdf_value <- f_pdf_rcpp2(params, Z[1, ], x[3])
+#' pdf_value <- f_pdf_rcpp2(params, features[1, ], x[3])
 #' print(pdf_value)
-#' }
+#'
 NULL
 
 #' @name F_cdf_rcpp2
@@ -936,18 +1051,18 @@ NULL
 #' @return A numeric value representing the CDF.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(1984)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
+#' x <- rexp(100, rate = 1/2)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' params <- rep(0.001, 2 * (ncol(features) + 2))
-#' x <- 5
+#' x <- 2
 #' cdf_value <- F_cdf_rcpp2(params, features[1, ], x)
 #' print(cdf_value)
-#' }
+#'
 NULL
 
 #' @name log_f_rcpp2
@@ -957,17 +1072,17 @@ NULL
 #' @return A numeric value representing the log-likelihood.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(1984)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
+#' x <- rexp(100, rate = 1/8)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' params <- rep(0.001, 2 * (ncol(features) + 2))
 #' log_likelihood <- log_f_rcpp2(params)
 #' print(log_likelihood)
-#' }
+#'
 NULL
 
 #' @name compute_log_f_gradient_rcpp2
@@ -977,16 +1092,17 @@ NULL
 #' @return A numeric vector representing the gradient of the log-likelihood.
 #' @export
 #' @examples
-#' \dontrun{
+#' library(cmpp)
+#' set.seed(1984)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
+#' x <- rexp(100, rate = 1/5)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' params <- rep(0.001, 2 * (ncol(features) + 2))
 #' gradient <- compute_log_f_gradient_rcpp2(params)
 #' print(gradient)
-#' }
+#'
 NULL
 
 
@@ -1026,8 +1142,8 @@ NULL
 #' \link{log_f_rcpp2}.
 #'
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(1984)
 #' # Example data
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
 #' delta1 <- sample(c(0, 1), 100, replace = TRUE)
@@ -1043,7 +1159,6 @@ NULL
 #' # Estimate parameters using the POM
 #' result <- estimate_parameters_POM(initial_params)
 #' print(result)
-#' }
 #'
 #' @export
 estimate_parameters_POM <- function(initial_params, FeaturesNames = NULL) {
@@ -1108,17 +1223,17 @@ NULL
 #' @return A numeric value representing the PDF.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
-#' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' set.seed(21)
+#' features <- matrix(rnorm(300, -1, 2), nrow = 100, ncol = 3)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
-#' x <- rexp(100, rate = 1/10)
+#' x <- rexp(100, rate = 1)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
-#' params <- rep(0.001, 2 * (ncol(features) + 2))
-#' pdf_value <- f_pdf_rcpp2(params, Z[1, ], x[3])
+#' params <- rep(0.0001, 2 * (ncol(features) + 2))
+#' pdf_value <- f_pdf_rcpp3(params, features[4, ], x[4])
 #' print(pdf_value)
-#' }
+#' 
 NULL
 
 #' @name F_cdf_rcpp3
@@ -1130,18 +1245,18 @@ NULL
 #' @return A numeric value representing the CDF.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(1984)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
 #' x <- rexp(100, rate = 1/10)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' params <- rep(0.001, 2 * (ncol(features) + 2))
 #' x <- 5
-#' cdf_value <- F_cdf_rcpp2(params, features[1, ], x)
+#' cdf_value <- F_cdf_rcpp3(params, features[1, ], x)
 #' print(cdf_value)
-#' }
+#'
 NULL
 
 #' @name log_f_rcpp3
@@ -1151,17 +1266,17 @@ NULL
 #' @return A numeric value representing the log-likelihood.
 #' @export
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(1984)
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
 #' x <- rexp(100, rate = 1/10)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' params <- rep(0.001, 2 * (ncol(features) + 2))
-#' log_likelihood <- log_f_rcpp2(params)
+#' log_likelihood <- log_f_rcpp3(params)
 #' print(log_likelihood)
-#' }
+#'
 NULL
 
 #' @name compute_log_f_gradient_rcpp3
@@ -1171,16 +1286,17 @@ NULL
 #' @return A numeric vector representing the gradient of the log-likelihood.
 #' @export
 #' @examples
-#' \dontrun{
+#' library(cmpp)
+#' set.seed(1984)  
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-#' delta1 <- sample(c(0, 1), 100)
+#' delta1 <- sample(c(0, 1), 100, replace = TRUE)
 #' delta2 <- 1 - delta1
 #' x <- rexp(100, rate = 1/10)
 #' Initialize(features, x, delta1, delta2, h = 1e-5)
 #' params <- rep(0.001, 2 * (ncol(features) + 2))
-#' gradient <- compute_log_f_gradient_rcpp2(params)
+#' gradient <- compute_log_f_gradient_rcpp3(params)
 #' print(gradient)
-#' }
+#'
 NULL
 
 #' @name estimate_parameters_PHM
@@ -1219,8 +1335,8 @@ NULL
 #' \link{log_f_rcpp3}.
 #'
 #' @examples
-#' \dontrun{
 #' library(cmpp)
+#' set.seed(1984)
 #' # Example data
 #' features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
 #' delta1 <- sample(c(0, 1), 100, replace = TRUE)
@@ -1236,7 +1352,6 @@ NULL
 #' # Estimate parameters using the PHM
 #' result <- estimate_parameters_PHM(initial_params)
 #' print(result)
-#' }
 #'
 #' @export
 estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL) {
@@ -1312,14 +1427,27 @@ NULL
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming the Cmpp model has been initialized
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' data <- GetData()
 #' print(data$features)  # Feature matrix
 #' print(data$timee)      # Failure times
 #' print(data$delta1)    # Indicator for the first competing event
 #' print(data$delta2)    # Indicator for the second competing event
-#' }
 NULL
 
 #' @name FineGray_Model
@@ -1329,7 +1457,6 @@ NULL
 #' It estimates the subdistribution hazard model parameters, computes cumulative incidence functions (CIFs), 
 #' and provides a summary of the results along with a plot of the CIFs.
 #'
-#' @param featureNames A character vector of feature names for the covariates. If `NULL`, default names will be generated.
 #' @param CovarNames A character vector of names for the covariates. If `NULL`, default names will be generated.
 #' @param Failcode An integer specifying the event of interest (default is `1`).
 #' @param RiskNames A character vector specifying the names of the competing risks. If `NULL`, default names ("Risk1" and "Risk2") will be used.
@@ -1347,20 +1474,33 @@ NULL
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming the Cmpp model has been initialized
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' result <- FineGray_Model(
-#'   featureNames = c("Feature1", "Feature2"),
-#'   CovarNames = c("Covar1", "Covar2"),
+#'   CovarNames = c("Covar1", "Covar2", "Covar3"),
 #'   Failcode = 1,
 #'   RiskNames = c("Event1", "Event2")
 #' )
 #' print(result$Results)  # Summary of the Fine-Gray model
-#' print(result$Plot)     # Plot of the CIFs
+#' #print(result$Plot)     # Plot of the CIFs
 #' print(result$CIF_Results)  # CIF data
-#' }
-FineGray_Model <- function(featureNames = NULL, 
-  CovarNames = NULL, Failcode = 1, RiskNames = NULL
+#'
+FineGray_Model <- function(CovarNames = NULL, 
+    Failcode = 1, RiskNames = NULL
 ) {
   Features <- GetData()$features 
   Time <- GetData()$timee
@@ -1407,18 +1547,18 @@ NULL
 #' @title Compute and Plot Cumulative Incidence Functions (CIF) for Competing Risks
 #'
 #' @description This function computes and plots the cumulative incidence functions (CIF) for competing risks using three parametric models: 
-#' Generalized Chance Model (GCM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM). 
+#' Generalized odds rate (GOR), Proportional Odds Model (POM), and Proportional Hazards Model (PHM). 
 #' It allows for adjusted CIFs based on specific covariate values and provides visualizations for all models.
 #'
 #' @param featureID A numeric vector of indices specifying the features to adjust. Default is `NULL`.
 #' @param featureValue A numeric vector of values corresponding to the features specified in `featureID`. Default is `NULL`.
 #' @param RiskNames A character vector specifying the names of the competing risks. Default is `NULL`, which assigns names as "Risk1" and "Risk2".
-#' @param TypeMethod A character string specifying the model to use for plotting. Must be one of `"GCM"`, `"POM"`, or `"PHM"`. Default is `"GCM"`.
+#' @param TypeMethod A character string specifying the model to use for plotting. Must be one of `"GOR"`, `"POM"`, or `"PHM"`. Default is `"GOR"`.
 #' @param predTime A numeric vector of time points for which CIFs are computed. Default is `NULL`, which uses the failure times from the initialized data.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
-#'   \item Estimates the model parameters for GCM, POM, and PHM using the `estimate_parameters_GCM`, `estimate_parameters_POM`, and `estimate_parameters_PHM` functions.
+#'   \item Estimates the model parameters for GOR, POM, and PHM using the `estimate_parameters_GOR`, `estimate_parameters_POM`, and `estimate_parameters_PHM` functions.
 #'   \item Computes the CIFs for the specified time points and covariate values.
 #'   \item Generates plots for the CIFs, including adjusted CIFs based on specific covariate values.
 #'   \item Provides separate plots for each model and a combined plot for all models.
@@ -1444,27 +1584,42 @@ NULL
 #'   }
 #' }
 #'
-#' @export
 #'
 #' @examples
-#' \dontrun{
-#' # Assuming the Cmpp model has been initialized
+#' library(cmpp)
+#' data("fertility_data")
+#' Nam <- names(fertility_data)
+#' fertility_data$Education
+#' datt <- make_Dummy(fertility_data, features = c("Education"))
+#' datt <- datt$New_Data 
+#' datt['Primary_Secondary'] <- datt$`Education:2`
+#' datt['Higher_Education'] <- datt$`Education:3`
+#' datt$`Education:2` <- datt$`Education:3` <- NULL
+#' datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+#' d1 <- datt2$`Event:2`
+#' d2 <- datt2$`Event:3`
+#' feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+#'    data.matrix()
+#' timee <- datt2[['time']]
+#' Initialize(feat, timee, d1, d2, 1e-10)
 #' result <- Cmpp_CIF(
 #'   featureID = c(1, 2),
 #'   featureValue = c(0.5, 1.2),
 #'   RiskNames = c("Event1", "Event2"),
-#'   TypeMethod = "GCM",
+#'   TypeMethod = "GOR",
 #'   predTime = seq(0, 10, by = 0.5)
 #' )
 #' print(result$Plot$Plot_InputModel)  # Plot for the specified model
 #' print(result$Plot$PlotAdjusted_AllModels)  # Adjusted CIFs for all models
 #' print(result$CIF$CIFAdjusted)  # Adjusted CIF values
-#' }
+#'
+#' @export
+#'
 Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL, 
-    TypeMethod = "GCM", predTime = NULL) {
+    TypeMethod = "GOR", predTime = NULL) {
     
-    if(!TypeMethod %in% c("GCM", "POM", "PHM")) {
-      stop("TypeMethod must be one of `GCM` or `POM` or `PHM`.")    
+    if(!TypeMethod %in% c("GOR", "POM", "PHM")) {
+      stop("TypeMethod must be one of `GOR` or `POM` or `PHM`.")    
     }
     if(is.null(featureValue)) {
        Features <- GetData()$features
@@ -1492,7 +1647,7 @@ Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL,
     }
   }
 
-  Par1 <- estimate_parameters_GCM(rep(0.01, 2*(3 + GetDim()$Nfeature)))
+  Par1 <- estimate_parameters_GOR(rep(0.01, 2*(3 + GetDim()$Nfeature)))
   Par2 <- estimate_parameters_POM(rep(0.01, 2*(2 + GetDim()$Nfeature)))
   Par3 <- estimate_parameters_PHM(rep(0.01, 2*(2 + GetDim()$Nfeature)))
   Par11 <- Par1[1:3, 2]
@@ -1537,14 +1692,14 @@ Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL,
   CIF32Val <- lapply(predTime, \(timeVal) F_cdf_rcpp3(Params = Par32, Z = z, x = timeVal)) |> unlist()
 
   CIFnull <- data.frame(
-    Model = rep(c("GCM", "POM", "PHM"), each = 2*length(timexNull)),
+    Model = rep(c("GOR", "POM", "PHM"), each = 2*length(timexNull)),
     CIF = c(CIF11Null, CIF12Null, CIF21Null, CIF22Null, CIF31Null, CIF32Null),
     Time = rep(timexNull, 6),
     Risk = rep(rep(RiskNames, each = length(timexNull)), 3)
   )
 
   CIFAdjustedFig <- data.frame(
-    Model = rep(c("GCM", "POM", "PHM"), each = 2*length(timexNull)),
+    Model = rep(c("GOR", "POM", "PHM"), each = 2*length(timexNull)),
     CIFAdjusted = c(CIF11Fig, CIF12Fig, CIF21Fig, CIF22Fig, CIF31Fig, CIF32Fig), 
     Time = rep(timex, 6),
     Risk = rep(rep(RiskNames, each = length(timexNull)), 3)
@@ -1552,16 +1707,16 @@ Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL,
   )
 
   CIFAdjustedVal <- data.frame(
-    Model = rep(c("GCM", "POM", "PHM"), each = 2*length(predTime)),
+    Model = rep(c("GOR", "POM", "PHM"), each = 2*length(predTime)),
     Time = rep(predTime, 6),
     CIFAdjusted = c(CIF11Val, CIF12Val, CIF21Val, CIF22Val, CIF31Val, CIF32Val),
     Risk = rep(rep(RiskNames, each = length(predTime)), 3) 
   )
-  CIFnull <- CIFnull |> within(Model <- factor(Model, levels = c("GCM", "POM", "PHM")))
+  CIFnull <- CIFnull |> within(Model <- factor(Model, levels = c("GOR", "POM", "PHM")))
   CIFnull <- CIFnull |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
-  CIFAdjustedFig <- CIFAdjustedFig |> within(Model <- factor(Model, levels = c("GCM", "POM", "PHM")))
+  CIFAdjustedFig <- CIFAdjustedFig |> within(Model <- factor(Model, levels = c("GOR", "POM", "PHM")))
   CIFAdjustedFig <- CIFAdjustedFig |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
-  CIFAdjustedVal <- CIFAdjustedVal |> within(Model <- factor(Model, levels = c("GCM", "POM", "PHM")))
+  CIFAdjustedVal <- CIFAdjustedVal |> within(Model <- factor(Model, levels = c("GOR", "POM", "PHM")))
   CIFAdjustedVal <- CIFAdjustedVal |> within(Risk <- factor(Risk, levels = c(RiskNames[1], RiskNames[2])))
 
 Plot_Adjusted <- CIFAdjustedFig |> 
@@ -1582,14 +1737,14 @@ Plot_NULL <- CIFnull |>
     ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks", 
     caption = "All Models | Not Adjusted")
 
-Plot_GCM <- CIFAdjustedFig |> 
-    subset(subset = Model == "GCM") |> 
+Plot_GOR <- CIFAdjustedFig |> 
+    subset(subset = Model == "GOR") |> 
     ggplot2::ggplot(ggplot2::aes(x = Time, y = CIFAdjusted, group = Risk, color = Risk)) +
     ggplot2::geom_line(linewidth = 1) +
     ggplot2::ylim(c(0, 1)) +
     ggplot2::theme_bw() + 
-    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | GCM Model",
-    caption = "Adjusted by covariates | GCM Model")
+    ggplot2::labs(title = "Cumulative Incidence Function (CIF) for Competing Risks | GOR Model",
+    caption = "Adjusted by covariates | GOR Model")
 
 Plot_POM <- CIFAdjustedFig |> 
     subset(subset = Model == "POM") |> 
@@ -1610,7 +1765,7 @@ Plot_PHM <- CIFAdjustedFig |>
     caption = "Adjusted by covariates | PHM Model")
 
 PlotType = switch(TypeMethod, 
-  "GCM" = Plot_GCM, 
+  "GOR" = Plot_GOR, 
   "POM" = Plot_POM,
   "PHM" = Plot_PHM)
 

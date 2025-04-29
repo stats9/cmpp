@@ -4,11 +4,11 @@
 \name{cmpp}
 \alias{cmpp-package}
 \alias{cmpp}
-\title{Parametric (Direct) Methods for Cumulative Incidence Functions in Competing Risks}
+\title{Direct Parametric Inference for the Cumulative Incidence Function in Competing Risks}
 \description{
 The \code{cmpp} package provides parametric (Direct) modeling methods for analyzing cumulative incidence functions (CIFs)
 in the context of competing risks. It includes Gompertz-based models, regression techniques, and parametric (Direct) approaches
-such as the Generalized Chance Model (GCM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM).
+such as the Generalized odds rate (GOR), Proportional Odds Model (POM), and Proportional Hazards Model (PHM).
 The package enables users to estimate and compare CIFs using maximum likelihood estimation, perform regression analysis,
 and visualize CIFs with confidence intervals. It also supports covariate adjustment and bootstrap variance estimation.
 }
@@ -32,12 +32,12 @@ Commonly used functions include:
 \item \code{\link{LogLike1}}: Computes the negative log-likelihood for the model without covariate effect.
 \item \code{\link{compute_grad}}: Computes the gradient of the log-likelihood.
 \item \code{\link{compute_hessian}}: Computes the Hessian matrix of the log-likelihood.
-\item \code{\link{estimate_parameters_GCM}}: Estimates parameters using the Generalized Chance Model (GCM).
+\item \code{\link{estimate_parameters_GOR}}: Estimates parameters using the Generalized odds rate (GOR).
 \item \code{\link{estimate_parameters_POM}}: Estimates parameters using the Proportional Odds Model (POM).
 \item \code{\link{estimate_parameters_PHM}}: Estimates parameters using the Proportional Hazards Model (PHM).
 \item \code{\link{CIF_res1}}: Computes CIF results for competing risks without covariates.
 \item \code{\link{CIF_Figs}}: Plots CIFs with confidence intervals (without covariate effect).
-\item \code{\link{Cmpp_CIF}}: Computes and plots CIFs for competing risks using GCM, POM, and PHM.
+\item \code{\link{Cmpp_CIF}}: Computes and plots CIFs for competing risks using GOR, POM, and PHM.
 \item \code{\link{FineGray_Model}}: Fits a Fine-Gray regression model for competing risks data and
 visualize CIF by Fine-Gray model result using \code{\link[cmprsk:cuminc]{cmprsk::cuminc}} and \code{\link[cmprsk:crr]{cmprsk::crr}}.
 \item \code{\link{bootstrap_variance}}: Estimates variance of parameters using the bootstrap method.
@@ -46,54 +46,46 @@ visualize CIF by Fine-Gray model result using \code{\link[cmprsk:cuminc]{cmprsk:
 }
 }
 \examples{
- \dontrun{
-   ## Example: Initialize the Cmpp model and compute CIFs
-   library(cmpp)
-   features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-   delta1 <- sample(c(0, 1), 100, replace = TRUE)
-   delta2 <- 1 - delta1
-   timee <- rexp(100, rate = 1/10)
+## Example: Initialize the Cmpp model and compute CIFs
+library(cmpp)
+features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+delta1 <- sample(c(0, 1), 100, replace = TRUE)
+delta2 <- 1 - delta1
+timee <- rexp(100, rate = 1/10)
+Initialize(features, timee, delta1, delta2, h = 1e-5)
+# Initialize the Cmpp model
+# Estimate parameters using the Generalized odds rate (GOR)
+initial_params <- rep(0.001, 2 * (ncol(features) + 3))
+result <- estimate_parameters_GOR(initial_params)
+print(result)
+# Compute CIFs for competing risks (without covariate effect | Not Regression model)
+cif_results <- CIF_res1()
+print(cif_results)
+# Plot CIFs with confidence intervals
+plot <- CIF_Figs(rep(0.01, 4), timee)
+print(plot)
+# Compute and plot adjusted CIFs
+result_cif <- Cmpp_CIF(
+featureID = c(1, 2),
+featureValue = c(0.5, 1.2),
+RiskNames = c("Event1", "Event2"),
+TypeMethod = "GOR",
+predTime = seq(0, 10, by = 0.5)
+)
+print(result_cif$Plot$Plot_InputModel) # Plot for the specified model
+print(result_cif$CIF$CIFAdjusted) # Adjusted CIF values
+# Fit a Fine-Gray model for competing risks
+result_fg <- FineGray_Model(
+CovarNames = c("Covar1", "Covar2", 'Covar3'),
+Failcode = 1,
+RiskNames = c("Event1", "Event2")
+)
+print(result_fg$Results)  # Summary of the Fine-Gray model
+print(result_fg$Plot) # Plot of the CIFs
 
-   Initialize(features, timee, delta1, delta2, h = 1e-5)
-   # Initialize the Cmpp model
+# Clean up memory
+Cleanup()
 
-   # Estimate parameters using the Generalized Chance Model (GCM)
-   initial_params <- rep(0.001, 2 * (ncol(features) + 3))
-   result <- estimate_parameters_GCM(initial_params)
-   print(result)
-
-   # Compute CIFs for competing risks (without covariate effect | Not Regression model)
-   cif_results <- CIF_res1(initial_params)
-   print(cif_results)
-
-   # Plot CIFs with confidence intervals
-   plot <- CIF_Figs(initial_params, timee)
-   print(plot)
-
-   # Compute and plot adjusted CIFs
-   result_cif <- Cmpp_CIF(
-     featureID = c(1, 2),
-     featureValue = c(0.5, 1.2),
-     RiskNames = c("Event1", "Event2"),
-     TypeMethod = "GCM",
-     predTime = seq(0, 10, by = 0.5)
-   )
-   print(result_cif$Plot$Plot_InputModel) # Plot for the specified model
-   print(result_cif$CIF$CIFAdjusted) # Adjusted CIF values
-
-   # Fit a Fine-Gray model for competing risks
-   result_fg <- FineGray_Model(
-     featureNames = c("Feature1", "Feature2"),
-     CovarNames = c("Covar1", "Covar2"),
-     Failcode = 1,
-     RiskNames = c("Event1", "Event2")
-   )
-   print(result_fg$Results)  # Summary of the Fine-Gray model
-   print(result_fg$Plot) # Plot of the CIFs
-
-   # Clean up memory
-   Cleanup()
- }
 }
 \references{
 \itemize{
@@ -102,7 +94,7 @@ visualize CIF by Fine-Gray model result using \code{\link[cmprsk:cuminc]{cmprsk:
 }
 }
 \seealso{
-\link{Initialize}, \link{LogLike1}, \link{compute_grad}, \link{compute_hessian}, \link{estimate_parameters_GCM},
+\link{Initialize}, \link{LogLike1}, \link{compute_grad}, \link{compute_hessian}, \link{estimate_parameters_GOR},
 \link{estimate_parameters_POM}, \link{estimate_parameters_PHM}, \link{CIF_res1}, \link{CIF_Figs},
 \link{Cmpp_CIF}, \link{FineGray_Model}, \link{bootstrap_variance}, \link{GetData}, \link{Cleanup}
 }

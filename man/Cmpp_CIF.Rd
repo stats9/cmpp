@@ -8,7 +8,7 @@ Cmpp_CIF(
   featureID = NULL,
   featureValue = NULL,
   RiskNames = NULL,
-  TypeMethod = "GCM",
+  TypeMethod = "GOR",
   predTime = NULL
 )
 }
@@ -19,7 +19,7 @@ Cmpp_CIF(
 
 \item{RiskNames}{A character vector specifying the names of the competing risks. Default is \code{NULL}, which assigns names as "Risk1" and "Risk2".}
 
-\item{TypeMethod}{A character string specifying the model to use for plotting. Must be one of \code{"GCM"}, \code{"POM"}, or \code{"PHM"}. Default is \code{"GCM"}.}
+\item{TypeMethod}{A character string specifying the model to use for plotting. Must be one of \code{"GOR"}, \code{"POM"}, or \code{"PHM"}. Default is \code{"GOR"}.}
 
 \item{predTime}{A numeric vector of time points for which CIFs are computed. Default is \code{NULL}, which uses the failure times from the initialized data.}
 }
@@ -42,13 +42,13 @@ A list containing:
 }
 \description{
 This function computes and plots the cumulative incidence functions (CIF) for competing risks using three parametric models:
-Generalized Chance Model (GCM), Proportional Odds Model (POM), and Proportional Hazards Model (PHM).
+Generalized odds rate (GOR), Proportional Odds Model (POM), and Proportional Hazards Model (PHM).
 It allows for adjusted CIFs based on specific covariate values and provides visualizations for all models.
 }
 \details{
 This function performs the following steps:
 \itemize{
-\item Estimates the model parameters for GCM, POM, and PHM using the \code{estimate_parameters_GCM}, \code{estimate_parameters_POM}, and \code{estimate_parameters_PHM} functions.
+\item Estimates the model parameters for GOR, POM, and PHM using the \code{estimate_parameters_GOR}, \code{estimate_parameters_POM}, and \code{estimate_parameters_PHM} functions.
 \item Computes the CIFs for the specified time points and covariate values.
 \item Generates plots for the CIFs, including adjusted CIFs based on specific covariate values.
 \item Provides separate plots for each model and a combined plot for all models.
@@ -59,17 +59,31 @@ If \code{RiskNames} is not provided, the default names "Risk1" and "Risk2" are u
 which model's CIF plot is returned in the output.
 }
 \examples{
-\dontrun{
-# Assuming the Cmpp model has been initialized
+library(cmpp)
+data("fertility_data")
+Nam <- names(fertility_data)
+fertility_data$Education
+datt <- make_Dummy(fertility_data, features = c("Education"))
+datt <- datt$New_Data 
+datt['Primary_Secondary'] <- datt$`Education:2`
+datt['Higher_Education'] <- datt$`Education:3`
+datt$`Education:2` <- datt$`Education:3` <- NULL
+datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+d1 <- datt2$`Event:2`
+d2 <- datt2$`Event:3`
+feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+   data.matrix()
+timee <- datt2[['time']]
+Initialize(feat, timee, d1, d2, 1e-10)
 result <- Cmpp_CIF(
   featureID = c(1, 2),
   featureValue = c(0.5, 1.2),
   RiskNames = c("Event1", "Event2"),
-  TypeMethod = "GCM",
+  TypeMethod = "GOR",
   predTime = seq(0, 10, by = 0.5)
 )
 print(result$Plot$Plot_InputModel)  # Plot for the specified model
 print(result$Plot$PlotAdjusted_AllModels)  # Adjusted CIFs for all models
 print(result$CIF$CIFAdjusted)  # Adjusted CIF values
-}
+
 }

@@ -22,8 +22,22 @@ This function requires the data to be initialized using \code{Initialize} before
 The log-likelihood is based on survival probabilities derived from the Gompertz distributions.
 }
 \examples{
-\dontrun{
+library(cmpp)
+data("fertility_data")
+Nam <- names(fertility_data)
+fertility_data$Education
+datt <- make_Dummy(fertility_data, features = c("Education"))
+datt <- datt$New_Data 
+datt['Primary_Secondary'] <- datt$`Education:2`
+datt['Higher_Education'] <- datt$`Education:3`
+datt$`Education:2` <- datt$`Education:3` <- NULL
+datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+d1 <- datt2$`Event:2`
+d2 <- datt2$`Event:3`
+feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+   data.matrix()
+timee <- datt2[['time']]
+Initialize(feat, timee, d1, d2, 1e-10)
 param <- c(0.01, 0.01, 0.01, 0.01)
 LogLike1(param)
-}
 }

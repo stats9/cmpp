@@ -29,9 +29,8 @@ in scenarios where a specific value needs to be assigned to all elements of the
 matrix, for example in machine learning algorithms, matrix manipulations, or tests.
 }
 \examples{
-\dontrun{
+library(cmpp)
 # Create a 3x3 matrix filled with 5
 mat <- makeMat(3, 3, 5)
 print(mat)
-}
 }

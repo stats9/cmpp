@@ -29,11 +29,10 @@ This function does not return any value but sets up internal data structures req
 Ensure that \code{features}, \code{x}, \code{delta1}, and \code{delta2} have matching lengths or dimensions.
 }
 \examples{
-\dontrun{
+library(cmpp)
 features <- matrix(rnorm(100), ncol = 5)
 x <- rnorm(20)
 delta1 <- sample(0:1, 20, replace = TRUE)
-delta2 <- sample(0:1, 20, replace = TRUE)
+delta2 <- 1 - delta1
 Initialize(features, x, delta1, delta2, h = 1e-5)
-}
 }

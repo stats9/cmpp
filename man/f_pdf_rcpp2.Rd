@@ -17,15 +17,15 @@ A numeric value representing the PDF.
 This function computes the probability density function (PDF) of the parametric model (POM Approach).
 }
 \examples{
-\dontrun{
 library(cmpp)
+set.seed(1984)
 features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-delta1 <- sample(c(0, 1), 100)
+delta1 <- sample(c(0, 1), 100, replace = TRUE)
 delta2 <- 1 - delta1
-x <- rexp(100, rate = 1/10)
-Initialize(features, x, delta1, delta2, h = 1e-5)
+x <- rexp(100, rate = 1/9)
+Initialize(features, x, delta1, delta2, h = 1e-4)
 params <- rep(0.001, 2 * (ncol(features) + 2))
-pdf_value <- f_pdf_rcpp2(params, Z[1, ], x[3])
+pdf_value <- f_pdf_rcpp2(params, features[1, ], x[3])
 print(pdf_value)
-}
+
 }

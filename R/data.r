@@ -1,30 +1,32 @@
-#' Example Dataset: dat
+#' Fertility History of Rural Women in Shiraz
 #'
-#' This dataset contains survival data for a study involving burn injuries.
+#' This dataset includes fertility history information from a cross-sectional study
+#' of 652 women aged 15–49 years in rural areas of Shiraz, Iran. 
+#' It was used in the article "A parametric method for cumulative incidence modeling with a new four-parameter log-logistic distribution" 
+#' to model the cumulative incidence of live births and competing risks (stillborn fetus or abortion).
 #'
-#' @format A data frame with 968 rows and 21 variables:
+#' @format A data frame with 652 rows and the following variables:
 #' \describe{
-#'   \item{id}{Unique identifier for each individual.}
-#'   \item{time}{Time to event or censoring.}
-#'   \item{event}{Event indicator Variable:, 3 = event occurred (Discharge), 1 = Cardio Arrest (Competing Risk), 2 = Sepsis (Main Event).}
-#'   \item{age}{Age of the individual.}
-#'   \item{sex}{Sex of the individual (e.g., "Male", "Female").}
-#'   \item{percent_burn}{Percentage of body burned.}
-#'   \item{cause_burn}{Cause of burn (e.g., "Fire", "Hot Object").}
-#'   \item{ca}{Calcium levels.}
-#'   \item{k}{Potassium levels.}
-#'   \item{mg}{Magnesium levels.}
-#'   \item{na}{Sodium levels.}
-#'   \item{pho}{Phosphorus levels.}
-#'   \item{alb}{Albumin levels.}
-#'   \item{bun}{Blood urea nitrogen levels.}
-#'   \item{cr}{Creatinine levels.}
-#'   \item{wbc}{White blood cell count.}
-#'   \item{d1}{A Indicator variable to indicate the cause of death, which takes the value 1 if death is due to Sepsis and the value zero otherwise.}
-#'   \item{d2}{A Indicator variable to indicate the cause of death, which takes the value 1 if death was due to a Cardio Arrest, and the value 0 otherwise.}
-#'   \item{cause_fire1}{Indicator for burns caused by fire.}
-#'   \item{cause_boiling2}{Indicator for burns caused by boiling liquids.}
-#'   \item{cause_hotObject3}{Indicator for burns caused by hot objects.}
+#'   \item{id}{Unique identifier for each case.}
+#'   \item{time}{Time from marriage to event (live birth, competing event, or censoring).}
+#'   \item{Event}{Event indicator: \code{0} = censored, \code{1} = live birth, \code{2} = stillborn fetus or abortion.}
+#'   \item{age}{Age of the woman at the time of the event or censoring.}
+#'   \item{Education}{Education level: \code{1} = Illiterate, \code{2} = Primary/Secondary, \code{3} = Higher Education.}
 #' }
-#' @source real-world dataset from a study on burn injuries (Shiraz Accident and Burn Hospital, Iran).
-"dat"
+#'
+#' 
+#' @source <doi:10.1186/1742-4682-8-43>
+#' https://doi.org/10.1186/1742-4682-8-43
+#' @references
+#' Shayan, Z., Ayatollahi, S. M. T., & Zare, N. (2011). 
+#' "A parametric method for cumulative incidence modeling with a new four-parameter log-logistic distribution." 
+#' Theoretical Biology and Medical Modelling, 8:43. <doi:10.1186/1742-4682-8-43>
+#'
+#'@note 
+#' To view the article, follow this link: \url{https://tbiomed.biomedcentral.com/articles/10.1186/1742-4682-8-43}
+#'
+#' @examples
+#' data(fertility_data)
+#' head(fertility_data)
+#' @keywords datasets
+"fertility_data"

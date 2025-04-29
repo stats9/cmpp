@@ -38,15 +38,15 @@ This function performs bootstrap sampling to estimate the variance of the model 
 It requires the data to be initialized using \code{Initialize} before being called.
 }
 \examples{
-\dontrun{
+library(cmpp)
 features <- matrix(rnorm(100), ncol = 5)
 x <- rnorm(20)
 delta1 <- sample(0:1, 20, replace = TRUE)
-delta2 <- sample(0:1, 20, replace = TRUE)
+delta2 <- 1 - delta1
 initial_params <- c(0.01, 0.01, 0.01, 0.01)
-n_bootstrap <- 1000
-results <- bootstrap_variance(features, x, delta1, delta2, initial_params, n_bootstrap)
+n_bootstrap <- 100
+results <- bootstrap_variance(features, x, delta1, delta2, 
+initial_params, n_bootstrap, optimMethod = "BFGS")
 print(results$variances)
 print(results$bootstrap_estimates)
-}
 }

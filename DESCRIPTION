@@ -7,12 +7,12 @@ Authors@R: person(given = "Habib",
                  family = "Ezzatabadipour",
                  email = "habibezati@outlook.com",
                  role = c("aut", "cre"))
-Description: Implements parametric modeling and regression methods for cumulative incidence functions in 
-        the presence of competing risks. Methods include the direct Gompertz-based approach 
-        and generalized regression models as described in Jeong and Fine (2006, 2007). 
-        The package facilitates maximum likelihood estimation, variance computation, 
-        and goodness-of-fit evaluation for competing risks data, 
-        with applications to clinical trials and survival analysis.
+Description: Implements parametric (Direct) regression methods for modeling cumulative incidence functions (CIFs) in 
+                the presence of competing risks. Methods include the direct Gompertz-based approach 
+                and generalized regression models as described in Jeong and Fine (2006) <doi:10.1111/j.1467-9876.2006.00532.x> 
+                and Jeong and Fine (2007) <doi:10.1093/biostatistics/kxj040>.
+                The package facilitates maximum likelihood estimation, variance computation, 
+                with applications to clinical trials and survival analysis.
 License: GPL (>= 2)
 Imports: 
     ggplot2, 
@@ -22,8 +22,7 @@ Imports:
     cmprsk, 
     tidyselect,
     stats, 
-    Rcpp, 
-    RcppEigen
+    Rcpp
 LinkingTo: 
     Rcpp, 
     RcppEigen

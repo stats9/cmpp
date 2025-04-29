@@ -6,6 +6,9 @@
 \usage{
 Cleanup()
 }
+\value{
+No return value. Called for side effects.
+}
 \description{
 This function is used to clean up and delete the instance of the Cmpp class in
 the C++ code. It ensures proper memory management and prevents memory leaks by
@@ -19,8 +22,6 @@ the allocated memory in C++. Failure to call this function may result in memory
 leaks, as the memory allocated for the \code{Cmpp} object is not automatically freed.
 }
 \examples{
-\dontrun{
 # Assuming you have previously initialized the Cmpp object with `Initialize()`
 Cleanup()
-}
 }

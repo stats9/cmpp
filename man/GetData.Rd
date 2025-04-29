@@ -20,12 +20,25 @@ data stored in the Cmpp object, which includes the feature matrix, failure times
 competing risks. If the Cmpp object is not initialized, the function will throw an error.
 }
 \examples{
-\dontrun{
-# Assuming the Cmpp model has been initialized
+library(cmpp)
+data("fertility_data")
+Nam <- names(fertility_data)
+fertility_data$Education
+datt <- make_Dummy(fertility_data, features = c("Education"))
+datt <- datt$New_Data 
+datt['Primary_Secondary'] <- datt$`Education:2`
+datt['Higher_Education'] <- datt$`Education:3`
+datt$`Education:2` <- datt$`Education:3` <- NULL
+datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+d1 <- datt2$`Event:2`
+d2 <- datt2$`Event:3`
+feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+   data.matrix()
+timee <- datt2[['time']]
+Initialize(feat, timee, d1, d2, 1e-10)
 data <- GetData()
 print(data$features)  # Feature matrix
 print(data$timee)      # Failure times
 print(data$delta1)    # Indicator for the first competing event
 print(data$delta2)    # Indicator for the second competing event
-}
 }

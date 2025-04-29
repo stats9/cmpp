@@ -13,15 +13,15 @@ A numeric value representing the log-likelihood.
 This function computes the log-likelihood function for the parametric model (POM Approach).
 }
 \examples{
-\dontrun{
 library(cmpp)
+set.seed(1984)
 features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-delta1 <- sample(c(0, 1), 100)
+delta1 <- sample(c(0, 1), 100, replace = TRUE)
 delta2 <- 1 - delta1
-x <- rexp(100, rate = 1/10)
+x <- rexp(100, rate = 1/8)
 Initialize(features, x, delta1, delta2, h = 1e-5)
 params <- rep(0.001, 2 * (ncol(features) + 2))
 log_likelihood <- log_f_rcpp2(params)
 print(log_likelihood)
-}
+
 }

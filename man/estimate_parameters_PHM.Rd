@@ -39,8 +39,8 @@ The Proportional Hazards Model (PHM) is a parametric model for cumulative incide
 It uses Gompertz distributions to model the failure times for competing events.
 }
 \examples{
-\dontrun{
 library(cmpp)
+set.seed(1984)
 # Example data
 features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
 delta1 <- sample(c(0, 1), 100, replace = TRUE)
@@ -56,7 +56,6 @@ initial_params <- rep(0.001, 2 * (ncol(features) + 2))
 # Estimate parameters using the PHM
 result <- estimate_parameters_PHM(initial_params)
 print(result)
-}
 
 }
 \seealso{

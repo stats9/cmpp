@@ -2,7 +2,7 @@
 % Please edit documentation in R/RCode.r
 \name{F_cdf_rcpp}
 \alias{F_cdf_rcpp}
-\title{Compute the CDF of the Parametric Generalized Chance Model (GCM)}
+\title{Compute the CDF of the Parametric Generalized odds rate (GOR)}
 \arguments{
 \item{Params}{A numeric vector of parameters.}
 
@@ -14,19 +14,18 @@
 A numeric value representing the CDF.
 }
 \description{
-This function computes the cumulative distribution function (CDF) of the parametric model (GCM Approach).
+This function computes the cumulative distribution function (CDF) of the parametric model (GOR Approach).
 }
 \examples{
-\dontrun{
 library(cmpp)
+set.seed(321)
 features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-delta1 <- sample(c(0, 1), 100)
+delta1 <- sample(c(0, 1), 100, replace = TRUE)
 delta2 <- 1 - delta1
-x <- rexp(100, rate = 1/10)
-Initialize(features, x, delta1, delta2, h = 1e-5)
+x <- rexp(100, rate = 1/2)
+Initialize(features, x, delta1, delta2, h = 1e-3)
 params <- rep(0.001, 2 * (ncol(features) + 3))
-x <- 5
-cdf_value <- F_cdf_rcpp(params, features[1, ], x)
-print(cdf_value)
-}
+y <- 0.07
+z <- features[1, ]
+(cdf_value <- F_cdf_rcpp(params, z, y))
 }

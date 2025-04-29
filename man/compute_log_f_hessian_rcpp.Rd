@@ -2,7 +2,7 @@
 % Please edit documentation in R/RCode.r
 \name{compute_log_f_hessian_rcpp}
 \alias{compute_log_f_hessian_rcpp}
-\title{Compute the Hessian Matrix of the Log-Likelihood Function Generalized Chance Model (GCM)}
+\title{Compute the Hessian Matrix of the Log-Likelihood Function Generalized odds rate (GOR)}
 \arguments{
 \item{Params}{A numeric vector of parameters.}
 }
@@ -10,18 +10,18 @@
 A numeric matrix representing the Hessian matrix of the log-likelihood.
 }
 \description{
-This function computes the Hessian matrix of the log-likelihood function for the parametric model (GCM Approach).
+This function computes the Hessian matrix of the log-likelihood function for the parametric model (GOR Approach).
 }
 \examples{
-\dontrun{
 library(cmpp)
+set.seed(1984)
 features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-delta1 <- sample(c(0, 1), 100)
+delta1 <- sample(c(0, 1), 100, replace = TRUE)
 delta2 <- 1 - delta1
-x <- rexp(100, rate = 1/10)
-Initialize(features, x, delta1, delta2, h = 1e-5)
+x <- rexp(100, rate = 1/7)
+Initialize(features, x, delta1, delta2, h = 1e-4)
 params <- rep(0.001, 2 * (ncol(features) + 3))
 hessian <- compute_log_f_hessian_rcpp(params)
 print(hessian)
-}
+
 }

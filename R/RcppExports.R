@@ -37,7 +37,7 @@ Cleanup <- function() {
     invisible(.Call(`_cmpp_Cleanup`))
 }
 
-bootstrap_variance <- function(features, x, delta1, delta2, initial_params, n_bootstrap, optimMethod) {
+bootstrap_variance <- function(features, x, delta1, delta2, initial_params, n_bootstrap, optimMethod = "BFGS") {
     .Call(`_cmpp_bootstrap_variance`, features, x, delta1, delta2, initial_params, n_bootstrap, optimMethod)
 }
 

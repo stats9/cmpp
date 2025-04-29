@@ -148,16 +148,34 @@ public:
     }
 
     // Method to compute F_cdf
-    double F_cdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) {
-        double alpha = Params[0];
-        double tau = Params[1];
-        double rho = Params[2];
-        rho = (rho < 0) * rho - (rho > 0) * rho;
-        Eigen::VectorXd Beta = Params.tail(Params.size() - 3);
-        double tempval = Z.dot(Beta);
-        double temp1 = 1 - std::pow(1 + alpha * std::exp(tempval) * tau * (std::exp(rho * x) - 1) / rho, -1 / alpha);
-        return temp1;
-    }
+    // double F_cdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) {
+    //     double alpha = Params[0];
+    //     double tau = Params[1];
+    //     double rho = Params[2];
+    //     rho = (rho < 0) * rho - (rho > 0) * rho;
+    //     Eigen::VectorXd Beta = Params.tail(Params.size() - 3);
+    //     double tempval = Z.dot(Beta);
+    //     double temp1 = 1 - std::pow(1 + alpha * std::exp(tempval) * tau * (std::exp(rho * x) - 1) / rho, -1 / alpha);
+    //     return temp1;
+    // }
+double F_cdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) {
+    double alpha = Params[0];
+    double tau = Params[1];
+    double rho = Params[2];
+
+    // Ensure rho is treated properly
+    rho = (rho < 0) * rho - (rho > 0) * rho;
+
+    Eigen::VectorXd Beta = Params.tail(Params.size() - 3);
+    double tempval = Z.dot(Beta);
+
+    // Prevent division by zero
+    double term = (rho != 0) ? std::expm1(rho * x) / rho : x;
+
+    double temp1 = 1 - std::pow(1 + alpha * std::exp(tempval) * tau * term, -1.0 / alpha);
+    return temp1;
+}
+
     // Method to compute f_pdf
     double f_pdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) {
         double alpha = Params[0];
@@ -502,7 +520,7 @@ void Cleanup() {
 }
 
 // [[Rcpp::export]]
-List bootstrap_variance(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, NumericVector initial_params, int n_bootstrap, std::string optimMethod) {
+List bootstrap_variance(NumericMatrix features, NumericVector x, IntegerVector delta1, IntegerVector delta2, NumericVector initial_params, int n_bootstrap, std::string optimMethod = "BFGS") {
   int n = features.nrow();  // Number of rows in features
   int p = initial_params.size();  // Number of parameters
   Eigen::MatrixXd bootstrap_estimates(n_bootstrap, p);

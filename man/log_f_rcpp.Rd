@@ -2,7 +2,7 @@
 % Please edit documentation in R/RCode.r
 \name{log_f_rcpp}
 \alias{log_f_rcpp}
-\title{Compute the Log-Likelihood Function Generalized Chance Model (GCM)}
+\title{Compute the Log-Likelihood Function Generalized odds rate (GOR)}
 \arguments{
 \item{Params}{A numeric vector of parameters.}
 }
@@ -10,18 +10,18 @@
 A numeric value representing the log-likelihood.
 }
 \description{
-This function computes the log-likelihood function for the parametric model (GCM Approach).
+This function computes the log-likelihood function for the parametric model (GOR Approach).
 }
 \examples{
-\dontrun{
 library(cmpp)
+set.seed(1984)
 features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
-delta1 <- sample(c(0, 1), 100)
+delta1 <- sample(c(0, 1), 100, replace = TRUE)
 delta2 <- 1 - delta1
-x <- rexp(100, rate = 1/10)
+x <- rexp(100, rate = 1/4)
 Initialize(features, x, delta1, delta2, h = 1e-5)
 params <- rep(0.001, 2 * (ncol(features) + 3))
 log_likelihood <- log_f_rcpp(params)
 print(log_likelihood)
-}
+
 }

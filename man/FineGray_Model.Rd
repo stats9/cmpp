@@ -4,16 +4,9 @@
 \alias{FineGray_Model}
 \title{Fine-Gray Model for Competing Risks Data}
 \usage{
-FineGray_Model(
-  featureNames = NULL,
-  CovarNames = NULL,
-  Failcode = 1,
-  RiskNames = NULL
-)
+FineGray_Model(CovarNames = NULL, Failcode = 1, RiskNames = NULL)
 }
 \arguments{
-\item{featureNames}{A character vector of feature names for the covariates. If \code{NULL}, default names will be generated.}
-
 \item{CovarNames}{A character vector of names for the covariates. If \code{NULL}, default names will be generated.}
 
 \item{Failcode}{An integer specifying the event of interest (default is \code{1}).}
@@ -38,16 +31,29 @@ The function also computes cumulative incidence functions (CIFs) using the \code
 generates a plot of the CIFs for the competing risks.
 }
 \examples{
-\dontrun{
-# Assuming the Cmpp model has been initialized
+library(cmpp)
+data("fertility_data")
+Nam <- names(fertility_data)
+fertility_data$Education
+datt <- make_Dummy(fertility_data, features = c("Education"))
+datt <- datt$New_Data 
+datt['Primary_Secondary'] <- datt$`Education:2`
+datt['Higher_Education'] <- datt$`Education:3`
+datt$`Education:2` <- datt$`Education:3` <- NULL
+datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+d1 <- datt2$`Event:2`
+d2 <- datt2$`Event:3`
+feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+   data.matrix()
+timee <- datt2[['time']]
+Initialize(feat, timee, d1, d2, 1e-10)
 result <- FineGray_Model(
-  featureNames = c("Feature1", "Feature2"),
-  CovarNames = c("Covar1", "Covar2"),
+  CovarNames = c("Covar1", "Covar2", "Covar3"),
   Failcode = 1,
   RiskNames = c("Event1", "Event2")
 )
 print(result$Results)  # Summary of the Fine-Gray model
-print(result$Plot)     # Plot of the CIFs
+#print(result$Plot)     # Plot of the CIFs
 print(result$CIF_Results)  # CIF data
-}
+
 }

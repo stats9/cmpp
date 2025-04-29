@@ -23,13 +23,25 @@ checking the size of the data without needing to manually access the underlying 
 or \code{Eigen::VectorXd} objects directly.
 }
 \examples{
-
-\dontrun{
 # Initialize Cmpp object
-Initialize(features, x, delta1, delta2, h)
+library(cmpp)
+data("fertility_data")
+Nam <- names(fertility_data)
+fertility_data$Education
+datt <- make_Dummy(fertility_data, features = c("Education"))
+datt <- datt$New_Data 
+datt['Primary_Secondary'] <- datt$`Education:2`
+datt['Higher_Education'] <- datt$`Education:3`
+datt$`Education:2` <- datt$`Education:3` <- NULL
+datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+d1 <- datt2$`Event:2`
+d2 <- datt2$`Event:3`
+feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
+   data.matrix()
+timee <- datt2[['time']]
+Initialize(feat, timee, d1, d2, 1e-10)
 # Get dimensions
 dims <- GetDim()
 dims$Nsamp    # Number of samples
 dims$Nfeature # Number of features
-}
 }

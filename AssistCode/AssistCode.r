@@ -8,7 +8,7 @@ unlink("src/RcppExports.*")
 Rcpp::compileAttributes()
 
 system("R CMD build .")           # ساخت tar.gz
-system("R CMD INSTALL --build cmpp_0.0.1.tar.gz")  # ساخت zip
+system("R CMD INSTALL --build cmpp_0.0.2.tar.gz")  # ساخت zip
 
 
 devtools :: check()

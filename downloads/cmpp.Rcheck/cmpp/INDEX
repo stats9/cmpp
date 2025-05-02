@@ -1,0 +1,68 @@
+CIF_Figs                Plot Cumulative Incidence Functions (CIF) with
+                        Confidence Intervals
+CIF_res1                Compute Cumulative Incidence Function (CIF)
+                        Results
+Cleanup                 Clean up memory by deleting the pointer to the
+                        Cmpp instance
+Cmpp_CIF                Compute and Plot Cumulative Incidence Functions
+                        (CIF) for Competing Risks
+F_cdf_rcpp              Compute the CDF of the Parametric Generalized
+                        odds rate (GOR)
+F_cdf_rcpp2             Compute the CDF of the Parametric Proportional
+                        Odds Model (POM)
+F_cdf_rcpp3             Compute the CDF of the Parametric Proportional
+                        Hazards Model (PHM)
+FineGray_Model          Fine-Gray Model for Competing Risks Data
+GetData                 Retrieve Initialized Data from the Cmpp Model
+GetDim                  Get Dimensions of the Cmpp Object
+Initialize              Initialize Data for the Cmpp Model
+LogLike1                Compute the Log-Likelihood for the Model
+bootstrap_variance      Estimate Variance of Parameters Using Bootstrap
+                        Method
+cdf_gomp                Compute the CDF of the Gompertz Distribution
+cmpp                    Direct Parametric Inference for the Cumulative
+                        Incidence Function in Competing Risks
+compute_grad            Compute the Numerical Gradient of the
+                        Log-Likelihood
+compute_hessian         Compute the Hessian Matrix of the
+                        Log-Likelihood
+compute_log_f_gradient_rcpp
+                        Compute the Gradient of the Log-Likelihood
+                        Function Generalized odds rate (GOR)
+compute_log_f_gradient_rcpp2
+                        Compute the Gradient of the Log-Likelihood
+                        Function Proportional Odds Model (POM)
+compute_log_f_gradient_rcpp3
+                        Compute the Gradient of the Log-Likelihood
+                        Function Proportional Hazards Model (PHM)
+compute_log_f_hessian_rcpp
+                        Compute the Hessian Matrix of the
+                        Log-Likelihood Function Generalized odds rate
+                        (GOR)
+estimate_parameters     Estimate Model Parameters Using Optimization
+estimate_parameters_GOR
+                        Estimate Parameters for the Generalized odds
+                        rate (GOR)
+estimate_parameters_PHM
+                        Estimate Parameters for the Proportional
+                        Hazards Model (PHM)
+estimate_parameters_POM
+                        Estimate Parameters for the Proportional Odds
+                        Model (POM)
+f_pdf_rcpp              Compute the PDF of the Parametric Generalized
+                        odds rate (GOR)
+f_pdf_rcpp2             Compute the PDF of the Parametric Proportional
+                        Odds Model (POM)
+f_pdf_rcpp3             Compute the PDF of the Parametric Proportional
+                        Hazards Model (PHM)
+fertility_data          Fertility History of Rural Women in Shiraz
+log_f_rcpp              Compute the Log-Likelihood Function Generalized
+                        odds rate (GOR)
+log_f_rcpp2             Compute the Log-Likelihood Function
+                        Proportional Odds Model (POM)
+log_f_rcpp3             Compute the Log-Likelihood Function
+                        Proportional Hazards Model (PHM)
+makeMat                 Create a matrix of given size filled with a
+                        constant value
+make_Dummy              Create Dummy Variables
+pdf_gomp                Compute the PDF of the Gompertz Distribution

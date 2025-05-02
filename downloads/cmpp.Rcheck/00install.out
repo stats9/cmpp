@@ -1,0 +1,1090 @@
+* installing *source* package 'cmpp' ...
+** this is package 'cmpp' version '0.0.2'
+** using staged installation
+** libs
+using C++ compiler: 'G__~1.EXE (GCC) 14.2.0'
+g++ -std=gnu++17  -I"C:/PROGRA~1/R/R-45~1.0/include" -DNDEBUG  -I'C:/Program Files/R/R-4.5.0/library/Rcpp/include' -I'C:/Program Files/R/R-4.5.0/library/RcppEigen/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c CppCodes.cpp -o CppCodes.o
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Core:205,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Dense:1,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/RcppEigenForward.h:28,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/RcppEigen.h:25,
+                 from CppCodes.cpp:3:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:46:40: warning: ignoring attributes on template argument '__m128i' [-Wignored-attributes]
+   46 | typedef eigen_packet_wrapper<__m128i, 0> Packet4i;
+      |                                        ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:47:40: warning: ignoring attributes on template argument '__m128i' [-Wignored-attributes]
+   47 | typedef eigen_packet_wrapper<__m128i, 1> Packet16b;
+      |                                        ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:49:39: warning: ignoring attributes on template argument '__m128' [-Wignored-attributes]
+   49 | template<> struct is_arithmetic<__m128>  { enum { value = true }; };
+      |                                       ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:50:40: warning: ignoring attributes on template argument '__m128i' [-Wignored-attributes]
+   50 | template<> struct is_arithmetic<__m128i> { enum { value = true }; };
+      |                                        ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:51:40: warning: ignoring attributes on template argument '__m128d' [-Wignored-attributes]
+   51 | template<> struct is_arithmetic<__m128d> { enum { value = true }; };
+      |                                        ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:222:43: warning: ignoring attributes on template argument 'Eigen::internal::Packet4f' {aka '__m128'} [-Wignored-attributes]
+  222 | template<> struct unpacket_traits<Packet4f> {
+      |                                           ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:228:43: warning: ignoring attributes on template argument 'Eigen::internal::Packet2d' {aka '__m128d'} [-Wignored-attributes]
+  228 | template<> struct unpacket_traits<Packet2d> {
+      |                                           ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:1124:34: warning: ignoring attributes on template argument 'Eigen::internal::Packet4f' {aka '__m128'} [-Wignored-attributes]
+ 1124 | ptranspose(PacketBlock<Packet4f,4>& kernel) {
+      |                                  ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:1129:34: warning: ignoring attributes on template argument 'Eigen::internal::Packet2d' {aka '__m128d'} [-Wignored-attributes]
+ 1129 | ptranspose(PacketBlock<Packet2d,2>& kernel) {
+      |                                  ^
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Core:174:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/Default/ConjHelper.h:16:60: warning: ignoring attributes on template argument 'Eigen::internal::Packet4f' {aka '__m128'} [-Wignored-attributes]
+   16 |   struct conj_helper<PACKET_REAL, PACKET_CPLX, false, false> {          \
+      |                                                            ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/Complex.h:173:1: note: in expansion of macro 'EIGEN_MAKE_CONJ_HELPER_CPLX_REAL'
+  173 | EIGEN_MAKE_CONJ_HELPER_CPLX_REAL(Packet2cf,Packet4f)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/Default/ConjHelper.h:29:60: warning: ignoring attributes on template argument 'Eigen::internal::Packet4f' {aka '__m128'} [-Wignored-attributes]
+   29 |   struct conj_helper<PACKET_CPLX, PACKET_REAL, false, false> {          \
+      |                                                            ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/Complex.h:173:1: note: in expansion of macro 'EIGEN_MAKE_CONJ_HELPER_CPLX_REAL'
+  173 | EIGEN_MAKE_CONJ_HELPER_CPLX_REAL(Packet2cf,Packet4f)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/Default/ConjHelper.h:16:60: warning: ignoring attributes on template argument 'Eigen::internal::Packet2d' {aka '__m128d'} [-Wignored-attributes]
+   16 |   struct conj_helper<PACKET_REAL, PACKET_CPLX, false, false> {          \
+      |                                                            ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/Complex.h:298:1: note: in expansion of macro 'EIGEN_MAKE_CONJ_HELPER_CPLX_REAL'
+  298 | EIGEN_MAKE_CONJ_HELPER_CPLX_REAL(Packet1cd,Packet2d)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/Default/ConjHelper.h:29:60: warning: ignoring attributes on template argument 'Eigen::internal::Packet2d' {aka '__m128d'} [-Wignored-attributes]
+   29 |   struct conj_helper<PACKET_CPLX, PACKET_REAL, false, false> {          \
+      |                                                            ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/Complex.h:298:1: note: in expansion of macro 'EIGEN_MAKE_CONJ_HELPER_CPLX_REAL'
+  298 | EIGEN_MAKE_CONJ_HELPER_CPLX_REAL(Packet1cd,Packet2d)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Core:165:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h: In instantiation of 'struct Eigen::internal::find_best_packet<float, 4>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:22:57:   required from 'struct Eigen::internal::traits<Eigen::Matrix<float, 4, 1> >'
+   22 |   typedef typename find_best_packet<_Scalar,size>::type PacketScalar;
+      |                                                         ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:266:49:   required from 'struct Eigen::internal::traits<Eigen::Quaternion<float> >'
+  266 |     Alignment = internal::traits<Coefficients>::Alignment,
+      |                                                 ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/arch/Geometry_SIMD.h:24:46:   required from here
+   24 |     ResAlignment = traits<Quaternion<float> >::Alignment
+      |                                              ^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:44: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                                       ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::unpacket_traits<__vector(4) float>::half' {aka '__m128'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:208:88: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+  208 |   typedef typename find_best_packet_helper<Size,typename packet_traits<T>::type>::type type;
+      |                                                                                        ^~~~
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Core:271:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Matrix<float, 4, 1>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<float, 4, 1>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<float, 4, 1>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Matrix<float, 4, 1> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Matrix<float, 4, 1> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Matrix<float, 4, 1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:178:7:   required from 'class Eigen::Matrix<float, 4, 1>'
+  178 | class Matrix
+      |       ^~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:46:50:   required from 'class Eigen::QuaternionBase<Eigen::Quaternion<float> >'
+   46 |   typedef typename Coefficients::CoeffReturnType CoeffReturnType;
+      |                                                  ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:273:7:   required from 'class Eigen::Quaternion<float>'
+  273 | class Quaternion : public QuaternionBase<Quaternion<_Scalar,_Options> >
+      |       ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/arch/Geometry_SIMD.h:27:3:   required from here
+   27 |   {
+      |   ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h: In instantiation of 'struct Eigen::internal::find_best_packet<double, 4>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:22:57:   required from 'struct Eigen::internal::traits<Eigen::Matrix<double, 4, 1> >'
+   22 |   typedef typename find_best_packet<_Scalar,size>::type PacketScalar;
+      |                                                         ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:266:49:   required from 'struct Eigen::internal::traits<Eigen::Quaternion<double> >'
+  266 |     Alignment = internal::traits<Coefficients>::Alignment,
+      |                                                 ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/arch/Geometry_SIMD.h:98:47:   required from here
+   98 |     ResAlignment = traits<Quaternion<double> >::Alignment
+      |                                               ^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:44: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                                       ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::unpacket_traits<__vector(2) double>::half' {aka '__m128d'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:208:88: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  208 |   typedef typename find_best_packet_helper<Size,typename packet_traits<T>::type>::type type;
+      |                                                                                        ^~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, 4, 1>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, 4, 1>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, 4, 1>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Matrix<double, 4, 1> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Matrix<double, 4, 1> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Matrix<double, 4, 1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:178:7:   required from 'class Eigen::Matrix<double, 4, 1>'
+  178 | class Matrix
+      |       ^~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:46:50:   required from 'class Eigen::QuaternionBase<Eigen::Quaternion<double> >'
+   46 |   typedef typename Coefficients::CoeffReturnType CoeffReturnType;
+      |                                                  ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:273:7:   required from 'class Eigen::Quaternion<double>'
+  273 | class Quaternion : public QuaternionBase<Quaternion<_Scalar,_Options> >
+      |       ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/arch/Geometry_SIMD.h:102:3:   required from here
+  102 |   {
+      |   ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/SparseCore:37,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Sparse:26,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/RcppEigenForward.h:29:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/SparseCore/SparseMatrixBase.h: In instantiation of 'class Eigen::SparseMatrixBase<Eigen::SparseMatrix<double, 0, int> >':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/SparseCore/SparseCompressedBase.h:36:7:   required from 'class Eigen::SparseCompressedBase<Eigen::SparseMatrix<double, 0, int> >'
+   36 | class SparseCompressedBase
+      |       ^~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/SparseCore/SparseMatrix.h:96:7:   required from 'class Eigen::SparseMatrix<double, 0, int>'
+   96 | class SparseMatrix
+      |       ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/unsupported/Eigen/src/IterativeSolvers/ConstrainedConjGrad.h:61:25:   required from here
+   61 |   typedef Triplet<double> T;
+      |                         ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/SparseCore/SparseMatrixBase.h:47:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   47 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h: In instantiation of 'struct Eigen::internal::find_best_packet<double, -1>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:22:57:   required from 'struct Eigen::internal::traits<Eigen::Matrix<double, -1, -1> >'
+   22 |   typedef typename find_best_packet<_Scalar,size>::type PacketScalar;
+      |                                                         ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Matrix<double, -1, -1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:178:7:   required from 'class Eigen::Matrix<double, -1, -1>'
+  178 | class Matrix
+      |       ^~~~~~
+CppCodes.cpp:12:21:   required from here
+   12 |     Eigen::MatrixXd features;  // Matrix to store feature data
+      |                     ^~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:44: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                                       ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::unpacket_traits<__vector(2) double>::half' {aka '__m128d'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:208:88: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  208 |   typedef typename find_best_packet_helper<Size,typename packet_traits<T>::type>::type type;
+      |                                                                                        ^~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, -1, -1>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, -1, -1>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, -1, -1>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Matrix<double, -1, -1> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Matrix<double, -1, -1> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Matrix<double, -1, -1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:178:7:   required from 'class Eigen::Matrix<double, -1, -1>'
+  178 | class Matrix
+      |       ^~~~~~
+CppCodes.cpp:12:21:   required from here
+   12 |     Eigen::MatrixXd features;  // Matrix to store feature data
+      |                     ^~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, -1, 1>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, -1, 1>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, -1, 1>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Matrix<double, -1, 1> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Matrix<double, -1, 1> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Matrix<double, -1, 1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:178:7:   required from 'class Eigen::Matrix<double, -1, 1>'
+  178 | class Matrix
+      |       ^~~~~~
+CppCodes.cpp:13:21:   required from here
+   13 |     Eigen::VectorXd x;         // Vector to store failure times
+      |                     ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, -1, 1> >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, -1, 1> > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, -1, 1> > >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseNullaryOp.h:60:7:   required from 'class Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, -1, 1> >'
+   60 | class CwiseNullaryOp : public internal::dense_xpr_base< CwiseNullaryOp<NullaryOp, PlainObjectType> >::type, internal::no_assignment_operator
+      |       ^~~~~~~~~~~~~~
+CppCodes.cpp:93:53:   required from here
+   93 |         Eigen::VectorXd grad = Eigen::VectorXd::Zero(Param.size());
+      |                                ~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, -1, -1> >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, -1, -1> > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, -1, -1> > >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseNullaryOp.h:60:7:   required from 'class Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, Eigen::Matrix<double, -1, -1> >'
+   60 | class CwiseNullaryOp : public internal::dense_xpr_base< CwiseNullaryOp<NullaryOp, PlainObjectType> >::type, internal::no_assignment_operator
+      |       ^~~~~~~~~~~~~~
+CppCodes.cpp:125:56:   required from here
+  125 |         Eigen::MatrixXd hessian = Eigen::MatrixXd::Zero(n, n);
+      |                                   ~~~~~~~~~~~~~~~~~~~~~^~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:481:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>, 2>'
+  481 | class DenseCoeffsBase<Derived, DirectAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:37:34:   required from 'class Eigen::MapBase<Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>, 0>'
+   37 | template<typename Derived> class MapBase<Derived, ReadOnlyAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:329:7:   required from 'class Eigen::internal::BlockImpl_dense<const Eigen::Matrix<double, -1, 1>, -1, 1, false, true>'
+  329 | class BlockImpl_dense<XprType,BlockRows,BlockCols, InnerPanel,true>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:154:7:   required from 'class Eigen::BlockImpl<const Eigen::Matrix<double, -1, 1>, -1, 1, false, Eigen::Dense>'
+  154 | class BlockImpl<XprType, BlockRows, BlockCols, InnerPanel, Dense>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:103:81:   required from 'class Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>'
+  103 | template<typename XprType, int BlockRows, int BlockCols, bool InnerPanel> class Block
+      |                                                                                 ^~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/VectorBlock.h:56:47:   required from 'class Eigen::VectorBlock<const Eigen::Matrix<double, -1, 1>, -1>'
+   56 | template<typename VectorType, int Size> class VectorBlock
+      |                                               ^~~~~~~~~~~
+CppCodes.cpp:169:39:   required from here
+  169 |     Eigen::VectorXd Beta = Params.tail(Params.size() - 3);
+      |                            ~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:481:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>, 2>'
+  481 | class DenseCoeffsBase<Derived, DirectAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:37:34:   required from 'class Eigen::MapBase<Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>, 0>'
+   37 | template<typename Derived> class MapBase<Derived, ReadOnlyAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:329:7:   required from 'class Eigen::internal::BlockImpl_dense<const Eigen::Matrix<double, -1, -1>, 1, -1, false, true>'
+  329 | class BlockImpl_dense<XprType,BlockRows,BlockCols, InnerPanel,true>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:154:7:   required from 'class Eigen::BlockImpl<const Eigen::Matrix<double, -1, -1>, 1, -1, false, Eigen::Dense>'
+  154 | class BlockImpl<XprType, BlockRows, BlockCols, InnerPanel, Dense>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:103:81:   required from 'class Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>'
+  103 | template<typename XprType, int BlockRows, int BlockCols, bool InnerPanel> class Block
+      |                                                                                 ^~~~~
+CppCodes.cpp:214:65:   required from here
+  214 |                 fTemp += delta * std::log(f_pdf(parr, covars.row(j), x[j]));
+      |                                                       ~~~~~~~~~~^~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> > >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:37:34:   required from 'class Eigen::MapBase<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 0>'
+   37 | template<typename Derived> class MapBase<Derived, ReadOnlyAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:223:34:   required from 'class Eigen::MapBase<Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >, 1>'
+  223 | template<typename Derived> class MapBase<Derived, WriteAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Map.h:94:79:   required from 'class Eigen::Map<Eigen::Matrix<double, -1, -1>, 0, Eigen::Stride<0, 0> >'
+   94 | template<typename PlainObjectType, int MapOptions, typename StrideType> class Map
+      |                                                                               ^~~
+CppCodes.cpp:462:54:   required from here
+  462 |     Eigen::Map<Eigen::MatrixXd> feature_matrix(Rcpp::as<Eigen::Map<Eigen::MatrixXd>>(features));  // Convert R matrix to Eigen matrix
+      |                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Map<Eigen::Matrix<double, -1, 1>, 0, Eigen::Stride<0, 0> >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Map<Eigen::Matrix<double, -1, 1>, 0, Eigen::Stride<0, 0> >, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Map<Eigen::Matrix<double, -1, 1>, 0, Eigen::Stride<0, 0> >, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Map<Eigen::Matrix<double, -1, 1>, 0, Eigen::Stride<0, 0> > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Map<Eigen::Matrix<double, -1, 1>, 0, Eigen::Stride<0, 0> > >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:37:34:   required from 'class Eigen::MapBase<Eigen::Map<Eigen::Matrix<double, -1, 1>, 0, Eigen::Stride<0, 0> >, 0>'
+   37 | template<typename Derived> class MapBase<Derived, ReadOnlyAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:223:34:   required from 'class Eigen::MapBase<Eigen::Map<Eigen::Matrix<double, -1, 1>, 0, Eigen::Stride<0, 0> >, 1>'
+  223 | template<typename Derived> class MapBase<Derived, WriteAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Map.h:94:79:   required from 'class Eigen::Map<Eigen::Matrix<double, -1, 1>, 0, Eigen::Stride<0, 0> >'
+   94 | template<typename PlainObjectType, int MapOptions, typename StrideType> class Map
+      |                                                                               ^~~
+CppCodes.cpp:463:48:   required from here
+  463 |     Eigen::Map<Eigen::VectorXd> x_vector(Rcpp::as<Eigen::Map<Eigen::VectorXd>>(x));                // Convert R vector to Eigen vector
+      |                                                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:37:34:   required from 'class Eigen::MapBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>, 0>'
+   37 | template<typename Derived> class MapBase<Derived, ReadOnlyAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:223:34:   required from 'class Eigen::MapBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>, 1>'
+  223 | template<typename Derived> class MapBase<Derived, WriteAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:329:7:   required from 'class Eigen::internal::BlockImpl_dense<Eigen::Matrix<double, -1, -1>, 1, -1, false, true>'
+  329 | class BlockImpl_dense<XprType,BlockRows,BlockCols, InnerPanel,true>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:154:7:   required from 'class Eigen::BlockImpl<Eigen::Matrix<double, -1, -1>, 1, -1, false, Eigen::Dense>'
+  154 | class BlockImpl<XprType, BlockRows, BlockCols, InnerPanel, Dense>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:103:81:   required from 'class Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>'
+  103 | template<typename XprType, int BlockRows, int BlockCols, bool InnerPanel> class Block
+      |                                                                                 ^~~~~
+CppCodes.cpp:584:28:   required from here
+  584 |     bootstrap_estimates.row(i) = par;
+      |     ~~~~~~~~~~~~~~~~~~~~~~~^~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:37:34:   required from 'class Eigen::MapBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>, 0>'
+   37 | template<typename Derived> class MapBase<Derived, ReadOnlyAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MapBase.h:223:34:   required from 'class Eigen::MapBase<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>, 1>'
+  223 | template<typename Derived> class MapBase<Derived, WriteAccessors>
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:329:7:   required from 'class Eigen::internal::BlockImpl_dense<Eigen::Matrix<double, -1, -1>, -1, 1, true, true>'
+  329 | class BlockImpl_dense<XprType,BlockRows,BlockCols, InnerPanel,true>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:154:7:   required from 'class Eigen::BlockImpl<Eigen::Matrix<double, -1, -1>, -1, 1, true, Eigen::Dense>'
+  154 | class BlockImpl<XprType, BlockRows, BlockCols, InnerPanel, Dense>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Block.h:103:81:   required from 'class Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>'
+  103 | template<typename XprType, int BlockRows, int BlockCols, bool InnerPanel> class Block
+      |                                                                                 ^~~~~
+CppCodes.cpp:590:44:   required from here
+  590 |     variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~^~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/ArrayBase.h:39:34:   required from 'class Eigen::ArrayBase<Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> > >'
+   39 | template<typename Derived> class ArrayBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/ArrayWrapper.h:42:7:   required from 'class Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >'
+   42 | class ArrayWrapper : public ArrayBase<ArrayWrapper<ExpressionType> >
+      |       ^~~~~~~~~~~~
+CppCodes.cpp:590:53:   required from here
+  590 |     variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+      |                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/ArrayBase.h:39:34:   required from 'class Eigen::ArrayBase<Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > >'
+   39 | template<typename Derived> class ArrayBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseNullaryOp.h:60:7:   required from 'class Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> >'
+   60 | class CwiseNullaryOp : public internal::dense_xpr_base< CwiseNullaryOp<NullaryOp, PlainObjectType> >::type, internal::no_assignment_operator
+      |       ^~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseBinaryOp.h:38:28:   required from 'struct Eigen::internal::traits<Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >'
+   38 |                    >::type Scalar;
+      |                            ^~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseBinaryOp.h:148:7:   required from 'class Eigen::CwiseBinaryOpImpl<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> >, Eigen::Dense>'
+  148 | class CwiseBinaryOpImpl
+      |       ^~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseBinaryOp.h:77:7:   required from 'class Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > >'
+   77 | class CwiseBinaryOp :
+      |       ^~~~~~~~~~~~~
+CppCodes.cpp:590:90:   required from here
+  590 |     variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+      |                                                                                          ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/ArrayBase.h:39:34:   required from 'class Eigen::ArrayBase<Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >'
+   39 | template<typename Derived> class ArrayBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseBinaryOp.h:148:7:   required from 'class Eigen::CwiseBinaryOpImpl<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> >, Eigen::Dense>'
+  148 | class CwiseBinaryOpImpl
+      |       ^~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseBinaryOp.h:77:7:   required from 'class Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > >'
+   77 | class CwiseBinaryOp :
+      |       ^~~~~~~~~~~~~
+CppCodes.cpp:590:90:   required from here
+  590 |     variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+      |                                                                                          ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/ArrayBase.h:39:34:   required from 'class Eigen::ArrayBase<Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > > >'
+   39 | template<typename Derived> class ArrayBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseUnaryOp.h:94:7:   required from 'class Eigen::CwiseUnaryOpImpl<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > >, Eigen::Dense>'
+   94 | class CwiseUnaryOpImpl
+      |       ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseUnaryOp.h:55:7:   required from 'class Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >'
+   55 | class CwiseUnaryOp : public CwiseUnaryOpImpl<UnaryOp, XprType, typename internal::traits<XprType>::StorageKind>, internal::no_assignment_operator
+      |       ^~~~~~~~~~~~
+CppCodes.cpp:590:99:   required from here
+  590 |     variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::CwiseBinaryOp<Eigen::internal::scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1> >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::CwiseBinaryOp<Eigen::internal::scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1> > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::CwiseBinaryOp<Eigen::internal::scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1> > >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseBinaryOp.h:148:7:   required from 'class Eigen::CwiseBinaryOpImpl<Eigen::internal::scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1>, Eigen::Dense>'
+  148 | class CwiseBinaryOpImpl
+      |       ^~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CwiseBinaryOp.h:77:7:   required from 'class Eigen::CwiseBinaryOp<Eigen::internal::scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1> >'
+   77 | class CwiseBinaryOp :
+      |       ^~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Dot.h:37:44:   required from 'static Eigen::internal::dot_nocheck<T, U, NeedToTranspose>::ResScalar Eigen::internal::dot_nocheck<T, U, NeedToTranspose>::run(const Eigen::MatrixBase<Derived>&, const Eigen::MatrixBase<U>&) [with T = Eigen::Matrix<double, -1, 1>; U = Eigen::Matrix<double, -1, 1>; bool NeedToTranspose = false; ResScalar = double]'
+   37 |     return a.template binaryExpr<conj_prod>(b).sum();
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Dot.h:84:58:   required from 'typename Eigen::ScalarBinaryOpTraits<typename Eigen::internal::traits<T>::Scalar, typename Eigen::internal::traits<OtherDerived>::Scalar>::ReturnType Eigen::MatrixBase<Derived>::dot(const Eigen::MatrixBase<OtherDerived>&) const [with OtherDerived = Eigen::Matrix<double, -1, 1>; Derived = Eigen::Matrix<double, -1, 1>; typename Eigen::ScalarBinaryOpTraits<typename Eigen::internal::traits<T>::Scalar, typename Eigen::internal::traits<OtherDerived>::Scalar>::ReturnType = double; typename Eigen::internal::traits<T>::Scalar = double; typename Eigen::internal::traits<OtherDerived>::Scalar = double]'
+   84 |   return internal::dot_nocheck<Derived,OtherDerived>::run(*this, other);
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+CppCodes.cpp:175:27:   required from here
+  175 |     double tempval = Z.dot(Beta);
+      |                      ~~~~~^~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Core:277:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h: In instantiation of 'struct Eigen::internal::evaluator<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:357:7:   required from 'class Eigen::internal::redux_evaluator<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >'
+  357 | class redux_evaluator : public internal::evaluator<_XprType>
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:414:17:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::redux(const Func&) const [with BinaryOp = Eigen::internal::scalar_sum_op<double, double>; Derived = Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>; typename Eigen::internal::traits<T>::Scalar = double]'
+  414 |   ThisEvaluator thisEval(derived());
+      |                 ^~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:478:32:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::mean() const [with Derived = Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>; typename Eigen::internal::traits<T>::Scalar = double]'
+  478 |   return Scalar(derived().redux(Eigen::internal::scalar_sum_op<Scalar,Scalar>())) / Scalar(this->size());
+      |                 ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CppCodes.cpp:590:89:   required from here
+  590 |     variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+      |                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h:1071:54: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+ 1071 |     PacketAlignment = unpacket_traits<PacketScalar>::alignment,
+      |                                                      ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Array<double, -1, 1>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Array<double, -1, 1>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Array<double, -1, 1>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Array<double, -1, 1> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/ArrayBase.h:39:34:   required from 'class Eigen::ArrayBase<Eigen::Array<double, -1, 1> >'
+   39 | template<typename Derived> class ArrayBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Array<double, -1, 1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h:167:44:   [ skipping 7 instantiation contexts, use -ftemplate-backtrace-limit=0 to disable ]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h:564:45:   required from 'struct Eigen::internal::unary_evaluator<Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >, Eigen::internal::IndexBased, double>'
+  564 |     CoeffReadCost = int(evaluator<ArgType>::CoeffReadCost) + int(functor_traits<UnaryOp>::Cost),
+      |                                             ^~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h:90:8:   required from 'struct Eigen::internal::evaluator<Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > > >'
+   90 | struct evaluator : public unary_evaluator<T>
+      |        ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:357:7:   required from 'class Eigen::internal::redux_evaluator<Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > > >'
+  357 | class redux_evaluator : public internal::evaluator<_XprType>
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:414:17:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::redux(const Func&) const [with BinaryOp = Eigen::internal::scalar_sum_op<double, double>; Derived = Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >; typename Eigen::internal::traits<T>::Scalar = double]'
+  414 |   ThisEvaluator thisEval(derived());
+      |                 ^~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:463:25:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::sum() const [with Derived = Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >; typename Eigen::internal::traits<T>::Scalar = double]'
+  463 |   return derived().redux(Eigen::internal::scalar_sum_op<Scalar,Scalar>());
+      |          ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CppCodes.cpp:590:105:   required from here
+  590 |     variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Transpose<Eigen::Matrix<double, -1, 1> >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Transpose<Eigen::Matrix<double, -1, 1> >, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Transpose<Eigen::Matrix<double, -1, 1> >, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Transpose<Eigen::Matrix<double, -1, 1> > >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Transpose.h:118:37:   required from 'class Eigen::TransposeImpl<Eigen::Matrix<double, -1, 1>, Eigen::Dense>'
+  118 | template<typename MatrixType> class TransposeImpl<MatrixType,Dense>
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Transpose.h:52:37:   required from 'class Eigen::Transpose<Eigen::Matrix<double, -1, 1> >'
+   52 | template<typename MatrixType> class Transpose
+      |                                     ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:883:17:   required from 'void Eigen::internal::call_assignment_no_alias(Dst&, const Src&, const Func&) [with Dst = Eigen::Matrix<double, -1, 1>; Src = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; Func = assign_op<double, double>]'
+  883 |   ActualDstType actualDst(dst);
+      |                 ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:797:41:   required from 'Derived& Eigen::PlainObjectBase<Derived>::_set_noalias(const Eigen::DenseBase<OtherDerived>&) [with OtherDerived = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; Derived = Eigen::Matrix<double, -1, 1>]'
+  797 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:594:19:   required from 'Eigen::PlainObjectBase<Derived>::PlainObjectBase(const Eigen::DenseBase<OtherDerived>&) [with OtherDerived = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; Derived = Eigen::Matrix<double, -1, 1>]'
+  594 |       _set_noalias(other);
+      |       ~~~~~~~~~~~~^~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:423:29:   required from 'Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Eigen::EigenBase<OtherDerived>&) [with OtherDerived = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; _Scalar = double; int _Rows = -1; int _Cols = 1; int _Options = 0; int _MaxRows = -1; int _MaxCols = 1]'
+  423 |       : Base(other.derived())
+      |                             ^
+CppCodes.cpp:214:48:   required from here
+  214 |                 fTemp += delta * std::log(f_pdf(parr, covars.row(j), x[j]));
+      |                                           ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> > >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> > >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Transpose.h:118:37:   required from 'class Eigen::TransposeImpl<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>, Eigen::Dense>'
+  118 | template<typename MatrixType> class TransposeImpl<MatrixType,Dense>
+      |                                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Transpose.h:52:37:   required from 'class Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >'
+   52 | template<typename MatrixType> class Transpose
+      |                                     ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:883:17:   required from 'void Eigen::internal::call_assignment_no_alias(Dst&, const Src&, const Func&) [with Dst = Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>; Src = Eigen::Matrix<double, -1, 1>; Func = assign_op<double, double>]'
+  883 |   ActualDstType actualDst(dst);
+      |                 ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:858:27:   required from 'void Eigen::internal::call_assignment(Dst&, const Src&, const Func&, typename enable_if<(! evaluator_assume_aliasing<Src>::value), void*>::type) [with Dst = Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>; Src = Eigen::Matrix<double, -1, 1>; Func = assign_op<double, double>; typename enable_if<(! evaluator_assume_aliasing<Src>::value), void*>::type = void*; typename evaluator_traits<SrcXprType>::Shape = Eigen::DenseShape]'
+  858 |   call_assignment_no_alias(dst, src, func);
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:836:18:   required from 'void Eigen::internal::call_assignment(Dst&, const Src&) [with Dst = Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>; Src = Eigen::Matrix<double, -1, 1>]'
+  836 |   call_assignment(dst, src, internal::assign_op<typename Dst::Scalar,typename Src::Scalar>());
+      |   ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Assign.h:66:28:   required from 'Derived& Eigen::MatrixBase<Derived>::operator=(const Eigen::DenseBase<OtherDerived>&) [with OtherDerived = Eigen::Matrix<double, -1, 1>; Derived = Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>]'
+   66 |   internal::call_assignment(derived(), other.derived());
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CppCodes.cpp:584:34:   required from here
+  584 |     bootstrap_estimates.row(i) = par;
+      |                                  ^~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'Eigen::Index Eigen::internal::first_default_aligned(const Eigen::DenseBase<Derived>&) [with Derived = Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>; Eigen::Index = long long int]':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:243:63:   required from 'static Eigen::internal::redux_impl<Func, Evaluator, 3, 0>::Scalar Eigen::internal::redux_impl<Func, Evaluator, 3, 0>::run(const Evaluator&, const Func&, const XprType&) [with XprType = Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>; Func = Eigen::internal::scalar_sum_op<double, double>; Evaluator = Eigen::internal::redux_evaluator<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >; Scalar = double]'
+  243 |     const Index alignedStart = internal::first_default_aligned(xpr);
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:418:56:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::redux(const Func&) const [with BinaryOp = Eigen::internal::scalar_sum_op<double, double>; Derived = Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>; typename Eigen::internal::traits<T>::Scalar = double]'
+  418 |   return internal::redux_impl<Func, ThisEvaluator>::run(thisEval, func, derived());
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:478:32:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::mean() const [with Derived = Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true>; typename Eigen::internal::traits<T>::Scalar = double]'
+  478 |   return Scalar(derived().redux(Eigen::internal::scalar_sum_op<Scalar,Scalar>())) / Scalar(this->size());
+      |                 ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CppCodes.cpp:590:89:   required from here
+  590 |     variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+      |                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:654:74: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  654 |   return internal::first_aligned<int(unpacket_traits<DefaultPacketType>::alignment),Derived>(m);
+      |                                                                          ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'Eigen::Index Eigen::internal::first_default_aligned(const Eigen::DenseBase<Derived>&) [with Derived = Eigen::CwiseUnaryOp<scalar_square_op<double>, const Eigen::CwiseBinaryOp<scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >; Eigen::Index = long long int]':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:243:63:   required from 'static Eigen::internal::redux_impl<Func, Evaluator, 3, 0>::Scalar Eigen::internal::redux_impl<Func, Evaluator, 3, 0>::run(const Evaluator&, const Func&, const XprType&) [with XprType = Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >; Func = Eigen::internal::scalar_sum_op<double, double>; Evaluator = Eigen::internal::redux_evaluator<Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > > >; Scalar = double]'
+  243 |     const Index alignedStart = internal::first_default_aligned(xpr);
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:418:56:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::redux(const Func&) const [with BinaryOp = Eigen::internal::scalar_sum_op<double, double>; Derived = Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >; typename Eigen::internal::traits<T>::Scalar = double]'
+  418 |   return internal::redux_impl<Func, ThisEvaluator>::run(thisEval, func, derived());
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:463:25:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::sum() const [with Derived = Eigen::CwiseUnaryOp<Eigen::internal::scalar_square_op<double>, const Eigen::CwiseBinaryOp<Eigen::internal::scalar_difference_op<double, double>, const Eigen::ArrayWrapper<Eigen::Block<Eigen::Matrix<double, -1, -1>, -1, 1, true> >, const Eigen::CwiseNullaryOp<Eigen::internal::scalar_constant_op<double>, const Eigen::Array<double, -1, 1> > > >; typename Eigen::internal::traits<T>::Scalar = double]'
+  463 |   return derived().redux(Eigen::internal::scalar_sum_op<Scalar,Scalar>());
+      |          ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CppCodes.cpp:590:105:   required from here
+  590 |     variances[j] = (bootstrap_estimates.col(j).array() - bootstrap_estimates.col(j).mean()).square().sum() / (n_bootstrap - 1);
+      |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:654:74: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  654 |   return internal::first_aligned<int(unpacket_traits<DefaultPacketType>::alignment),Derived>(m);
+      |                                                                          ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h: In instantiation of 'struct Eigen::internal::evaluator<Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false> >':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:774:20:   required from 'void Eigen::internal::call_dense_assignment_loop(DstXprType&, const SrcXprType&, const Functor&) [with DstXprType = Eigen::Matrix<double, -1, 1>; SrcXprType = Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>; Functor = assign_op<double, double>]'
+  774 |   SrcEvaluatorType srcEvaluator(src);
+      |                    ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:954:31:   required from 'static void Eigen::internal::Assignment<DstXprType, SrcXprType, Functor, Eigen::internal::Dense2Dense, Weak>::run(DstXprType&, const SrcXprType&, const Functor&) [with DstXprType = Eigen::Matrix<double, -1, 1>; SrcXprType = Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>; Functor = Eigen::internal::assign_op<double, double>; Weak = void]'
+  954 |     call_dense_assignment_loop(dst, src, func);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:890:49:   required from 'void Eigen::internal::call_assignment_no_alias(Dst&, const Src&, const Func&) [with Dst = Eigen::Matrix<double, -1, 1>; Src = Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>; Func = assign_op<double, double>]'
+  890 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:797:41:   required from 'Derived& Eigen::PlainObjectBase<Derived>::_set_noalias(const Eigen::DenseBase<OtherDerived>&) [with OtherDerived = Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>; Derived = Eigen::Matrix<double, -1, 1>]'
+  797 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:594:19:   required from 'Eigen::PlainObjectBase<Derived>::PlainObjectBase(const Eigen::DenseBase<OtherDerived>&) [with OtherDerived = Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>; Derived = Eigen::Matrix<double, -1, 1>]'
+  594 |       _set_noalias(other);
+      |       ~~~~~~~~~~~~^~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:423:29:   required from 'Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Eigen::EigenBase<OtherDerived>&) [with OtherDerived = Eigen::Block<const Eigen::Matrix<double, -1, 1>, -1, 1, false>; _Scalar = double; int _Rows = -1; int _Cols = 1; int _Options = 0; int _MaxRows = -1; int _MaxCols = 1]'
+  423 |       : Base(other.derived())
+      |                             ^
+CppCodes.cpp:169:57:   required from here
+  169 |     Eigen::VectorXd Beta = Params.tail(Params.size() - 3);
+      |                                                         ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h:1071:54: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+ 1071 |     PacketAlignment = unpacket_traits<PacketScalar>::alignment,
+      |                                                      ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'Eigen::Index Eigen::internal::first_default_aligned(const Eigen::DenseBase<Derived>&) [with Derived = Eigen::CwiseBinaryOp<scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1> >; Eigen::Index = long long int]':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:243:63:   required from 'static Eigen::internal::redux_impl<Func, Evaluator, 3, 0>::Scalar Eigen::internal::redux_impl<Func, Evaluator, 3, 0>::run(const Evaluator&, const Func&, const XprType&) [with XprType = Eigen::CwiseBinaryOp<Eigen::internal::scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1> >; Func = Eigen::internal::scalar_sum_op<double, double>; Evaluator = Eigen::internal::redux_evaluator<Eigen::CwiseBinaryOp<Eigen::internal::scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1> > >; Scalar = double]'
+  243 |     const Index alignedStart = internal::first_default_aligned(xpr);
+      |                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:418:56:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::redux(const Func&) const [with BinaryOp = Eigen::internal::scalar_sum_op<double, double>; Derived = Eigen::CwiseBinaryOp<Eigen::internal::scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1> >; typename Eigen::internal::traits<T>::Scalar = double]'
+  418 |   return internal::redux_impl<Func, ThisEvaluator>::run(thisEval, func, derived());
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Redux.h:463:25:   required from 'typename Eigen::internal::traits<T>::Scalar Eigen::DenseBase<Derived>::sum() const [with Derived = Eigen::CwiseBinaryOp<Eigen::internal::scalar_conj_product_op<double, double>, const Eigen::Matrix<double, -1, 1>, const Eigen::Matrix<double, -1, 1> >; typename Eigen::internal::traits<T>::Scalar = double]'
+  463 |   return derived().redux(Eigen::internal::scalar_sum_op<Scalar,Scalar>());
+      |          ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Dot.h:37:51:   required from 'static Eigen::internal::dot_nocheck<T, U, NeedToTranspose>::ResScalar Eigen::internal::dot_nocheck<T, U, NeedToTranspose>::run(const Eigen::MatrixBase<Derived>&, const Eigen::MatrixBase<U>&) [with T = Eigen::Matrix<double, -1, 1>; U = Eigen::Matrix<double, -1, 1>; bool NeedToTranspose = false; ResScalar = double]'
+   37 |     return a.template binaryExpr<conj_prod>(b).sum();
+      |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Dot.h:84:58:   required from 'typename Eigen::ScalarBinaryOpTraits<typename Eigen::internal::traits<T>::Scalar, typename Eigen::internal::traits<OtherDerived>::Scalar>::ReturnType Eigen::MatrixBase<Derived>::dot(const Eigen::MatrixBase<OtherDerived>&) const [with OtherDerived = Eigen::Matrix<double, -1, 1>; Derived = Eigen::Matrix<double, -1, 1>; typename Eigen::ScalarBinaryOpTraits<typename Eigen::internal::traits<T>::Scalar, typename Eigen::internal::traits<OtherDerived>::Scalar>::ReturnType = double; typename Eigen::internal::traits<T>::Scalar = double; typename Eigen::internal::traits<OtherDerived>::Scalar = double]'
+   84 |   return internal::dot_nocheck<Derived,OtherDerived>::run(*this, other);
+      |          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+CppCodes.cpp:175:27:   required from here
+  175 |     double tempval = Z.dot(Beta);
+      |                      ~~~~~^~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:654:74: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  654 |   return internal::first_aligned<int(unpacket_traits<DefaultPacketType>::alignment),Derived>(m);
+      |                                                                          ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h: In instantiation of 'struct Eigen::internal::evaluator<Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false> >':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:774:20:   required from 'void Eigen::internal::call_dense_assignment_loop(DstXprType&, const SrcXprType&, const Functor&) [with DstXprType = Eigen::Transpose<Eigen::Matrix<double, -1, 1> >; SrcXprType = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; Functor = assign_op<double, double>]'
+  774 |   SrcEvaluatorType srcEvaluator(src);
+      |                    ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:954:31:   required from 'static void Eigen::internal::Assignment<DstXprType, SrcXprType, Functor, Eigen::internal::Dense2Dense, Weak>::run(DstXprType&, const SrcXprType&, const Functor&) [with DstXprType = Eigen::Transpose<Eigen::Matrix<double, -1, 1> >; SrcXprType = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; Functor = Eigen::internal::assign_op<double, double>; Weak = void]'
+  954 |     call_dense_assignment_loop(dst, src, func);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:890:49:   required from 'void Eigen::internal::call_assignment_no_alias(Dst&, const Src&, const Func&) [with Dst = Eigen::Matrix<double, -1, 1>; Src = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; Func = assign_op<double, double>]'
+  890 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:797:41:   required from 'Derived& Eigen::PlainObjectBase<Derived>::_set_noalias(const Eigen::DenseBase<OtherDerived>&) [with OtherDerived = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; Derived = Eigen::Matrix<double, -1, 1>]'
+  797 |       internal::call_assignment_no_alias(this->derived(), other.derived(), internal::assign_op<Scalar,typename OtherDerived::Scalar>());
+      |       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:594:19:   required from 'Eigen::PlainObjectBase<Derived>::PlainObjectBase(const Eigen::DenseBase<OtherDerived>&) [with OtherDerived = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; Derived = Eigen::Matrix<double, -1, 1>]'
+  594 |       _set_noalias(other);
+      |       ~~~~~~~~~~~~^~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:423:29:   required from 'Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols>::Matrix(const Eigen::EigenBase<OtherDerived>&) [with OtherDerived = Eigen::Block<const Eigen::Matrix<double, -1, -1>, 1, -1, false>; _Scalar = double; int _Rows = -1; int _Cols = 1; int _Options = 0; int _MaxRows = -1; int _MaxCols = 1]'
+  423 |       : Base(other.derived())
+      |                             ^
+CppCodes.cpp:214:48:   required from here
+  214 |                 fTemp += delta * std::log(f_pdf(parr, covars.row(j), x[j]));
+      |                                           ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h:1071:54: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+ 1071 |     PacketAlignment = unpacket_traits<PacketScalar>::alignment,
+      |                                                      ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h: In instantiation of 'struct Eigen::internal::evaluator<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h:311:41:   required from 'struct Eigen::internal::unary_evaluator<Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >, Eigen::internal::IndexBased, double>'
+  311 |     CoeffReadCost = evaluator<ArgType>::CoeffReadCost,
+      |                                         ^~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h:90:8:   required from 'struct Eigen::internal::evaluator<Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> > >'
+   90 | struct evaluator : public unary_evaluator<T>
+      |        ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:780:20:   required from 'void Eigen::internal::call_dense_assignment_loop(DstXprType&, const SrcXprType&, const Functor&) [with DstXprType = Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >; SrcXprType = Eigen::Matrix<double, -1, 1>; Functor = assign_op<double, double>]'
+  780 |   DstEvaluatorType dstEvaluator(dst);
+      |                    ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:954:31:   required from 'static void Eigen::internal::Assignment<DstXprType, SrcXprType, Functor, Eigen::internal::Dense2Dense, Weak>::run(DstXprType&, const SrcXprType&, const Functor&) [with DstXprType = Eigen::Transpose<Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false> >; SrcXprType = Eigen::Matrix<double, -1, 1>; Functor = Eigen::internal::assign_op<double, double>; Weak = void]'
+  954 |     call_dense_assignment_loop(dst, src, func);
+      |     ~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:890:49:   required from 'void Eigen::internal::call_assignment_no_alias(Dst&, const Src&, const Func&) [with Dst = Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>; Src = Eigen::Matrix<double, -1, 1>; Func = assign_op<double, double>]'
+  890 |   Assignment<ActualDstTypeCleaned,Src,Func>::run(actualDst, src, func);
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:858:27:   required from 'void Eigen::internal::call_assignment(Dst&, const Src&, const Func&, typename enable_if<(! evaluator_assume_aliasing<Src>::value), void*>::type) [with Dst = Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>; Src = Eigen::Matrix<double, -1, 1>; Func = assign_op<double, double>; typename enable_if<(! evaluator_assume_aliasing<Src>::value), void*>::type = void*; typename evaluator_traits<SrcXprType>::Shape = Eigen::DenseShape]'
+  858 |   call_assignment_no_alias(dst, src, func);
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/AssignEvaluator.h:836:18:   required from 'void Eigen::internal::call_assignment(Dst&, const Src&) [with Dst = Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>; Src = Eigen::Matrix<double, -1, 1>]'
+  836 |   call_assignment(dst, src, internal::assign_op<typename Dst::Scalar,typename Src::Scalar>());
+      |   ~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Assign.h:66:28:   required from 'Derived& Eigen::MatrixBase<Derived>::operator=(const Eigen::DenseBase<OtherDerived>&) [with OtherDerived = Eigen::Matrix<double, -1, 1>; Derived = Eigen::Block<Eigen::Matrix<double, -1, -1>, 1, -1, false>]'
+   66 |   internal::call_assignment(derived(), other.derived());
+      |   ~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+CppCodes.cpp:584:34:   required from here
+  584 |     bootstrap_estimates.row(i) = par;
+      |                                  ^~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/CoreEvaluators.h:1071:54: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+ 1071 |     PacketAlignment = unpacket_traits<PacketScalar>::alignment,
+      |                                                      ^~~~~~~~~
+g++ -std=gnu++17  -I"C:/PROGRA~1/R/R-45~1.0/include" -DNDEBUG  -I'C:/Program Files/R/R-4.5.0/library/Rcpp/include' -I'C:/Program Files/R/R-4.5.0/library/RcppEigen/include'   -I"C:/rtools45/x86_64-w64-mingw32.static.posix/include"      -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign    -c RcppExports.cpp -o RcppExports.o
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Core:205,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Dense:1,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/RcppEigenForward.h:28,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/RcppEigen.h:25,
+                 from RcppExports.cpp:4:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:46:40: warning: ignoring attributes on template argument '__m128i' [-Wignored-attributes]
+   46 | typedef eigen_packet_wrapper<__m128i, 0> Packet4i;
+      |                                        ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:47:40: warning: ignoring attributes on template argument '__m128i' [-Wignored-attributes]
+   47 | typedef eigen_packet_wrapper<__m128i, 1> Packet16b;
+      |                                        ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:49:39: warning: ignoring attributes on template argument '__m128' [-Wignored-attributes]
+   49 | template<> struct is_arithmetic<__m128>  { enum { value = true }; };
+      |                                       ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:50:40: warning: ignoring attributes on template argument '__m128i' [-Wignored-attributes]
+   50 | template<> struct is_arithmetic<__m128i> { enum { value = true }; };
+      |                                        ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:51:40: warning: ignoring attributes on template argument '__m128d' [-Wignored-attributes]
+   51 | template<> struct is_arithmetic<__m128d> { enum { value = true }; };
+      |                                        ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:222:43: warning: ignoring attributes on template argument 'Eigen::internal::Packet4f' {aka '__m128'} [-Wignored-attributes]
+  222 | template<> struct unpacket_traits<Packet4f> {
+      |                                           ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:228:43: warning: ignoring attributes on template argument 'Eigen::internal::Packet2d' {aka '__m128d'} [-Wignored-attributes]
+  228 | template<> struct unpacket_traits<Packet2d> {
+      |                                           ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:1124:34: warning: ignoring attributes on template argument 'Eigen::internal::Packet4f' {aka '__m128'} [-Wignored-attributes]
+ 1124 | ptranspose(PacketBlock<Packet4f,4>& kernel) {
+      |                                  ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/PacketMath.h:1129:34: warning: ignoring attributes on template argument 'Eigen::internal::Packet2d' {aka '__m128d'} [-Wignored-attributes]
+ 1129 | ptranspose(PacketBlock<Packet2d,2>& kernel) {
+      |                                  ^
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Core:174:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/Default/ConjHelper.h:16:60: warning: ignoring attributes on template argument 'Eigen::internal::Packet4f' {aka '__m128'} [-Wignored-attributes]
+   16 |   struct conj_helper<PACKET_REAL, PACKET_CPLX, false, false> {          \
+      |                                                            ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/Complex.h:173:1: note: in expansion of macro 'EIGEN_MAKE_CONJ_HELPER_CPLX_REAL'
+  173 | EIGEN_MAKE_CONJ_HELPER_CPLX_REAL(Packet2cf,Packet4f)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/Default/ConjHelper.h:29:60: warning: ignoring attributes on template argument 'Eigen::internal::Packet4f' {aka '__m128'} [-Wignored-attributes]
+   29 |   struct conj_helper<PACKET_CPLX, PACKET_REAL, false, false> {          \
+      |                                                            ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/Complex.h:173:1: note: in expansion of macro 'EIGEN_MAKE_CONJ_HELPER_CPLX_REAL'
+  173 | EIGEN_MAKE_CONJ_HELPER_CPLX_REAL(Packet2cf,Packet4f)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/Default/ConjHelper.h:16:60: warning: ignoring attributes on template argument 'Eigen::internal::Packet2d' {aka '__m128d'} [-Wignored-attributes]
+   16 |   struct conj_helper<PACKET_REAL, PACKET_CPLX, false, false> {          \
+      |                                                            ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/Complex.h:298:1: note: in expansion of macro 'EIGEN_MAKE_CONJ_HELPER_CPLX_REAL'
+  298 | EIGEN_MAKE_CONJ_HELPER_CPLX_REAL(Packet1cd,Packet2d)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/Default/ConjHelper.h:29:60: warning: ignoring attributes on template argument 'Eigen::internal::Packet2d' {aka '__m128d'} [-Wignored-attributes]
+   29 |   struct conj_helper<PACKET_CPLX, PACKET_REAL, false, false> {          \
+      |                                                            ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/arch/SSE/Complex.h:298:1: note: in expansion of macro 'EIGEN_MAKE_CONJ_HELPER_CPLX_REAL'
+  298 | EIGEN_MAKE_CONJ_HELPER_CPLX_REAL(Packet1cd,Packet2d)
+      | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Core:165:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h: In instantiation of 'struct Eigen::internal::find_best_packet<float, 4>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:22:57:   required from 'struct Eigen::internal::traits<Eigen::Matrix<float, 4, 1> >'
+   22 |   typedef typename find_best_packet<_Scalar,size>::type PacketScalar;
+      |                                                         ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:266:49:   required from 'struct Eigen::internal::traits<Eigen::Quaternion<float> >'
+  266 |     Alignment = internal::traits<Coefficients>::Alignment,
+      |                                                 ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/arch/Geometry_SIMD.h:24:46:   required from here
+   24 |     ResAlignment = traits<Quaternion<float> >::Alignment
+      |                                              ^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:44: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                                       ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::unpacket_traits<__vector(4) float>::half' {aka '__m128'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:208:88: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+  208 |   typedef typename find_best_packet_helper<Size,typename packet_traits<T>::type>::type type;
+      |                                                                                        ^~~~
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Core:271:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Matrix<float, 4, 1>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<float, 4, 1>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<float, 4, 1>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Matrix<float, 4, 1> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Matrix<float, 4, 1> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Matrix<float, 4, 1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:178:7:   required from 'class Eigen::Matrix<float, 4, 1>'
+  178 | class Matrix
+      |       ^~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:46:50:   required from 'class Eigen::QuaternionBase<Eigen::Quaternion<float> >'
+   46 |   typedef typename Coefficients::CoeffReturnType CoeffReturnType;
+      |                                                  ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:273:7:   required from 'class Eigen::Quaternion<float>'
+  273 | class Quaternion : public QuaternionBase<Quaternion<_Scalar,_Options> >
+      |       ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/arch/Geometry_SIMD.h:27:3:   required from here
+   27 |   {
+      |   ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<float>::type' {aka '__m128'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h: In instantiation of 'struct Eigen::internal::find_best_packet<double, 4>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:22:57:   required from 'struct Eigen::internal::traits<Eigen::Matrix<double, 4, 1> >'
+   22 |   typedef typename find_best_packet<_Scalar,size>::type PacketScalar;
+      |                                                         ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:266:49:   required from 'struct Eigen::internal::traits<Eigen::Quaternion<double> >'
+  266 |     Alignment = internal::traits<Coefficients>::Alignment,
+      |                                                 ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/arch/Geometry_SIMD.h:98:47:   required from here
+   98 |     ResAlignment = traits<Quaternion<double> >::Alignment
+      |                                               ^~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:44: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                                       ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::unpacket_traits<__vector(2) double>::half' {aka '__m128d'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:208:88: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  208 |   typedef typename find_best_packet_helper<Size,typename packet_traits<T>::type>::type type;
+      |                                                                                        ^~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, 4, 1>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, 4, 1>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, 4, 1>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Matrix<double, 4, 1> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Matrix<double, 4, 1> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Matrix<double, 4, 1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:178:7:   required from 'class Eigen::Matrix<double, 4, 1>'
+  178 | class Matrix
+      |       ^~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:46:50:   required from 'class Eigen::QuaternionBase<Eigen::Quaternion<double> >'
+   46 |   typedef typename Coefficients::CoeffReturnType CoeffReturnType;
+      |                                                  ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/Quaternion.h:273:7:   required from 'class Eigen::Quaternion<double>'
+  273 | class Quaternion : public QuaternionBase<Quaternion<_Scalar,_Options> >
+      |       ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Geometry/arch/Geometry_SIMD.h:102:3:   required from here
+  102 |   {
+      |   ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+In file included from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/SparseCore:37,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/Sparse:26,
+                 from C:/Program Files/R/R-4.5.0/library/RcppEigen/include/RcppEigenForward.h:29:
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/SparseCore/SparseMatrixBase.h: In instantiation of 'class Eigen::SparseMatrixBase<Eigen::SparseMatrix<double, 0, int> >':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/SparseCore/SparseCompressedBase.h:36:7:   required from 'class Eigen::SparseCompressedBase<Eigen::SparseMatrix<double, 0, int> >'
+   36 | class SparseCompressedBase
+      |       ^~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/SparseCore/SparseMatrix.h:96:7:   required from 'class Eigen::SparseMatrix<double, 0, int>'
+   96 | class SparseMatrix
+      |       ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/unsupported/Eigen/src/IterativeSolvers/ConstrainedConjGrad.h:61:25:   required from here
+   61 |   typedef Triplet<double> T;
+      |                         ^
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/SparseCore/SparseMatrixBase.h:47:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   47 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h: In instantiation of 'struct Eigen::internal::find_best_packet<double, -1>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:22:57:   required from 'struct Eigen::internal::traits<Eigen::Matrix<double, -1, -1> >'
+   22 |   typedef typename find_best_packet<_Scalar,size>::type PacketScalar;
+      |                                                         ^~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Matrix<double, -1, -1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:178:7:   required from 'class Eigen::Matrix<double, -1, -1>'
+  178 | class Matrix
+      |       ^~~~~~
+RcppExports.cpp:106:41:   required from here
+  106 |     rcpp_result_gen = Rcpp::wrap(makeMat(n, m, value));
+      |                                  ~~~~~~~^~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:44: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                                       ~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  190 |          bool Stop = Size==Dynamic || (Size%unpacket_traits<PacketType>::size)==0 || is_same<PacketType,typename unpacket_traits<PacketType>::half>::value>
+      |                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:190:83: warning: ignoring attributes on template argument 'Eigen::internal::unpacket_traits<__vector(2) double>::half' {aka '__m128d'} [-Wignored-attributes]
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/util/XprHelper.h:208:88: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+  208 |   typedef typename find_best_packet_helper<Size,typename packet_traits<T>::type>::type type;
+      |                                                                                        ^~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h: In instantiation of 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, -1, -1>, 0>':
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:302:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, -1, -1>, 1>'
+  302 | class DenseCoeffsBase<Derived, WriteAccessors> : public DenseCoeffsBase<Derived, ReadOnlyAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:555:7:   required from 'class Eigen::DenseCoeffsBase<Eigen::Matrix<double, -1, -1>, 3>'
+  555 | class DenseCoeffsBase<Derived, DirectWriteAccessors>
+      |       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseBase.h:41:34:   required from 'class Eigen::DenseBase<Eigen::Matrix<double, -1, -1> >'
+   41 | template<typename Derived> class DenseBase
+      |                                  ^~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/MatrixBase.h:48:34:   required from 'class Eigen::MatrixBase<Eigen::Matrix<double, -1, -1> >'
+   48 | template<typename Derived> class MatrixBase
+      |                                  ^~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/PlainObjectBase.h:98:7:   required from 'class Eigen::PlainObjectBase<Eigen::Matrix<double, -1, -1> >'
+   98 | class PlainObjectBase : public internal::dense_xpr_base<Derived>::type
+      |       ^~~~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/Matrix.h:178:7:   required from 'class Eigen::Matrix<double, -1, -1>'
+  178 | class Matrix
+      |       ^~~~~~
+RcppExports.cpp:106:41:   required from here
+  106 |     rcpp_result_gen = Rcpp::wrap(makeMat(n, m, value));
+      |                                  ~~~~~~~^~~~~~~~~~~~~
+C:/Program Files/R/R-4.5.0/library/RcppEigen/include/Eigen/src/Core/DenseCoeffsBase.h:56:30: warning: ignoring attributes on template argument 'Eigen::internal::packet_traits<double>::type' {aka '__m128d'} [-Wignored-attributes]
+   56 |                      >::type PacketReturnType;
+      |                              ^~~~~~~~~~~~~~~~
+g++ -std=gnu++17 -shared -s -static-libgcc -o cmpp.dll tmp.def CppCodes.o RcppExports.o -LC:/rtools45/x86_64-w64-mingw32.static.posix/lib/x64 -LC:/rtools45/x86_64-w64-mingw32.static.posix/lib -LC:/PROGRA~1/R/R-45~1.0/bin/x64 -lR
+installing to D:/media_repos/habib_repository_github/cmpp/downloads/cmpp.Rcheck/00LOCK-cmpp/00new/cmpp/libs/x64
+** R
+** data
+*** moving datasets to lazyload DB
+** byte-compile and prepare package for lazy loading
+** help
+*** installing help indices
+** building package indices
+** testing if installed package can be loaded from temporary location
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (cmpp)

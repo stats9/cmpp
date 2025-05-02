@@ -167,6 +167,11 @@ double F_cdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) 
     rho = (rho < 0) * rho - (rho > 0) * rho;
 
     Eigen::VectorXd Beta = Params.tail(Params.size() - 3);
+    // Safety check
+    if (Z.size() != Beta.size()) {
+        throw std::runtime_error("Z and Beta must have the same length in F_cdf.");
+    }
+
     double tempval = Z.dot(Beta);
 
     // Prevent division by zero
@@ -183,6 +188,10 @@ double F_cdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) 
         double rho = Params[2];
         rho = (rho < 0) * rho - (rho > 0) * rho;
         Eigen::VectorXd Beta = Params.tail(Params.size() - 3);
+    // Safety check
+    if (Z.size() != Beta.size()) {
+        throw std::runtime_error("Z and Beta must have the same length in f_pdf.");
+    }
         double tempval = Z.dot(Beta);
         double result = (tau * std::pow(alpha * tau * (std::exp(rho * x) - 1) * std::exp(tempval) / rho + 1, -1 / alpha) * 
                         std::exp(tempval) * std::exp(rho * x)) / 
@@ -277,6 +286,10 @@ double F_cdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) 
         double rho = Params[1];
         rho = (rho < 0) * rho - (rho > 0) * rho;
         Eigen::VectorXd Beta = Params.tail(Params.size() - 2);
+    // Safety check
+    if (Z.size() != Beta.size()) {
+        throw std::runtime_error("Z and Beta must have the same length in F_cdf2.");
+    }
         double tempval = Z.dot(Beta);
         double temp1 = tau * (std::exp(rho * x) - 1) * std::exp(tempval) / (tau * (std::exp(rho * x) - 1) * std::exp(tempval) + rho);
         return temp1;
@@ -287,6 +300,10 @@ double F_cdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) 
         double rho = Params[1];
         rho = (rho < 0) * rho - (rho > 0) * rho;
         Eigen::VectorXd Beta = Params.tail(Params.size() - 2);
+    // Safety check
+    if (Z.size() != Beta.size()) {
+        throw std::runtime_error("Z and Beta must have the same length in F_cdf3.");
+    }
         double tempval = Z.dot(Beta);
         double temp1 = 1 - std::exp(-(tau * (std::exp(rho * x) - 1) * std::exp(tempval))/rho);
         return temp1;
@@ -297,6 +314,10 @@ double F_cdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) 
         double rho = Params[1];
         rho = (rho < 0) * rho - (rho > 0) * rho;
         Eigen::VectorXd Beta = Params.tail(Params.size() - 2);
+    // Safety check
+    if (Z.size() != Beta.size()) {
+        throw std::runtime_error("Z and Beta must have the same length in f_pdf2.");
+    }
         double tempval = Z.dot(Beta);
         double result1n = -std::pow(tau, 2)*(std::exp(rho * x)-1)*std::exp(rho*x)*std::exp(2 * tempval);
         double result1d = rho * std::pow(tau *(std::exp(rho*x)-1)*std::exp(tempval)/rho + 1, 2);
@@ -309,6 +330,10 @@ double F_cdf(const Eigen::VectorXd& Params, const Eigen::VectorXd& Z, double x) 
         double rho = Params[1];
         rho = (rho < 0) * rho - (rho > 0) * rho;
         Eigen::VectorXd Beta = Params.tail(Params.size() - 2);
+    // Safety check
+    if (Z.size() != Beta.size()) {
+        throw std::runtime_error("Z and Beta must have the same length in f_pdf3.");
+    }
         double tempval = Z.dot(Beta);
         double result = tau * std::exp(rho * x) * (std::exp(-tau *(std::exp(rho * x) - 1)*std::exp(tempval)/rho)) * std::exp(tempval);
         return result;

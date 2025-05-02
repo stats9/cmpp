@@ -1,0 +1,3110 @@
+
+R version 4.5.0 (2025-04-11 ucrt) -- "How About a Twenty-Six"
+Copyright (C) 2025 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> pkgname <- "cmpp"
+> source(file.path(R.home("share"), "R", "examples-header.R"))
+> options(warn = 1)
+> options(pager = "console")
+> base::assign(".ExTimings", "cmpp-Ex.timings", pos = 'CheckExEnv')
+> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
+> base::assign(".format_ptime",
++ function(x) {
++   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
++   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
++   options(OutDec = '.')
++   format(x[1L:3L], digits = 7L)
++ },
++ pos = 'CheckExEnv')
+> 
+> ### * </HEADER>
+> library('cmpp')
+> 
+> base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
+> base::assign(".old_wd", base::getwd(), pos = 'CheckExEnv')
+> cleanEx()
+> nameEx("CIF_Figs")
+> ### * CIF_Figs
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CIF_Figs
+> ### Title: Plot Cumulative Incidence Functions (CIF) with Confidence
+> ###   Intervals
+> ### Aliases: CIF_Figs
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> initial_params <- c(0.001, 0.001, 0.001, 0.001)
+> result <- CIF_res1(initial_params)
+> print(result)
+  Params Estimation          STD
+1 alpha1  0.1189757 0.0004194304
+2  beta1  0.4279774 0.0006849270
+3 alpha2  0.1546152 0.0003632374
+4  beta2  0.1121007 0.0000000000
+> initial_params <- c(0.01, 0.01, 0.01, 0.01)
+> TimeFailure <- seq(0, 10, by = 0.1)
+> plot <- CIF_Figs(initial_params, TimeFailure)
+> print(plot)
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CIF_Figs", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("CIF_res1")
+> ### * CIF_res1
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: CIF_res1
+> ### Title: Compute Cumulative Incidence Function (CIF) Results
+> ### Aliases: CIF_res1
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> initial_params <- c(0.001, 0.001, 0.001, 0.001)
+> result <- CIF_res1(initial_params)
+> print(result)
+  Params Estimation          STD
+1 alpha1  0.1189757 0.0004194304
+2  beta1  0.4279774 0.0006849270
+3 alpha2  0.1546152 0.0003632374
+4  beta2  0.1121007 0.0000000000
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("CIF_res1", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Cleanup")
+> ### * Cleanup
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Cleanup
+> ### Title: Clean up memory by deleting the pointer to the Cmpp instance
+> ### Aliases: Cleanup
+> 
+> ### ** Examples
+> 
+> # Assuming you have previously initialized the Cmpp object with `Initialize()`
+> Cleanup()
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Cleanup", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Cmpp_CIF")
+> ### * Cmpp_CIF
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Cmpp_CIF
+> ### Title: Compute and Plot Cumulative Incidence Functions (CIF) for
+> ###   Competing Risks
+> ### Aliases: Cmpp_CIF
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> result <- Cmpp_CIF(
++   featureID = c(1, 2),
++   featureValue = c(0.5, 1.2),
++   RiskNames = c("Event1", "Event2"),
++   TypeMethod = "GOR",
++   predTime = seq(0, 10, by = 0.5)
++ )
+> print(result$Plot$Plot_InputModel)  # Plot for the specified model
+> print(result$Plot$PlotAdjusted_AllModels)  # Adjusted CIFs for all models
+> print(result$CIF$CIFAdjusted)  # Adjusted CIF values
+   Time  CIFAdjusted   Risk
+1   0.0 0.000000e+00 Event1
+2   0.5 1.598388e-12 Event1
+3   1.0 3.174572e-12 Event1
+4   1.5 4.772960e-12 Event1
+5   2.0 6.326939e-12 Event1
+6   2.5 7.903123e-12 Event1
+7   3.0 9.457102e-12 Event1
+8   3.5 1.101108e-11 Event1
+9   4.0 1.254286e-11 Event1
+10  4.5 1.407463e-11 Event1
+11  5.0 1.560641e-11 Event1
+12  5.5 1.711609e-11 Event1
+13  6.0 1.862566e-11 Event1
+14  6.5 2.013523e-11 Event1
+15  7.0 2.162259e-11 Event1
+16  7.5 2.310996e-11 Event1
+17  8.0 2.457512e-11 Event1
+18  8.5 2.606260e-11 Event1
+19  9.0 2.752776e-11 Event1
+20  9.5 2.897071e-11 Event1
+21 10.0 3.041367e-11 Event1
+22  0.0 0.000000e+00 Event2
+23  0.5 4.791775e-03 Event2
+24  1.0 9.536617e-03 Event2
+25  1.5 1.423510e-02 Event2
+26  2.0 1.888779e-02 Event2
+27  2.5 2.349524e-02 Event2
+28  3.0 2.805801e-02 Event2
+29  3.5 3.257663e-02 Event2
+30  4.0 3.705165e-02 Event2
+31  4.5 4.148357e-02 Event2
+32  5.0 4.587293e-02 Event2
+33  5.5 5.022023e-02 Event2
+34  6.0 5.452598e-02 Event2
+35  6.5 5.879067e-02 Event2
+36  7.0 6.301479e-02 Event2
+37  7.5 6.719882e-02 Event2
+38  8.0 7.134324e-02 Event2
+39  8.5 7.544852e-02 Event2
+40  9.0 7.951512e-02 Event2
+41  9.5 8.354349e-02 Event2
+42 10.0 8.753408e-02 Event2
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Cmpp_CIF", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("F_cdf_rcpp")
+> ### * F_cdf_rcpp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: F_cdf_rcpp
+> ### Title: Compute the CDF of the Parametric Generalized odds rate (GOR)
+> ### Aliases: F_cdf_rcpp
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(321)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/2)
+> Initialize(features, x, delta1, delta2, h = 1e-3)
+> params <- rep(0.001, (ncol(features) + 3))
+> y <- 0.07
+> z <- features[1, ]
+> (cdf_value <- F_cdf_rcpp(params, z, y))
+[1] 7.007936e-05
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("F_cdf_rcpp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("F_cdf_rcpp2")
+> ### * F_cdf_rcpp2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: F_cdf_rcpp2
+> ### Title: Compute the CDF of the Parametric Proportional Odds Model (POM)
+> ### Aliases: F_cdf_rcpp2
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/2)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.001, (ncol(features) + 2))
+> x <- 2
+> cdf_value <- F_cdf_rcpp2(params, features[1, ], x)
+> print(cdf_value)
+[1] 0.002001486
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("F_cdf_rcpp2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("F_cdf_rcpp3")
+> ### * F_cdf_rcpp3
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: F_cdf_rcpp3
+> ### Title: Compute the CDF of the Parametric Proportional Hazards Model
+> ###   (PHM)
+> ### Aliases: F_cdf_rcpp3
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/10)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.001, (ncol(features) + 2))
+> x <- 5
+> cdf_value <- F_cdf_rcpp3(params, features[1, ], x)
+> print(cdf_value)
+[1] 0.00499373
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("F_cdf_rcpp3", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("FineGray_Model")
+> ### * FineGray_Model
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: FineGray_Model
+> ### Title: Fine-Gray Model for Competing Risks Data
+> ### Aliases: FineGray_Model
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> result <- FineGray_Model(
++   CovarNames = c("Covar1", "Covar2", "Covar3"),
++   Failcode = 1,
++   RiskNames = c("Event1", "Event2")
++ )
+> print(result$Results)  # Summary of the Fine-Gray model
+Competing Risks Regression
+
+Call:
+cmprsk::crr(ftime = Time, fstatus = status, cov1 = Features, 
+    failcode = Failcode, cencode = 0)
+
+          coef exp(coef) se(coef)      z p-value
+Covar1  0.0110      1.01   0.0116  0.945   0.340
+Covar2  0.0399      1.04   0.1096  0.364   0.720
+Covar3 -0.2875      0.75   0.1536 -1.872   0.061
+
+       exp(coef) exp(-coef)  2.5% 97.5%
+Covar1      1.01      0.989 0.988  1.03
+Covar2      1.04      0.961 0.839  1.29
+Covar3      0.75      1.333 0.555  1.01
+
+Num. cases = 652
+Pseudo Log-likelihood = -3244 
+Pseudo likelihood ratio test = 7.1  on 3 df,
+> #print(result$Plot)     # Plot of the CIFs
+> print(result$CIF_Results)  # CIF data
+      Risk    Time         CIF
+1   Event1  0.0000 0.000000000
+2   Event1  0.4167 0.000000000
+3   Event1  0.4167 0.001545606
+4   Event1  0.7500 0.001545606
+5   Event1  0.7500 0.006204423
+6   Event1  0.7514 0.006204423
+7   Event1  0.7514 0.009310301
+8   Event1  0.7708 0.009310301
+9   Event1  0.7708 0.032641658
+10  Event1  0.7889 0.032641658
+11  Event1  0.7889 0.034197081
+12  Event1  0.7917 0.034197081
+13  Event1  0.7917 0.052862167
+14  Event1  0.8000 0.052862167
+15  Event1  0.8000 0.057528438
+16  Event1  0.8014 0.057528438
+17  Event1  0.8014 0.071527252
+18  Event1  0.8028 0.071527252
+19  Event1  0.8028 0.082415218
+20  Event1  0.8042 0.082415218
+21  Event1  0.8042 0.083970642
+22  Event1  0.8125 0.083970642
+23  Event1  0.8125 0.090192337
+24  Event1  0.8333 0.090192337
+25  Event1  0.8333 0.110412845
+26  Event1  0.8389 0.110412845
+27  Event1  0.8389 0.111968269
+28  Event1  0.8750 0.111968269
+29  Event1  0.8750 0.118189964
+30  Event1  0.8833 0.118189964
+31  Event1  0.8833 0.124411659
+32  Event1  0.8847 0.124411659
+33  Event1  0.8847 0.130633354
+34  Event1  0.8861 0.130633354
+35  Event1  0.8861 0.141521321
+36  Event1  0.8875 0.141521321
+37  Event1  0.8875 0.149298439
+38  Event1  0.8889 0.149298439
+39  Event1  0.8889 0.172629796
+40  Event1  0.8917 0.172629796
+41  Event1  0.8917 0.175740643
+42  Event1  0.9375 0.175740643
+43  Event1  0.9375 0.177299087
+44  Event1  0.9583 0.177299087
+45  Event1  0.9583 0.178860575
+46  Event1  0.9611 0.178860575
+47  Event1  0.9611 0.180422063
+48  Event1  0.9667 0.180422063
+49  Event1  0.9667 0.183545038
+50  Event1  0.9681 0.183545038
+51  Event1  0.9681 0.199159917
+52  Event1  0.9694 0.199159917
+53  Event1  0.9694 0.227266698
+54  Event1  0.9708 0.227266698
+55  Event1  0.9708 0.235074137
+56  Event1  0.9722 0.235074137
+57  Event1  0.9722 0.258496454
+58  Event1  0.9750 0.258496454
+59  Event1  0.9750 0.260057942
+60  Event1  1.0208 0.260057942
+61  Event1  1.0208 0.263187782
+62  Event1  1.0375 0.263187782
+63  Event1  1.0375 0.264756171
+64  Event1  1.0431 0.264756171
+65  Event1  1.0431 0.266324561
+66  Event1  1.0500 0.266324561
+67  Event1  1.0500 0.269461340
+68  Event1  1.0514 0.269461340
+69  Event1  1.0514 0.289850404
+70  Event1  1.0528 0.289850404
+71  Event1  1.0528 0.318081416
+72  Event1  1.0542 0.318081416
+73  Event1  1.0542 0.322786585
+74  Event1  1.0556 0.322786585
+75  Event1  1.0556 0.336902091
+76  Event1  1.1333 0.336902091
+77  Event1  1.1333 0.343222740
+78  Event1  1.1347 0.343222740
+79  Event1  1.1347 0.355864039
+80  Event1  1.1361 0.355864039
+81  Event1  1.1361 0.368505338
+82  Event1  1.1375 0.368505338
+83  Event1  1.1375 0.371665663
+84  Event1  1.1389 0.371665663
+85  Event1  1.1389 0.387467286
+86  Event1  1.1403 0.387467286
+87  Event1  1.1403 0.389051766
+88  Event1  1.1417 0.389051766
+89  Event1  1.1417 0.390636246
+90  Event1  1.2167 0.390636246
+91  Event1  1.2167 0.392220726
+92  Event1  1.2181 0.392220726
+93  Event1  1.2181 0.403312084
+94  Event1  1.2194 0.403312084
+95  Event1  1.2194 0.417572401
+96  Event1  1.2222 0.417572401
+97  Event1  1.2222 0.431832719
+98  Event1  1.2250 0.431832719
+99  Event1  1.2250 0.435001679
+100 Event1  1.2514 0.435001679
+101 Event1  1.2514 0.436586158
+102 Event1  1.3000 0.436586158
+103 Event1  1.3000 0.438170638
+104 Event1  1.3014 0.438170638
+105 Event1  1.3014 0.450846476
+106 Event1  1.3028 0.450846476
+107 Event1  1.3028 0.463522314
+108 Event1  1.3042 0.463522314
+109 Event1  1.3042 0.471444713
+110 Event1  1.3056 0.471444713
+111 Event1  1.3056 0.484120551
+112 Event1  1.3833 0.484120551
+113 Event1  1.3833 0.487300109
+114 Event1  1.3847 0.487300109
+115 Event1  1.3847 0.498428562
+116 Event1  1.3861 0.498428562
+117 Event1  1.3861 0.504787678
+118 Event1  1.3889 0.504787678
+119 Event1  1.3889 0.514326352
+120 Event1  1.3917 0.514326352
+121 Event1  1.3917 0.515916131
+122 Event1  1.4667 0.515916131
+123 Event1  1.4667 0.519107126
+124 Event1  1.4681 0.519107126
+125 Event1  1.4681 0.528680112
+126 Event1  1.4694 0.528680112
+127 Event1  1.4694 0.543039590
+128 Event1  1.4708 0.543039590
+129 Event1  1.4708 0.546230586
+130 Event1  1.4722 0.546230586
+131 Event1  1.4722 0.552612576
+132 Event1  1.4750 0.552612576
+133 Event1  1.4750 0.554208074
+134 Event1  1.5417 0.554208074
+135 Event1  1.5417 0.555803572
+136 Event1  1.5500 0.555803572
+137 Event1  1.5500 0.557405401
+138 Event1  1.5514 0.557405401
+139 Event1  1.5514 0.565414545
+140 Event1  1.5528 0.565414545
+141 Event1  1.5528 0.570220032
+142 Event1  1.5542 0.570220032
+143 Event1  1.5542 0.576627348
+144 Event1  1.5556 0.576627348
+145 Event1  1.5556 0.581432835
+146 Event1  1.6042 0.581432835
+147 Event1  1.6042 0.583034664
+148 Event1  1.6333 0.583034664
+149 Event1  1.6333 0.584636493
+150 Event1  1.6347 0.584636493
+151 Event1  1.6347 0.589441980
+152 Event1  1.6361 0.589441980
+153 Event1  1.6361 0.592645638
+154 Event1  1.6375 0.592645638
+155 Event1  1.6375 0.594247467
+156 Event1  1.6389 0.594247467
+157 Event1  1.6389 0.595849296
+158 Event1  1.6417 0.595849296
+159 Event1  1.6417 0.597451125
+160 Event1  1.7194 0.597451125
+161 Event1  1.7194 0.599067353
+162 Event1  1.7208 0.599067353
+163 Event1  1.7208 0.605532263
+164 Event1  1.7222 0.605532263
+165 Event1  1.7222 0.608764718
+166 Event1  1.8014 0.608764718
+167 Event1  1.8014 0.611997174
+168 Event1  1.8028 0.611997174
+169 Event1  1.8028 0.613613401
+170 Event1  1.8056 0.613613401
+171 Event1  1.8056 0.616845857
+172 Event1  1.8125 0.616845857
+173 Event1  1.8125 0.618462084
+174 Event1  1.8750 0.618462084
+175 Event1  1.8750 0.620086082
+176 Event1  1.8833 0.620086082
+177 Event1  1.8833 0.621717964
+178 Event1  1.8847 0.621717964
+179 Event1  1.8847 0.626613608
+180 Event1  1.8861 0.626613608
+181 Event1  1.8861 0.639668660
+182 Event1  1.8875 0.639668660
+183 Event1  1.8875 0.641300541
+184 Event1  1.8889 0.641300541
+185 Event1  1.8889 0.646196186
+186 Event1  1.8903 0.646196186
+187 Event1  1.8903 0.647828067
+188 Event1  1.9222 0.647828067
+189 Event1  1.9222 0.649459949
+190 Event1  1.9667 0.649459949
+191 Event1  1.9667 0.652723712
+192 Event1  1.9681 0.652723712
+193 Event1  1.9681 0.659251238
+194 Event1  1.9694 0.659251238
+195 Event1  1.9694 0.664146882
+196 Event1  1.9708 0.664146882
+197 Event1  1.9708 0.667410645
+198 Event1  1.9722 0.667410645
+199 Event1  1.9722 0.672306289
+200 Event1  2.0514 0.672306289
+201 Event1  2.0514 0.677230232
+202 Event1  2.0528 0.677230232
+203 Event1  2.0528 0.680512861
+204 Event1  2.0542 0.680512861
+205 Event1  2.0542 0.683795489
+206 Event1  2.0556 0.683795489
+207 Event1  2.0556 0.688719432
+208 Event1  2.0847 0.688719432
+209 Event1  2.0847 0.690370878
+210 Event1  2.1347 0.690370878
+211 Event1  2.1347 0.693694413
+212 Event1  2.1361 0.693694413
+213 Event1  2.1361 0.695356180
+214 Event1  2.1389 0.695356180
+215 Event1  2.1389 0.702003250
+216 Event1  2.2181 0.702003250
+217 Event1  2.2181 0.707021350
+218 Event1  2.2194 0.707021350
+219 Event1  2.2194 0.715384851
+220 Event1  2.2208 0.715384851
+221 Event1  2.2208 0.717057551
+222 Event1  2.2222 0.717057551
+223 Event1  2.2222 0.725421051
+224 Event1  2.3000 0.725421051
+225 Event1  2.3000 0.728815649
+226 Event1  2.3028 0.728815649
+227 Event1  2.3028 0.730512947
+228 Event1  2.3056 0.730512947
+229 Event1  2.3056 0.735604843
+230 Event1  2.3847 0.735604843
+231 Event1  2.3847 0.740736211
+232 Event1  2.3861 0.740736211
+233 Event1  2.3861 0.744157123
+234 Event1  2.3889 0.744157123
+235 Event1  2.3889 0.750998947
+236 Event1  2.4681 0.750998947
+237 Event1  2.4681 0.752709403
+238 Event1  2.4694 0.752709403
+239 Event1  2.4694 0.757840771
+240 Event1  2.5514 0.757840771
+241 Event1  2.5514 0.764682595
+242 Event1  2.5528 0.764682595
+243 Event1  2.5528 0.771524419
+244 Event1  2.5556 0.771524419
+245 Event1  2.5556 0.773234875
+246 Event1  2.6361 0.773234875
+247 Event1  2.6361 0.774945331
+248 Event1  2.6375 0.774945331
+249 Event1  2.6375 0.776655787
+250 Event1  2.6389 0.776655787
+251 Event1  2.6389 0.780076698
+252 Event1  2.7153 0.780076698
+253 Event1  2.7153 0.781787154
+254 Event1  2.7181 0.781787154
+255 Event1  2.7181 0.783497610
+256 Event1  2.7194 0.783497610
+257 Event1  2.7194 0.785208066
+258 Event1  2.7222 0.785208066
+259 Event1  2.7222 0.786918522
+260 Event1  2.7250 0.786918522
+261 Event1  2.7250 0.788628978
+262 Event1  2.7514 0.788628978
+263 Event1  2.7514 0.790339434
+264 Event1  2.8014 0.790339434
+265 Event1  2.8014 0.792049890
+266 Event1  2.8028 0.792049890
+267 Event1  2.8028 0.798891714
+268 Event1  2.8042 0.798891714
+269 Event1  2.8042 0.800602170
+270 Event1  2.8056 0.800602170
+271 Event1  2.8056 0.805733538
+272 Event1  2.8750 0.805733538
+273 Event1  2.8750 0.807443994
+274 Event1  2.8861 0.807443994
+275 Event1  2.8861 0.810864906
+276 Event1  2.8889 0.810864906
+277 Event1  2.8889 0.812575362
+278 Event1  2.9167 0.812575362
+279 Event1  2.9167 0.814285818
+280 Event1  2.9722 0.814285818
+281 Event1  2.9722 0.819417186
+282 Event1  3.0514 0.819417186
+283 Event1  3.0514 0.824614341
+284 Event1  3.0556 0.824614341
+285 Event1  3.0556 0.826346726
+286 Event1  3.1375 0.826346726
+287 Event1  3.1375 0.828127910
+288 Event1  3.2181 0.828127910
+289 Event1  3.2181 0.829909095
+290 Event1  3.2194 0.829909095
+291 Event1  3.2194 0.833471463
+292 Event1  3.2222 0.833471463
+293 Event1  3.2222 0.837033832
+294 Event1  3.2889 0.837033832
+295 Event1  3.2889 0.838815017
+296 Event1  3.3028 0.838815017
+297 Event1  3.3028 0.840596201
+298 Event1  3.3056 0.840596201
+299 Event1  3.3056 0.844158570
+300 Event1  3.3861 0.844158570
+301 Event1  3.3861 0.847720939
+302 Event1  3.4681 0.847720939
+303 Event1  3.4681 0.853064493
+304 Event1  3.4694 0.853064493
+305 Event1  3.4694 0.854845677
+306 Event1  3.6347 0.854845677
+307 Event1  3.6347 0.856626862
+308 Event1  3.7181 0.856626862
+309 Event1  3.7181 0.858408046
+310 Event1  3.7222 0.858408046
+311 Event1  3.7222 0.860189231
+312 Event1  3.7236 0.860189231
+313 Event1  3.7236 0.861970415
+314 Event1  3.8014 0.861970415
+315 Event1  3.8014 0.863751600
+316 Event1  3.8847 0.863751600
+317 Event1  3.8847 0.865532784
+318 Event1  4.0514 0.865532784
+319 Event1  4.0514 0.867389764
+320 Event1  4.0542 0.867389764
+321 Event1  4.0542 0.869246743
+322 Event1  4.0556 0.869246743
+323 Event1  4.0556 0.871103723
+324 Event1  4.1361 0.871103723
+325 Event1  4.1361 0.872960702
+326 Event1  4.1389 0.872960702
+327 Event1  4.1389 0.874817682
+328 Event1  4.2111 0.874817682
+329 Event1  4.2111 0.876674661
+330 Event1  4.2181 0.876674661
+331 Event1  4.2181 0.878531641
+332 Event1  4.2222 0.878531641
+333 Event1  4.2222 0.882245600
+334 Event1  4.3125 0.882245600
+335 Event1  4.3125 0.884102580
+336 Event1  4.3875 0.884102580
+337 Event1  4.3875 0.885959559
+338 Event1  4.3903 0.885959559
+339 Event1  4.3903 0.887816539
+340 Event1  4.4722 0.887816539
+341 Event1  4.4722 0.889673518
+342 Event1  4.5417 0.889673518
+343 Event1  4.5417 0.891530498
+344 Event1  4.8014 0.891530498
+345 Event1  4.8014 0.893387477
+346 Event1  5.4722 0.893387477
+347 Event1  5.4722 0.895306356
+348 Event1  5.5542 0.895306356
+349 Event1  5.5542 0.897225235
+350 Event1  5.5556 0.897225235
+351 Event1  5.5556 0.899144114
+352 Event1  5.6222 0.899144114
+353 Event1  5.6222 0.901062993
+354 Event1  5.6361 0.901062993
+355 Event1  5.6361 0.902981872
+356 Event1  5.7514 0.902981872
+357 Event1  5.7514 0.904900751
+358 Event1  6.1389 0.904900751
+359 Event1  6.1389 0.906819630
+360 Event1  6.7181 0.906819630
+361 Event1  6.7181 0.908829884
+362 Event1  6.7222 0.908829884
+363 Event1  6.7222 0.910840138
+364 Event1  6.9722 0.910840138
+365 Event1  6.9722 0.912962072
+366 Event1  7.3014 0.912962072
+367 Event1  7.3014 0.915084007
+368 Event1  7.3028 0.915084007
+369 Event1  7.3028 0.917205942
+370 Event1  7.3847 0.917205942
+371 Event1  7.3847 0.919327877
+372 Event1  8.0556 0.919327877
+373 Event1  8.0556 0.921613038
+374 Event1  8.8889 0.921613038
+375 Event1  8.8889 0.923898198
+376 Event1  8.9792 0.923898198
+377 Event1  8.9792 0.926183359
+378 Event1  9.0542 0.926183359
+379 Event1  9.0542 0.928722426
+380 Event1 10.6389 0.928722426
+381 Event1 10.6389 0.931684671
+382 Event1 10.8014 0.931684671
+383 Event1 10.8014 0.935387478
+384 Event1 10.9694 0.935387478
+385 Event1 10.9694 0.946495897
+386 Event1 10.9694 0.946495897
+387 Event2  0.0000 0.000000000
+388 Event2  0.2083 0.000000000
+389 Event2  0.2083 0.001543210
+390 Event2  0.2500 0.001543210
+391 Event2  0.2500 0.003086420
+392 Event2  0.2611 0.003086420
+393 Event2  0.2611 0.004629630
+394 Event2  0.2667 0.004629630
+395 Event2  0.2667 0.007720842
+396 Event2  0.3333 0.007720842
+397 Event2  0.3333 0.009266448
+398 Event2  0.4375 0.009266448
+399 Event2  0.4375 0.010812054
+400 Event2  0.5000 0.010812054
+401 Event2  0.5000 0.012357660
+402 Event2  0.5111 0.012357660
+403 Event2  0.5111 0.013903267
+404 Event2  0.5222 0.013903267
+405 Event2  0.5222 0.015448873
+406 Event2  0.7069 0.015448873
+407 Event2  0.7069 0.016996913
+408 Event2  0.7611 0.016996913
+409 Event2  0.7611 0.018549852
+410 Event2  0.7917 0.018549852
+411 Event2  0.7917 0.020105276
+412 Event2  0.8500 0.020105276
+413 Event2  0.8500 0.021660700
+414 Event2  0.9306 0.021660700
+415 Event2  0.9306 0.023219144
+416 Event2  0.9569 0.023219144
+417 Event2  0.9569 0.024780631
+418 Event2  0.9667 0.024780631
+419 Event2  0.9667 0.026342119
+420 Event2  1.0000 0.026342119
+421 Event2  1.0000 0.027903607
+422 Event2  1.0028 0.027903607
+423 Event2  1.0028 0.029468527
+424 Event2  1.0472 0.029468527
+425 Event2  1.0472 0.031036916
+426 Event2  1.1181 0.031036916
+427 Event2  1.1181 0.032613128
+428 Event2  1.1778 0.032613128
+429 Event2  1.1778 0.034197608
+430 Event2  1.1792 0.034197608
+431 Event2  1.1792 0.035782088
+432 Event2  1.3014 0.035782088
+433 Event2  1.3014 0.037366567
+434 Event2  1.3042 0.037366567
+435 Event2  1.3042 0.038951047
+436 Event2  1.3056 0.038951047
+437 Event2  1.3056 0.040535527
+438 Event2  1.6347 0.040535527
+439 Event2  1.6347 0.042137356
+440 Event2  1.6972 0.042137356
+441 Event2  1.6972 0.043746336
+442 Event2  2.5167 0.043746336
+443 Event2  2.5167 0.045456792
+444 Event2  3.0236 0.045456792
+445 Event2  3.0236 0.047189177
+446 Event2  4.0417 0.047189177
+447 Event2  4.0417 0.049046156
+448 Event2  6.0125 0.049046156
+449 Event2  6.0125 0.050965035
+450 Event2  9.3722 0.050965035
+451 Event2  9.3722 0.053504103
+452 Event2 10.9694 0.053504103
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("FineGray_Model", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("GetData")
+> ### * GetData
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GetData
+> ### Title: Retrieve Initialized Data from the Cmpp Model
+> ### Aliases: GetData
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> data <- GetData()
+> print(data$features)  # Feature matrix
+        [,1] [,2] [,3]
+  [1,] 17.42    1    0
+  [2,] 16.50    1    0
+  [3,] 21.42    1    0
+  [4,] 12.42    0    0
+  [5,] 13.50    1    0
+  [6,] 14.92    1    0
+  [7,] 16.08    1    0
+  [8,] 14.67    1    0
+  [9,] 16.92    1    0
+ [10,] 18.83    1    0
+ [11,] 13.70    0    0
+ [12,] 18.50    0    0
+ [13,] 27.40    1    0
+ [14,] 15.75    1    0
+ [15,] 15.83    1    0
+ [16,] 16.58    1    0
+ [17,] 17.08    0    0
+ [18,] 20.33    0    1
+ [19,] 17.25    0    1
+ [20,] 19.25    1    0
+ [21,] 16.25    1    0
+ [22,] 18.42    1    0
+ [23,] 14.17    1    0
+ [24,] 22.33    1    0
+ [25,] 15.42    1    0
+ [26,] 19.58    1    0
+ [27,] 17.58    1    0
+ [28,] 15.75    1    0
+ [29,] 13.75    0    0
+ [30,] 29.17    1    0
+ [31,] 15.25    0    0
+ [32,] 23.25    1    0
+ [33,] 20.83    1    0
+ [34,] 19.75    1    0
+ [35,] 21.33    1    0
+ [36,] 18.42    1    0
+ [37,] 19.08    1    0
+ [38,] 16.00    1    0
+ [39,] 17.58    0    0
+ [40,] 18.17    1    0
+ [41,] 19.33    0    1
+ [42,] 18.67    1    0
+ [43,] 13.17    1    0
+ [44,] 17.90    0    0
+ [45,] 20.58    1    0
+ [46,] 17.17    1    0
+ [47,] 18.25    1    0
+ [48,] 21.92    1    0
+ [49,] 14.75    1    0
+ [50,] 26.25    1    0
+ [51,] 21.58    1    0
+ [52,] 14.00    0    0
+ [53,] 20.50    1    0
+ [54,] 18.17    1    0
+ [55,] 22.25    1    0
+ [56,] 14.58    0    0
+ [57,] 21.42    1    0
+ [58,] 15.17    1    0
+ [59,] 20.58    1    0
+ [60,] 14.58    1    0
+ [61,] 12.92    1    0
+ [62,] 17.83    0    0
+ [63,] 16.67    0    0
+ [64,] 17.80    1    0
+ [65,] 20.67    1    0
+ [66,] 16.92    0    1
+ [67,] 17.08    0    1
+ [68,] 16.75    1    0
+ [69,] 15.92    1    0
+ [70,] 18.17    1    0
+ [71,] 18.50    1    0
+ [72,] 14.75    1    0
+ [73,] 13.92    1    0
+ [74,] 15.75    0    1
+ [75,] 17.83    1    0
+ [76,] 17.75    1    0
+ [77,] 17.25    1    0
+ [78,] 14.33    1    0
+ [79,] 13.33    1    0
+ [80,] 13.92    1    0
+ [81,] 22.33    1    0
+ [82,] 19.58    1    0
+ [83,] 19.00    1    0
+ [84,] 20.25    0    1
+ [85,] 18.50    1    0
+ [86,] 17.00    1    0
+ [87,] 16.83    1    0
+ [88,] 21.58    1    0
+ [89,] 16.75    1    0
+ [90,] 23.17    0    0
+ [91,] 17.08    1    0
+ [92,] 17.08    1    0
+ [93,] 18.08    1    0
+ [94,] 19.83    0    1
+ [95,] 20.58    1    0
+ [96,] 28.00    0    0
+ [97,] 17.92    0    0
+ [98,] 15.08    1    0
+ [99,] 22.92    1    0
+[100,] 18.08    0    0
+[101,] 15.92    0    0
+[102,] 17.75    0    1
+[103,] 20.67    1    0
+[104,] 15.75    1    0
+[105,] 18.17    1    0
+[106,] 13.00    1    0
+[107,] 18.08    0    0
+[108,] 20.92    0    1
+[109,] 15.83    1    0
+[110,] 17.25    1    0
+[111,] 17.08    0    1
+[112,] 20.50    0    1
+[113,] 15.42    1    0
+[114,] 18.00    1    0
+[115,] 16.42    1    0
+[116,] 15.75    1    0
+[117,] 17.08    1    0
+[118,] 29.92    1    0
+[119,] 13.67    1    0
+[120,] 22.42    1    0
+[121,] 16.00    0    1
+[122,] 18.00    1    0
+[123,] 21.90    1    0
+[124,] 18.08    1    0
+[125,] 16.70    1    0
+[126,] 14.58    1    0
+[127,] 18.50    0    1
+[128,] 20.60    1    0
+[129,] 17.67    1    0
+[130,] 15.17    1    0
+[131,] 25.50    1    0
+[132,] 23.33    1    0
+[133,] 25.67    1    0
+[134,] 17.00    1    0
+[135,] 13.50    1    0
+[136,] 19.67    1    0
+[137,] 18.42    0    1
+[138,] 25.50    1    0
+[139,] 15.58    1    0
+[140,] 20.83    1    0
+[141,] 20.50    1    0
+[142,] 17.42    1    0
+[143,] 21.75    0    1
+[144,] 18.00    1    0
+[145,] 21.42    1    0
+[146,] 12.25    1    0
+[147,] 17.25    1    0
+[148,] 17.83    0    1
+[149,] 19.67    0    1
+[150,] 15.17    1    0
+[151,] 17.92    1    0
+[152,] 18.17    0    0
+[153,] 20.83    0    1
+[154,] 26.67    0    0
+[155,] 17.67    0    1
+[156,] 18.00    1    0
+[157,] 18.67    1    0
+[158,] 24.17    0    1
+[159,] 20.00    1    0
+[160,] 19.75    0    1
+[161,] 20.33    0    1
+[162,] 22.92    0    1
+[163,] 21.67    1    0
+[164,] 15.25    1    0
+[165,] 15.25    1    0
+[166,] 14.25    0    0
+[167,] 13.25    1    0
+[168,] 25.08    1    0
+[169,] 17.25    0    1
+[170,] 21.17    0    0
+[171,] 14.58    1    0
+[172,] 15.50    1    0
+[173,] 14.58    0    0
+[174,] 18.00    1    0
+[175,] 24.83    1    0
+[176,] 21.67    0    1
+[177,] 19.58    1    0
+[178,] 18.58    0    0
+[179,] 19.00    1    0
+[180,] 20.20    0    0
+[181,] 17.83    1    0
+[182,] 19.92    0    0
+[183,] 22.92    1    0
+[184,] 16.42    1    0
+[185,] 18.83    1    0
+[186,] 18.75    1    0
+[187,] 32.33    0    0
+[188,] 21.25    1    0
+[189,] 19.50    1    0
+[190,] 18.92    1    0
+[191,] 19.25    0    0
+[192,] 21.08    0    1
+[193,] 22.17    1    0
+[194,] 14.17    1    0
+[195,] 25.17    1    0
+[196,] 21.25    1    0
+[197,] 23.08    0    1
+[198,] 19.25    0    0
+[199,] 22.33    1    0
+[200,] 21.75    1    0
+[201,] 23.17    1    0
+[202,] 20.17    1    0
+[203,] 21.50    1    0
+[204,] 17.20    1    0
+[205,] 14.40    1    0
+[206,] 38.50    1    0
+[207,] 21.17    0    1
+[208,] 22.08    1    0
+[209,] 21.33    0    0
+[210,] 17.67    0    1
+[211,] 12.80    0    0
+[212,] 19.42    0    1
+[213,] 16.00    1    0
+[214,] 16.17    1    0
+[215,] 17.92    1    0
+[216,] 16.25    1    0
+[217,] 21.67    0    1
+[218,] 18.75    1    0
+[219,] 16.75    0    1
+[220,] 26.75    1    0
+[221,] 15.83    1    0
+[222,] 18.25    1    0
+[223,] 22.92    0    1
+[224,] 16.70    1    0
+[225,] 17.58    1    0
+[226,] 22.50    1    0
+[227,] 18.25    1    0
+[228,] 17.67    1    0
+[229,] 16.00    1    0
+[230,] 23.75    1    0
+[231,] 12.75    1    0
+[232,] 17.67    1    0
+[233,] 16.75    1    0
+[234,] 22.83    1    0
+[235,] 16.42    1    0
+[236,] 19.00    1    0
+[237,] 12.70    0    1
+[238,] 16.08    1    0
+[239,] 18.20    1    0
+[240,] 15.83    1    0
+[241,] 17.17    0    1
+[242,] 15.10    1    0
+[243,] 11.67    1    0
+[244,] 14.75    1    0
+[245,] 20.08    0    1
+[246,] 21.67    1    0
+[247,] 22.00    0    1
+[248,] 15.83    1    0
+[249,] 15.00    1    0
+[250,] 14.75    0    0
+[251,] 22.58    1    0
+[252,] 28.00    0    0
+[253,] 19.58    0    1
+[254,] 23.67    1    0
+[255,] 17.83    1    0
+[256,] 19.58    1    0
+[257,] 14.08    1    0
+[258,] 14.75    1    0
+[259,] 21.92    1    0
+[260,] 16.58    1    0
+[261,] 20.00    0    1
+[262,] 13.83    0    0
+[263,] 19.17    1    0
+[264,] 16.00    1    0
+[265,] 18.17    1    0
+[266,] 20.00    1    0
+[267,] 16.25    1    0
+[268,] 17.00    1    0
+[269,] 17.08    1    0
+[270,] 22.75    1    0
+[271,] 14.83    1    0
+[272,] 18.08    1    0
+[273,] 16.33    1    0
+[274,] 15.50    0    1
+[275,] 14.83    1    0
+[276,] 16.33    1    0
+[277,] 15.40    1    0
+[278,] 16.75    1    0
+[279,] 17.92    1    0
+[280,] 21.42    0    0
+[281,] 14.67    0    0
+[282,] 21.83    1    0
+[283,] 14.42    0    0
+[284,] 22.67    1    0
+[285,] 22.33    1    0
+[286,] 15.67    1    0
+[287,] 18.50    1    0
+[288,] 22.17    1    0
+[289,] 18.67    0    0
+[290,] 15.42    1    0
+[291,] 12.00    1    0
+[292,] 19.92    1    0
+[293,] 18.92    1    0
+[294,] 23.50    1    0
+[295,] 19.08    1    0
+[296,] 16.25    0    0
+[297,] 14.33    0    0
+[298,] 13.67    0    0
+[299,] 16.67    1    0
+[300,] 19.92    1    0
+[301,] 17.75    1    0
+[302,] 18.17    1    0
+[303,] 17.58    1    0
+[304,] 19.08    1    0
+[305,] 15.00    1    0
+[306,] 23.42    1    0
+[307,] 17.83    0    0
+[308,] 24.30    1    0
+[309,] 20.17    0    0
+[310,] 16.75    1    0
+[311,] 24.83    1    0
+[312,] 18.08    1    0
+[313,] 27.67    0    0
+[314,] 19.83    1    0
+[315,] 19.25    1    0
+[316,] 21.25    1    0
+[317,] 14.42    1    0
+[318,] 15.50    1    0
+[319,] 32.17    1    0
+[320,] 20.25    1    0
+[321,] 16.67    1    0
+[322,] 15.83    0    0
+[323,] 18.58    1    0
+[324,] 23.08    0    0
+[325,] 14.58    0    0
+[326,] 18.92    1    0
+[327,] 13.40    0    0
+[328,] 20.25    1    0
+[329,] 31.58    1    0
+[330,] 18.83    1    0
+[331,] 17.42    1    0
+[332,] 16.50    1    0
+[333,] 12.42    0    0
+[334,] 19.70    1    0
+[335,] 20.67    0    1
+[336,] 15.08    1    0
+[337,] 18.08    0    1
+[338,] 24.25    0    1
+[339,] 16.75    1    0
+[340,] 17.08    0    1
+[341,] 14.50    1    0
+[342,] 17.50    0    1
+[343,] 36.00    1    0
+[344,] 14.42    1    0
+[345,] 17.50    0    1
+[346,] 16.75    1    0
+[347,] 14.42    1    0
+[348,] 16.00    0    1
+[349,] 14.75    1    0
+[350,] 20.58    1    0
+[351,] 14.50    0    0
+[352,] 16.08    0    1
+[353,] 15.08    1    0
+[354,] 17.83    0    1
+[355,] 24.25    1    0
+[356,] 17.00    1    0
+[357,] 21.83    0    1
+[358,] 18.20    0    1
+[359,] 20.00    0    1
+[360,] 22.25    0    1
+[361,] 15.83    1    0
+[362,] 13.50    1    0
+[363,] 18.92    1    0
+[364,] 20.00    0    0
+[365,] 23.50    0    1
+[366,] 27.75    1    0
+[367,] 20.92    1    0
+[368,] 20.50    1    0
+[369,] 17.08    1    0
+[370,] 15.42    1    0
+[371,] 18.33    1    0
+[372,] 15.00    0    0
+[373,] 16.33    1    0
+[374,] 19.42    0    0
+[375,] 13.75    0    0
+[376,] 18.17    0    0
+[377,] 15.75    0    0
+[378,] 22.00    1    0
+[379,] 20.08    1    0
+[380,] 20.00    0    0
+[381,] 25.42    0    0
+[382,] 17.00    1    0
+[383,] 14.33    1    0
+[384,] 15.92    0    0
+[385,] 16.00    0    0
+[386,] 20.50    0    1
+[387,] 16.42    1    0
+[388,] 18.00    0    0
+[389,] 20.25    0    0
+[390,] 19.58    1    0
+[391,] 16.42    0    0
+[392,] 17.08    1    0
+[393,] 22.67    0    0
+[394,] 17.00    1    0
+[395,] 20.67    1    0
+[396,] 13.50    1    0
+[397,] 15.83    0    0
+[398,] 17.33    1    0
+[399,] 15.25    0    0
+[400,] 20.50    1    0
+[401,] 17.75    1    0
+[402,] 17.50    1    0
+[403,] 29.75    0    0
+[404,] 18.75    1    0
+[405,] 14.00    0    0
+[406,] 22.67    0    1
+[407,] 19.92    1    0
+[408,] 28.75    1    0
+[409,] 17.50    1    0
+[410,] 16.58    0    1
+[411,] 28.75    1    0
+[412,] 18.75    0    0
+[413,] 15.00    1    0
+[414,] 18.00    0    0
+[415,] 20.33    0    1
+[416,] 19.33    1    0
+[417,] 13.08    1    0
+[418,] 16.92    1    0
+[419,] 13.92    1    0
+[420,] 23.75    1    0
+[421,] 18.33    1    0
+[422,] 14.67    1    0
+[423,] 11.67    1    0
+[424,] 20.17    1    0
+[425,] 14.92    1    0
+[426,] 11.92    1    0
+[427,] 19.75    1    0
+[428,] 18.25    1    0
+[429,] 19.42    1    0
+[430,] 14.67    1    0
+[431,] 15.50    1    0
+[432,] 14.50    1    0
+[433,] 18.00    1    0
+[434,] 20.25    1    0
+[435,] 22.33    1    0
+[436,] 18.25    1    0
+[437,] 13.58    1    0
+[438,] 16.17    1    0
+[439,] 15.58    1    0
+[440,] 15.33    1    0
+[441,] 18.00    1    0
+[442,] 19.50    1    0
+[443,] 24.00    1    0
+[444,] 16.25    1    0
+[445,] 14.00    0    0
+[446,] 22.00    1    0
+[447,] 15.92    1    0
+[448,] 16.08    1    0
+[449,] 21.17    1    0
+[450,] 15.75    1    0
+[451,] 20.42    0    0
+[452,] 19.75    0    1
+[453,] 16.83    0    0
+[454,] 18.75    1    0
+[455,] 21.92    0    1
+[456,] 18.25    0    1
+[457,] 23.00    1    0
+[458,] 13.00    0    0
+[459,] 18.17    1    0
+[460,] 14.00    1    0
+[461,] 15.20    1    0
+[462,] 22.67    0    0
+[463,] 20.00    1    0
+[464,] 19.83    1    0
+[465,] 16.92    1    0
+[466,] 23.08    0    1
+[467,] 17.17    1    0
+[468,] 20.17    1    0
+[469,] 19.50    1    0
+[470,] 25.08    1    0
+[471,] 17.17    0    1
+[472,] 18.08    1    0
+[473,] 18.25    1    0
+[474,] 16.80    1    0
+[475,] 22.00    1    0
+[476,] 15.25    1    0
+[477,] 18.58    1    0
+[478,] 19.17    0    1
+[479,] 22.00    0    1
+[480,] 20.58    1    0
+[481,] 16.83    0    0
+[482,] 18.50    0    0
+[483,] 14.25    1    0
+[484,] 14.33    1    0
+[485,] 14.25    1    0
+[486,] 14.42    1    0
+[487,] 13.83    1    0
+[488,] 24.33    1    0
+[489,] 17.00    1    0
+[490,] 15.33    1    0
+[491,] 17.67    0    1
+[492,] 18.08    1    0
+[493,] 13.67    1    0
+[494,] 19.67    1    0
+[495,] 20.20    1    0
+[496,] 16.75    1    0
+[497,] 14.08    1    0
+[498,] 22.75    1    0
+[499,] 20.00    0    1
+[500,] 15.50    1    0
+[501,] 16.08    1    0
+[502,] 16.75    1    0
+[503,] 15.67    1    0
+[504,] 13.20    1    0
+[505,] 16.50    1    0
+[506,] 21.50    0    1
+[507,] 17.08    1    0
+[508,] 24.08    0    1
+[509,] 19.08    0    1
+[510,] 14.75    1    0
+[511,] 14.67    1    0
+[512,] 23.25    1    0
+[513,] 14.42    1    0
+[514,] 21.25    0    1
+[515,] 19.17    1    0
+[516,] 17.58    1    0
+[517,] 14.00    1    0
+[518,] 13.42    1    0
+[519,] 21.92    0    1
+[520,] 12.08    0    0
+[521,] 19.83    1    0
+[522,] 23.50    1    0
+[523,] 20.25    0    1
+[524,] 15.25    1    0
+[525,] 18.92    1    0
+[526,] 21.92    1    0
+[527,] 14.00    1    0
+[528,] 18.17    0    1
+[529,] 16.90    1    0
+[530,] 15.00    1    0
+[531,] 14.75    1    0
+[532,] 16.67    0    1
+[533,] 14.75    1    0
+[534,] 41.92    0    1
+[535,] 20.92    1    0
+[536,] 18.40    0    0
+[537,] 20.33    0    0
+[538,] 17.33    1    0
+[539,] 18.08    0    1
+[540,] 17.33    1    0
+[541,] 18.92    0    1
+[542,] 20.50    0    1
+[543,] 18.58    1    0
+[544,] 20.58    1    0
+[545,] 14.58    1    0
+[546,] 18.67    1    0
+[547,] 22.17    0    1
+[548,] 15.67    1    0
+[549,] 21.67    0    1
+[550,] 28.25    1    0
+[551,] 13.50    1    0
+[552,] 15.25    1    0
+[553,] 23.33    0    1
+[554,] 23.08    0    1
+[555,] 16.67    1    0
+[556,] 18.83    1    0
+[557,] 18.50    1    0
+[558,] 18.75    1    0
+[559,] 21.25    1    0
+[560,] 17.33    1    0
+[561,] 19.75    1    0
+[562,] 17.25    1    0
+[563,] 15.92    1    0
+[564,] 15.50    1    0
+[565,] 13.67    1    0
+[566,] 13.08    1    0
+[567,] 24.50    1    0
+[568,] 16.17    1    0
+[569,] 20.42    1    0
+[570,] 19.58    1    0
+[571,] 27.58    0    1
+[572,] 21.92    0    1
+[573,] 22.92    1    0
+[574,] 20.67    1    0
+[575,] 25.08    1    0
+[576,] 13.92    1    0
+[577,] 15.08    1    0
+[578,] 16.80    0    0
+[579,] 26.33    1    0
+[580,] 18.92    0    1
+[581,] 14.00    1    0
+[582,] 18.08    1    0
+[583,] 15.83    1    0
+[584,] 19.50    0    0
+[585,] 21.17    1    0
+[586,] 14.92    1    0
+[587,] 18.17    1    0
+[588,] 15.58    0    0
+[589,] 15.00    1    0
+[590,] 16.90    1    0
+[591,] 16.08    1    0
+[592,] 16.50    1    0
+[593,] 15.50    1    0
+[594,] 18.33    1    0
+[595,] 15.83    1    0
+[596,] 15.50    1    0
+[597,] 19.42    1    0
+[598,] 15.83    1    0
+[599,] 16.17    1    0
+[600,] 12.33    0    0
+[601,] 15.67    1    0
+[602,] 15.92    1    0
+[603,] 13.20    1    0
+[604,] 13.42    1    0
+[605,] 15.33    1    0
+[606,] 26.17    1    0
+[607,] 19.75    1    0
+[608,] 16.17    1    0
+[609,] 14.17    1    0
+[610,] 21.58    0    1
+[611,] 26.08    1    0
+[612,] 24.67    1    0
+[613,] 18.42    1    0
+[614,] 20.75    0    1
+[615,] 16.33    1    0
+[616,] 12.40    1    0
+[617,] 20.80    0    0
+[618,] 16.08    1    0
+[619,] 16.58    1    0
+[620,] 19.17    0    0
+[621,] 16.08    1    0
+[622,] 15.33    0    0
+[623,] 17.08    1    0
+[624,] 20.75    1    0
+[625,] 19.42    1    0
+[626,] 20.75    0    0
+[627,] 33.33    1    0
+[628,] 22.33    0    0
+[629,] 17.08    0    0
+[630,] 18.17    1    0
+[631,] 22.08    1    0
+[632,] 15.33    1    0
+[633,] 22.67    1    0
+[634,] 20.17    1    0
+[635,] 23.92    1    0
+[636,] 17.30    1    0
+[637,] 21.75    1    0
+[638,] 28.17    0    1
+[639,] 21.33    0    1
+[640,] 16.75    1    0
+[641,] 22.80    0    0
+[642,] 14.08    1    0
+[643,] 23.42    1    0
+[644,] 17.50    0    0
+[645,] 21.20    1    0
+[646,] 25.17    1    0
+[647,] 26.67    1    0
+[648,] 20.83    1    0
+[649,] 29.80    1    0
+[650,] 21.42    0    0
+[651,] 19.83    1    0
+[652,] 23.58    1    0
+> print(data$timee)      # Failure times
+  [1]  1.4694  0.8000  0.2500  0.8861  5.6361  0.7917  2.2194  2.3861  0.8028
+ [10]  0.8028  1.1361  1.4694  1.0528  0.7917  1.0528  1.0528  4.2111  0.4375
+ [19]  2.5528  0.8861  0.2667  2.5528  2.1361  0.7917  0.9694  0.7917  1.5452
+ [28]  0.9694  2.8861  0.7644  1.8861  1.1361  0.8028  1.8861  0.5000  1.4694
+ [37]  1.2194  1.8356  2.8028  1.4667  1.0528  3.3028  3.2194  1.8861  1.1778
+ [46]  3.3861  1.9694  1.3028  2.2194  0.7917  1.1361  0.7917  3.1233  0.7917
+ [55]  2.0528  3.2194  2.0767  0.3333  0.9694  1.0000  0.7917  1.0528 10.9694
+ [64]  0.7917  0.8889  1.3042  2.7153  2.2208  0.8875  1.2222  0.7500  1.0556
+ [73]  2.0542  1.9694  2.5556  1.3889  1.3042  0.9694  1.6042  1.1792  1.3056
+ [82]  2.9722  0.8833  0.2083  0.9722  1.1347  1.1389  0.9722  0.8889  2.1389
+ [91]  1.0556  1.1403  1.3056  4.9096  1.1361  1.2222  1.8889  0.5222  0.7123
+[100]  1.3056  0.9722  1.6972  2.0556  1.8861  1.1361  1.1361  1.3056  0.9708
+[109]  0.4167  0.7708  0.8889  0.9479  1.8889  0.9569  1.0528  1.4722  0.8889
+[118]  0.8889  0.8333  2.3056  1.0556  1.1181  0.8333  0.7288  0.9694  4.0556
+[127]  0.8333  1.3028  0.9722  1.7222  0.8889  0.9722  6.9722  1.3056  2.2222
+[136]  2.7222  0.1945  0.8889  1.1347  0.8889  1.1389  0.8889  1.2222  4.2181
+[145]  0.7708  1.3847  1.3014  0.8889  0.8833  0.7500  1.1333  1.0528  5.6222
+[154]  1.1389  1.2222  1.2222  1.4722  1.5556  0.9722  1.1389  0.8750  2.1347
+[163]  1.0208  0.7708  2.0556  3.0236  1.9722  0.9708  0.8333  1.1389  2.3889
+[172]  0.8333  2.1389  0.8889  1.3056  0.8333  4.3875  0.8875  1.0028  1.2222
+[181]  1.2222  0.8125  0.9722  1.1205  1.1389  2.6389 10.8014  1.3056  1.4329
+[190]  1.4694  1.3861  1.3889  2.5167  2.2222  1.6389  1.3889  1.0274  2.0556
+[199]  0.8333  1.1389  0.8889  4.4722  1.0027  1.0556  1.2222  4.0164  0.9722
+[208]  0.9722  0.9611  4.2222  1.3889  0.9694  2.1389  0.8889  1.3056  5.5556
+[217]  3.2222  1.0556  4.1389  0.8889  0.9583 10.6389  6.8082  1.8889  2.9722
+[226]  1.3889  2.3000  0.9722  2.3889  1.2194  1.2194  1.1361  0.8861  4.2222
+[235]  1.0528  1.4722  2.6389  2.0542  1.0556  1.7208  1.1389  0.9722  3.7222
+[244]  0.9722  2.8889  0.8333  6.1389  1.1375  1.0514  4.0514 10.8493  1.1347
+[253]  0.9667  1.6375  1.5528  2.2194  3.8014  1.3028  0.7708  1.1347  1.6347
+[262]  2.3847  4.0417  0.7708  0.9722  2.7181  1.2194  1.5556  8.8889  1.2194
+[271]  1.3014  1.4681  0.9681  2.2247  1.0514  3.0556  1.0514  1.3028  9.0055
+[280]  1.5514  1.2181  0.8014  0.9694  0.9694  1.1347  1.0528  3.6347  4.1361
+[289]  1.2194  0.8875  1.3861  1.2222  0.7708  2.2194  0.2667  1.9722  1.3028
+[298]  0.8028  0.8333  2.8028  1.3014  1.2167  1.2181  1.4694  1.3847  0.8014
+[307]  1.3014  0.9681  3.4681  1.0514  1.1347  2.1347  1.4681  0.8014  1.5514
+[316]  1.0514  4.8014  1.8014  2.0514  1.6347  1.8847  1.0208  0.2658  2.2194
+[325]  1.5528  1.0528  1.2194  0.9694  9.7726  1.0528  1.4694  0.8000  0.8861
+[334]  2.0528  0.9708  1.4708  3.9562  1.3028  1.5542  1.5542  7.3028  0.8028
+[343]  2.3028  1.9222  3.3861  1.3861  0.8389  5.4722  2.3889  1.0528  0.8125
+[352]  1.6361  2.4694  0.9694  1.6361  2.1389  1.1361  2.8028  0.9667  2.6361
+[361]  1.0528  1.8861  0.8861  1.9681  0.9681  1.0514  1.8847  3.0514  1.8014
+[370]  1.8847  1.9681  3.4681  2.5514  2.3847  0.9681  2.8014  1.5514  2.5514
+[379]  1.0514  3.8847  1.3847  0.7708  1.0514  6.7181  6.0125  1.9681  3.0514
+[388]  1.2181  7.3014  0.9681  0.7917  0.8014  1.4681  1.0514  0.8500  0.8847
+[397]  2.0514  2.5514  1.0514  0.7708  0.7708  0.7708  0.8847  0.7708  1.1347
+[406]  0.8014  1.1347  0.0384  7.8630  0.2611  0.0384  2.3847  2.2222  1.7208
+[415]  2.9722  1.1389  1.0431  1.4708  0.9708  0.8125  0.8875  4.3903  1.3042
+[424]  1.3861  2.8861  2.5528  1.0528  1.8875  1.5542  1.5542  0.7069  2.3889
+[433]  1.3014  2.7194  6.7222  3.1375  8.9792  2.6375  2.2222  1.8028  5.7514
+[442]  0.8014  1.3847  2.2181  2.0514  1.6347  0.9306  1.8056  0.8000  1.1389
+[451]  1.3000  1.8833  1.3833  1.8822  2.3056  1.7222  1.5500  0.9667  3.3056
+[460] 10.7973  2.3000  1.0528  2.4694  0.9694  0.9694  0.9694  2.5528  1.2194
+[469]  0.8861  1.8861  1.9694  1.0528  1.0528  0.9694  1.8861  1.0528  0.9694
+[478]  1.3028  1.0904  0.9694  1.9667  0.7917  1.1333  1.9667  1.0500  1.8903
+[487]  3.4681  1.3042  1.3014  7.3847  2.1671  2.4681  2.4694  2.8042  1.4694
+[496]  0.7708  1.0514  0.7889  1.0822  0.8847  0.9681  0.9681  2.5514  1.3847
+[505]  1.2181  2.8750  2.3861  2.0849  0.9096  1.3014  1.5528  9.0542  0.7708
+[514]  3.0027  1.4681  1.0514  3.2181  0.8014  2.2959  0.8042  1.4681  0.9375
+[523]  0.9681  2.2181  0.8861  1.7041  3.4694  2.8056  1.0556  2.2222  1.4694
+[532]  3.0514  1.4694  1.3260  0.2000  0.7917  1.5514  0.9681  1.8750  1.4681
+[541]  0.9722  0.7708  1.6347  0.8889  9.3722  2.8056  2.0356  1.5514  1.5417
+[550]  0.8333  1.7208  0.7514  0.8028  0.8028  2.7514  1.2514  4.5417  1.7208
+[559]  2.0847  1.9708  0.9708  1.6333  1.0472  2.8056  1.6417  0.8750  1.4750
+[568]  1.3917  0.8917  0.8750  1.3042  1.8056  1.9722  8.0556  0.8750  1.2250
+[577] 10.8630  1.0542  1.1417  0.9722  3.7236  1.2250  0.9750  0.8917  0.9694
+[586]  1.4667  1.1333  1.0500  0.8333  1.5556  1.2181  0.8833  0.7500  0.8014
+[595]  1.1333  3.3056  2.7250  0.8875  1.3028  1.0556  1.4722  1.3889  1.3014
+[604]  0.8833  1.0556  1.0375  1.3833  1.6548  3.2889  4.3125  0.7514  2.9167
+[613]  1.8125  1.1397  2.3151  0.8333  1.3014  0.8014  1.9681  0.7917  2.8028
+[622]  3.7181  3.0658  1.3847  1.0514  1.2181  1.8861  2.2181  0.5111  1.9708
+[631]  0.7611  1.3042  0.8847  6.1726  1.2181  1.3847  0.6986  0.9681  0.7708
+[640]  0.8125  1.3056  5.5542  1.1375  1.7194  1.0542  2.3056  0.8333  3.2222
+[649]  1.0542  4.0542  1.2194  0.9694
+> print(data$delta1)    # Indicator for the first competing event
+  [1] 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 0 1 1 1 1 1 0 1 1 0 1 1 1 1 0 1 1
+ [38] 0 1 1 1 1 1 1 0 1 1 1 1 1 1 0 0 1 1 1 0 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ [75] 1 1 1 1 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 1 0 0 0 1 0 1 1 1 1 1 1 1 1 1
+[112] 0 1 0 1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1
+[149] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 0 1
+[186] 1 1 1 0 1 1 1 0 1 1 1 0 1 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[223] 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1
+[260] 1 0 1 0 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1
+[297] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 1 1 1 1
+[334] 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1
+[371] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1
+[408] 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1
+[445] 1 1 0 1 1 1 1 1 1 0 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1
+[482] 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0 0 0 1 1 1 0 1 1 1 1
+[519] 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 0 1 0 1 1 1 1 1 1 1 1
+[556] 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+[593] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 0 1 1 1 1 1 1 1 0 1 1 1 1 1 0
+[630] 1 0 1 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+> print(data$delta2)    # Indicator for the second competing event
+  [1] 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0
+ [38] 0 0 0 0 0 0 0 1 0 0 0 0 0 0 1 0 0 0 0 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ [75] 0 0 0 0 0 1 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 1 0 1 0 0 0 0 0 0 0 0 0
+[112] 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[149] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0
+[186] 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[223] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[260] 0 1 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0
+[297] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[334] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0
+[371] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0
+[408] 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0
+[445] 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[482] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0
+[519] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0
+[556] 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[593] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1
+[630] 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("GetData", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("GetDim")
+> ### * GetDim
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: GetDim
+> ### Title: Get Dimensions of the Cmpp Object
+> ### Aliases: GetDim
+> 
+> ### ** Examples
+> 
+> # Initialize Cmpp object
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> # Get dimensions
+> dims <- GetDim()
+> dims$Nsamp    # Number of samples
+[1] 652
+> dims$Nfeature # Number of features
+[1] 3
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("GetDim", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("Initialize")
+> ### * Initialize
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: Initialize
+> ### Title: Initialize Data for the Cmpp Model
+> ### Aliases: Initialize
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> features <- matrix(rnorm(100), ncol = 5)
+> x <- rnorm(20)
+> delta1 <- sample(0:1, 20, replace = TRUE)
+> delta2 <- 1 - delta1
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("Initialize", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("LogLike1")
+> ### * LogLike1
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: LogLike1
+> ### Title: Compute the Log-Likelihood for the Model
+> ### Aliases: LogLike1
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> param <- c(0.01, 0.01, 0.01, 0.01)
+> LogLike1(param)
+[1] 2798.334
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("LogLike1", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("bootstrap_variance")
+> ### * bootstrap_variance
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: bootstrap_variance
+> ### Title: Estimate Variance of Parameters Using Bootstrap Method
+> ### Aliases: bootstrap_variance
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> features <- matrix(rnorm(100), ncol = 5)
+> x <- rnorm(20)
+> delta1 <- sample(0:1, 20, replace = TRUE)
+> delta2 <- 1 - delta1
+> initial_params <- c(0.01, 0.01, 0.01, 0.01)
+> n_bootstrap <- 100
+> results <- bootstrap_variance(features, x, delta1, delta2, 
++ initial_params, n_bootstrap, optimMethod = "BFGS")
+> print(results$variances)
+[1]    20.915001  6088.900874     4.856199 10737.343031
+> print(results$bootstrap_estimates)
+                [,1]       [,2]       [,3]       [,4]
+  [1,] -12.196609973   9.169654  -6.964381   8.597512
+  [2,]  -0.119418627 140.262820  -2.061109 261.430518
+  [3,] -21.845142219  14.096111  -2.410085   4.161343
+  [4,] -14.570059613  12.253852  -2.843412   4.140691
+  [5,] -22.125809932  13.049567  -1.671615   5.956934
+  [6,]  -8.135449965  36.595060  -4.731736  45.196399
+  [7,]  -0.044727976 120.208863  -1.935472 281.439565
+  [8,]  -8.163649139  36.388601  -3.094169  44.912884
+  [9,]  -0.392383140 139.873097  -2.065166 260.804035
+ [10,] -10.605007201  10.340198  -5.076099   7.080636
+ [11,]  -2.516657324   7.389314  -6.859498   9.318814
+ [12,]  -2.896977183  48.230102  -5.193970  32.406889
+ [13,]   1.763061266  28.067880  -6.978142  52.759931
+ [14,]  -4.493469737   8.327126  -7.026380   8.196857
+ [15,]  -3.960746763 260.469501  -2.749489 140.484833
+ [16,]  -2.100973561  28.106824  -4.516260  52.652286
+ [17,] -10.888158839   8.903751  -6.630558   8.904410
+ [18,]  -0.509135606  32.023786  -4.641638  48.185665
+ [19,]  -1.035865932   5.272754  -6.611692  11.262922
+ [20,]  -1.059922812 160.118365  -3.810856 240.596101
+ [21,]  -7.011825484   7.313668  -6.830839   9.525916
+ [22,]  -1.507078510 200.631770  -2.494851 201.256957
+ [23,]   0.813325991  59.694477  -1.599776 341.150555
+ [24,] -10.933224666   8.693760  -2.893158   8.486655
+ [25,]  -5.606347692   5.759434  -6.718175  10.383841
+ [26,]  -4.380245835 201.126873  -4.200976 201.348024
+ [27,]  -5.455063189   6.275522  -9.883379  10.754368
+ [28,]  -9.598898737   8.677447  -9.864966  10.864742
+ [29,]  -1.597573753 160.791959  -3.807593 240.951468
+ [30,]  -1.771048666  32.050636  -4.629908  48.587985
+ [31,] -10.023926695  14.025154  -7.370686   1.563974
+ [32,]  -4.141479529 241.060240  -2.709980 160.282028
+ [33,]  -1.182800738 200.358137  -2.494410 201.312526
+ [34,]  -5.159457465   5.559722  -9.721123  11.765464
+ [35,] -10.884483356   8.921078  -4.031316   8.801484
+ [36,]  -0.308447981 160.518069  -2.198841 240.869756
+ [37,]  -3.177141918   6.650499  -6.812376   9.661625
+ [38,]  -1.533110567 180.996772  -2.327796 222.869364
+ [39,] -10.575896658  10.500038  -3.037641   6.976195
+ [40,]  -2.578885981  32.296894  -7.089310  48.453835
+ [41,]  -0.055262645  28.062325  -4.522008  52.439590
+ [42,]  -1.545862069  28.104716  -4.519813  52.520558
+ [43,]   0.252324833  59.654336  -1.602611 340.606531
+ [44,]  -6.005630239   4.669575  -6.588274  11.465743
+ [45,]  -7.752047715  44.691628  -3.315009  37.119745
+ [46,]  -8.972942675   7.972397  -6.870024   9.243893
+ [47,]  -2.210169635   5.533615  -6.638192  11.037659
+ [48,]  -1.196157120 160.284333  -2.198591 240.905800
+ [49,] -10.635745128  10.173969  -6.552635   8.095382
+ [50,]  -1.071697944 180.298773  -2.337400 221.575548
+ [51,]   0.226605228  99.714016  -1.820741 300.800828
+ [52,] -10.091079405  13.541800  -1.362609   3.106779
+ [53,]  -0.151490290 120.205702  -1.939042 280.853994
+ [54,]  -6.498607098   8.915732  -7.049500   8.052147
+ [55,]  -1.218592942 220.751775  -2.660925 181.576672
+ [56,]  -1.385987528 200.528072  -2.496789 201.017985
+ [57,]  -8.384924786  32.553100  -4.887365  49.448572
+ [58,] -10.602230517  10.842978  -7.219088   7.063655
+ [59,]  -4.432052511  10.262639  -7.138579   7.517306
+ [60,]  -0.004309643 159.847490  -2.192512 241.784319
+ [61,]  -0.258747588 100.506358  -1.820529 300.837832
+ [62,]  -7.762390392  44.462716  -4.210354  36.421684
+ [63,]   0.084381481  40.039848  -4.889478  40.376798
+ [64,]  -8.502911662  40.917217  -4.853327  41.436936
+ [65,]  -7.753713710  44.654603  -1.663216  36.735626
+ [66,]  -0.926201883 200.293094  -2.493207 201.460870
+ [67,]  -1.311200566 180.582289  -2.339912 221.238246
+ [68,]  -1.333383191 160.460605  -2.196874 241.154639
+ [69,]  -2.350402696 181.622373  -4.033146 221.191233
+ [70,]  -7.989204886   8.138957  -6.940342   8.757940
+ [71,]  -9.564743359   7.433837  -6.830957   9.525058
+ [72,]  -4.512923460  48.990998  -7.866129  32.203482
+ [73,]  -6.045503017   7.445082  -6.864299   9.284618
+ [74,]  -7.747129078  44.800948  -3.376394  36.730466
+ [75,] -10.651761642  10.088401  -6.435693   8.064157
+ [76,] -10.761897205   9.390612 -10.289648   8.578364
+ [77,]  -2.771168179   8.899087  -7.049716   8.050778
+ [78,]  -5.339583081  48.481499  -5.187576  32.557956
+ [79,]  -5.471408758 201.605104  -4.388588 201.521472
+ [80,]  -0.508448805 180.222400  -2.342936 220.832410
+ [81,]  -4.550841130 201.706423  -4.056371 202.530112
+ [82,]  -7.946623050  40.564869  -4.248038  40.878324
+ [83,]  -4.558086480 201.063896  -2.424847 200.636690
+ [84,]  -6.114429956  11.441312  -7.208197   7.123409
+ [85,]  -2.802804917  44.234208  -5.023807  36.657076
+ [86,]  -8.154341308  36.559040  -4.158189  45.365952
+ [87,]  -2.917752903  27.936643  -6.927533  52.696200
+ [88,]  -1.818211369 261.059455  -3.062791 140.716705
+ [89,] -10.819904389   9.231152  -4.374202   8.174642
+ [90,]  -1.916026346  36.054929  -4.746868  44.711724
+ [91,]  -3.371527234  44.325230  -7.622892  36.632569
+ [92,]  -1.230114931 200.906126  -2.499455 200.687660
+ [93,] -10.724294365  53.575634  -2.903120  28.606651
+ [94,]  -4.509020594 201.418621  -4.197234 201.695904
+ [95,]  -7.560971767  44.746529  -5.014635  36.900549
+ [96,]  -9.567042403   8.138297  -6.856889   9.337502
+ [97,]  -7.944246660  40.612895  -4.664176  40.942397
+ [98,]  -0.139775065 139.778338  -2.061254 261.407484
+ [99,]  -1.337275538 180.690935  -2.335599 221.817956
+[100,]  -2.816628713  32.108586  -4.624012  48.791273
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("bootstrap_variance", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cdf_gomp")
+> ### * cdf_gomp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cdf_gomp
+> ### Title: Compute the CDF of the Gompertz Distribution
+> ### Aliases: cdf_gomp
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> x <- c(1, 2, 3)
+> alpha <- 0.5
+> beta <- 0.1
+> lapply(x, cdf_gomp, alpha = alpha, beta = beta) |> unlist()
+[1] 0.1216800 0.2908274 0.5015928
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cdf_gomp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("cmpp")
+> ### * cmpp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: cmpp
+> ### Title: Direct Parametric Inference for the Cumulative Incidence
+> ###   Function in Competing Risks
+> ### Aliases: cmpp-package cmpp
+> ### Keywords: cumulative incidence parametric regression risks survival
+> 
+> ### ** Examples
+> 
+> ## Example: Initialize the Cmpp model and compute CIFs
+> library(cmpp)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> timee <- rexp(100, rate = 1/10)
+> Initialize(features, timee, delta1, delta2, h = 1e-5)
+> # Initialize the Cmpp model
+> # Estimate parameters using the Generalized odds rate (GOR)
+> initial_params <- rep(0.001, 2 * (ncol(features) + 3))
+> result <- estimate_parameters_GOR(initial_params)
+> print(result)
+   Parameter     Estimate          S.E    PValue
+1     alpha1 1.000005e-03 1.344858e-02 0.9940672
+2       tau1 2.060139e-06 3.664761e-07 0.5740150
+3       rho1 1.005360e-03 3.407909e-04 0.7679878
+4    beta1:1 9.992691e-04 2.097214e-03 0.9619972
+5    beta1:2 9.993121e-04 1.787003e-03 0.9554046
+6    beta1:3 9.991959e-04 1.597829e-03 0.9501371
+7     alpha2 1.000005e-03 1.072915e-02 0.9925635
+8       tau2 3.083189e-04 3.973653e-07 0.0000000
+9       rho2 1.005531e-03 3.044940e-04 0.7412261
+10   beta2:1 9.992686e-04 1.755141e-03 0.9545979
+11   beta2:2 9.995777e-04 2.070816e-03 0.9615013
+12   beta2:3 9.995312e-04 1.848864e-03 0.9568858
+> # Compute CIFs for competing risks (without covariate effect | Not Regression model)
+> cif_results <- CIF_res1()
+> print(cif_results)
+  Params  Estimation       STD
+1 alpha1 0.003036101 0.8478269
+2  beta1 0.118172789 1.5590160
+3 alpha2 0.002785121 0.5949764
+4  beta2 0.097133301 0.7506350
+> # Plot CIFs with confidence intervals
+> plot <- CIF_Figs(rep(0.01, 4), timee)
+> print(plot)
+> # Compute and plot adjusted CIFs
+> result_cif <- Cmpp_CIF(
++ featureID = c(1, 2),
++ featureValue = c(0.5, 1.2),
++ RiskNames = c("Event1", "Event2"),
++ TypeMethod = "GOR",
++ predTime = seq(0, 10, by = 0.5)
++ )
+> print(result_cif$Plot$Plot_InputModel) # Plot for the specified model
+> print(result_cif$CIF$CIFAdjusted) # Adjusted CIF values
+   Time  CIFAdjusted   Risk
+1   0.0 0.000000e+00 Event1
+2   0.5 2.875716e-06 Event1
+3   1.0 5.736352e-06 Event1
+4   1.5 8.581988e-06 Event1
+5   2.0 1.141270e-05 Event1
+6   2.5 1.422857e-05 Event1
+7   3.0 1.702968e-05 Event1
+8   3.5 1.981610e-05 Event1
+9   4.0 2.258790e-05 Event1
+10  4.5 2.534518e-05 Event1
+11  5.0 2.808799e-05 Event1
+12  5.5 3.081643e-05 Event1
+13  6.0 3.353055e-05 Event1
+14  6.5 3.623045e-05 Event1
+15  7.0 3.891618e-05 Event1
+16  7.5 4.158784e-05 Event1
+17  8.0 4.424548e-05 Event1
+18  8.5 4.688919e-05 Event1
+19  9.0 4.951904e-05 Event1
+20  9.5 5.213510e-05 Event1
+21 10.0 5.473744e-05 Event1
+22  0.0 0.000000e+00 Event2
+23  0.5 1.713690e-03 Event2
+24  1.0 3.415448e-03 Event2
+25  1.5 5.105372e-03 Event2
+26  2.0 6.783559e-03 Event2
+27  2.5 8.450107e-03 Event2
+28  3.0 1.010511e-02 Event2
+29  3.5 1.174866e-02 Event2
+30  4.0 1.338086e-02 Event2
+31  4.5 1.500179e-02 Event2
+32  5.0 1.661156e-02 Event2
+33  5.5 1.821024e-02 Event2
+34  6.0 1.979793e-02 Event2
+35  6.5 2.137472e-02 Event2
+36  7.0 2.294069e-02 Event2
+37  7.5 2.449594e-02 Event2
+38  8.0 2.604055e-02 Event2
+39  8.5 2.757461e-02 Event2
+40  9.0 2.909820e-02 Event2
+41  9.5 3.061141e-02 Event2
+42 10.0 3.211431e-02 Event2
+> # Fit a Fine-Gray model for competing risks
+> result_fg <- FineGray_Model(
++ CovarNames = c("Covar1", "Covar2", 'Covar3'),
++ Failcode = 1,
++ RiskNames = c("Event1", "Event2")
++ )
+> print(result_fg$Results)  # Summary of the Fine-Gray model
+Competing Risks Regression
+
+Call:
+cmprsk::crr(ftime = Time, fstatus = status, cov1 = Features, 
+    failcode = Failcode, cencode = 0)
+
+          coef exp(coef) se(coef)      z p-value
+Covar1 -0.0412      0.96   0.0780 -0.528    0.60
+Covar2  0.0570      1.06   0.0721  0.790    0.43
+Covar3  0.0752      1.08   0.0632  1.190    0.23
+
+       exp(coef) exp(-coef)  2.5% 97.5%
+Covar1      0.96      1.042 0.824  1.12
+Covar2      1.06      0.945 0.919  1.22
+Covar3      1.08      0.928 0.953  1.22
+
+Num. cases = 100
+Pseudo Log-likelihood = -230 
+Pseudo likelihood ratio test = 2.1  on 3 df,
+> print(result_fg$Plot) # Plot of the CIFs
+> 
+> # Clean up memory
+> Cleanup()
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("cmpp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("compute_grad")
+> ### * compute_grad
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: compute_grad
+> ### Title: Compute the Numerical Gradient of the Log-Likelihood
+> ### Aliases: compute_grad
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> param <- c(0.5, 0.1, 0.6, 0.2)
+> compute_grad(param)
+[1]  1207.4463 -1019.3378   832.0035   788.7309
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("compute_grad", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("compute_hessian")
+> ### * compute_hessian
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: compute_hessian
+> ### Title: Compute the Hessian Matrix of the Log-Likelihood
+> ### Aliases: compute_hessian
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> # Estimate model parameters using default initial values and the BFGS method
+> result <- estimate_parameters()
+> print(result)
+$par
+[1] 0.1189778 0.4279753 0.1546098 0.1121017
+
+$value
+[1] 1096.601
+
+$counts
+function gradient 
+      66       19 
+
+$convergence
+[1] 0
+
+$message
+NULL
+
+> param <- c(0.5, 0.1, 0.6, 0.2)
+> hessian <- compute_hessian(param)
+> print(hessian)
+             [,1]          [,2]         [,3]         [,4]
+[1,] 1.207461e+13 -1.019329e+13 8.320040e+12 7.887326e+12
+[2,] 1.207476e+13 -1.019320e+13 8.320058e+12 7.887309e+12
+[3,] 1.207442e+13 -1.019336e+13 8.320040e+12 7.887320e+12
+[4,] 1.207441e+13 -1.019334e+13 8.320035e+12 7.887314e+12
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("compute_hessian", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("compute_log_f_gradient_rcpp")
+> ### * compute_log_f_gradient_rcpp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: compute_log_f_gradient_rcpp
+> ### Title: Compute the Gradient of the Log-Likelihood Function Generalized
+> ###   odds rate (GOR)
+> ### Aliases: compute_log_f_gradient_rcpp
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> set.seed(1984)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/3)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.001, 2 * (ncol(features) + 3))
+> gradient <- compute_log_f_gradient_rcpp(params)
+> print(gradient)
+ [1]  2.958809e+02 -7.296467e+07  2.961045e+05 -7.579769e+04 -6.915709e+04
+ [6] -8.404743e+04  1.648533e+02 -6.480266e+07  1.647946e+05 -9.197257e+04
+[11] -5.817410e+04 -6.203105e+04
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("compute_log_f_gradient_rcpp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("compute_log_f_gradient_rcpp2")
+> ### * compute_log_f_gradient_rcpp2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: compute_log_f_gradient_rcpp2
+> ### Title: Compute the Gradient of the Log-Likelihood Function Proportional
+> ###   Odds Model (POM)
+> ### Aliases: compute_log_f_gradient_rcpp2
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/5)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.001, 2 * (ncol(features) + 2))
+> gradient <- compute_log_f_gradient_rcpp2(params)
+> print(gradient)
+ [1] -75492141.20    311713.60    -61276.62    -40833.17    -40474.92
+ [6] -61604952.65    335871.51    -84351.71    -76006.66    -58196.99
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("compute_log_f_gradient_rcpp2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("compute_log_f_gradient_rcpp3")
+> ### * compute_log_f_gradient_rcpp3
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: compute_log_f_gradient_rcpp3
+> ### Title: Compute the Gradient of the Log-Likelihood Function Proportional
+> ###   Hazards Model (PHM)
+> ### Aliases: compute_log_f_gradient_rcpp3
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)  
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/10)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.001, 2 * (ncol(features) + 2))
+> gradient <- compute_log_f_gradient_rcpp3(params)
+> print(gradient)
+ [1] -75541344.21    623836.23    -61318.00    -40859.14    -40500.65
+ [6] -61643345.89    672165.55    -84402.92    -76053.16    -58235.26
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("compute_log_f_gradient_rcpp3", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("compute_log_f_hessian_rcpp")
+> ### * compute_log_f_hessian_rcpp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: compute_log_f_hessian_rcpp
+> ### Title: Compute the Hessian Matrix of the Log-Likelihood Function
+> ###   Generalized odds rate (GOR)
+> ### Aliases: compute_log_f_hessian_rcpp
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/7)
+> Initialize(features, x, delta1, delta2, h = 1e-4)
+> params <- rep(0.001, 2 * (ncol(features) + 3))
+> hessian <- compute_log_f_hessian_rcpp(params)
+> print(hessian)
+         [,1]          [,2]       [,3]       [,4]       [,5]       [,6]    [,7]
+ [1,] 4357845 -759485887209 4373093935 -613753738 -409380338 -405894004 4696621
+ [2,] 4355917 -768272754070 4374859408 -614000925 -409545986 -406058438 4698497
+ [3,] 4357846 -759485886230 4373093920 -613753738 -409380337 -405894003 4696621
+ [4,] 4357845 -759485887139 4373093935 -613753738 -409380338 -405894004 4696621
+ [5,] 4357845 -759485887135 4373093934 -613753738 -409380338 -405894004 4696621
+ [6,] 4357845 -759485887147 4373093934 -613753738 -409380338 -405894004 4696621
+ [7,] 4357845 -759485887208 4373093935 -613753738 -409380338 -405894004 4696621
+ [8,] 4359270 -759734033750 4374523325 -613954350 -409514148 -406026675 4694772
+ [9,] 4357845 -759485887414 4373093936 -613753738 -409380338 -405894004 4696624
+[10,] 4357845 -759485887218 4373093935 -613753738 -409380338 -405894004 4696621
+[11,] 4357845 -759485887219 4373093935 -613753738 -409380338 -405894004 4696621
+[12,] 4357845 -759485887219 4373093935 -613753738 -409380338 -405894004 4696621
+               [,8]       [,9]      [,10]      [,11]      [,12]
+ [1,] -620202173423 4716707902 -846487447 -762736316 -582972896
+ [2,] -620449860608 4718592207 -846825615 -763041026 -583205791
+ [3,] -620202173500 4716707902 -846487447 -762736316 -582972896
+ [4,] -620202173428 4716707902 -846487447 -762736316 -582972896
+ [5,] -620202173429 4716707902 -846487447 -762736316 -582972896
+ [6,] -620202173428 4716707902 -846487447 -762736316 -582972896
+ [7,] -620202173424 4716707902 -846487447 -762736316 -582972896
+ [8,] -627250244661 4718273396 -846768957 -762989954 -583165117
+ [9,] -620202171184 4716707857 -846487442 -762736313 -582972896
+[10,] -620202173316 4716707901 -846487447 -762736316 -582972896
+[11,] -620202173304 4716707901 -846487447 -762736316 -582972896
+[12,] -620202173302 4716707901 -846487447 -762736316 -582972896
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("compute_log_f_hessian_rcpp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("estimate_parameters")
+> ### * estimate_parameters
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: estimate_parameters
+> ### Title: Estimate Model Parameters Using Optimization
+> ### Aliases: estimate_parameters
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> # Estimate model parameters using default initial values and the BFGS method
+> result <- estimate_parameters()
+> print(result)
+$par
+[1] 0.1189778 0.4279753 0.1546098 0.1121017
+
+$value
+[1] 1096.601
+
+$counts
+function gradient 
+      66       19 
+
+$convergence
+[1] 0
+
+$message
+NULL
+
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("estimate_parameters", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("estimate_parameters_GOR")
+> ### * estimate_parameters_GOR
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: estimate_parameters_GOR
+> ### Title: Estimate Parameters for the Generalized odds rate (GOR)
+> ### Aliases: estimate_parameters_GOR
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> # Example data
+> set.seed(371)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/4)
+> # Initialize the Cmpp model
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> # Define initial parameter values
+> initial_params <- rep(0.001, 2 * (ncol(features) + 3))
+> # Estimate parameters using the GOR
+> result <- estimate_parameters_GOR(initial_params)
+> print(result)
+   Parameter     Estimate          S.E     PValue
+1     alpha1 1.000002e-03 1.437145e-02 0.99444816
+2       tau1 3.401958e-04 4.014053e-07 0.00000000
+3       rho1 1.002064e-03 1.293063e-03 0.93822945
+4    beta1:1 9.996704e-04 3.364942e-03 0.97629962
+5    beta1:2 9.993409e-04 3.646645e-03 0.97813719
+6    beta1:3 9.993146e-04 3.392191e-03 0.97649830
+7     alpha2 1.000002e-03 1.219878e-02 0.99345936
+8       tau2 9.221897e-06 3.629798e-07 0.01106597
+9       rho2 1.002604e-03 1.020569e-03 0.92174200
+10   beta2:1 9.991305e-04 2.956164e-03 0.97303806
+11   beta2:2 9.994507e-04 3.520240e-03 0.97734986
+12   beta2:3 9.991418e-04 2.449608e-03 0.96746505
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("estimate_parameters_GOR", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("estimate_parameters_PHM")
+> ### * estimate_parameters_PHM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: estimate_parameters_PHM
+> ### Title: Estimate Parameters for the Proportional Hazards Model (PHM)
+> ### Aliases: estimate_parameters_PHM
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> # Example data
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/10)
+> 
+> # Initialize the Cmpp model
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> 
+> # Define initial parameter values
+> initial_params <- rep(0.001, 2 * (ncol(features) + 2))
+> 
+> # Estimate parameters using the PHM
+> result <- estimate_parameters_PHM(initial_params)
+> print(result)
+   Parameter     Estimate          S.E      PValue
+1       tau1 9.982803e-06 3.631115e-07 0.005973378
+2       rho1 1.005418e-03 3.276636e-04 0.758961738
+3    beta1:1 9.994676e-04 2.099340e-03 0.962028140
+4    beta1:2 9.996451e-04 2.244138e-03 0.964470197
+5    beta1:3 9.996481e-04 2.500479e-03 0.968110449
+6       tau2 3.440614e-04 4.020526e-07 0.000000000
+7       rho2 1.005838e-03 3.261577e-04 0.757785432
+8    beta2:1 9.992668e-04 2.245317e-03 0.964502282
+9    beta2:2 9.993393e-04 1.833691e-03 0.956537772
+10   beta2:3 9.994944e-04 1.782113e-03 0.955274265
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("estimate_parameters_PHM", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("estimate_parameters_POM")
+> ### * estimate_parameters_POM
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: estimate_parameters_POM
+> ### Title: Estimate Parameters for the Proportional Odds Model (POM)
+> ### Aliases: estimate_parameters_POM
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> # Example data
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/10)
+> 
+> # Initialize the Cmpp model
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> 
+> # Define initial parameter values
+> initial_params <- rep(0.001, 2 * (ncol(features) + 2))
+> 
+> # Estimate parameters using the POM
+> result <- estimate_parameters_POM(initial_params)
+> print(result)
+   Parameter     Estimate          S.E    PValue
+1       tau1 2.376153e-06 3.636489e-07 0.5134858
+2       rho1 1.005401e-03 2.421549e-04 0.6780033
+3    beta1:1 9.994686e-04 1.510577e-03 0.9472467
+4    beta1:2 9.996467e-04 1.605330e-03 0.9503474
+5    beta1:3 9.996500e-04 1.783985e-03 0.9553142
+6       tau2 3.482281e-04 4.032351e-07 0.0000000
+7       rho2 1.005803e-03 2.359584e-04 0.6699165
+8    beta2:1 9.992722e-04 1.614765e-03 0.9506556
+9    beta2:2 9.993442e-04 1.321970e-03 0.9397412
+10   beta2:3 9.994956e-04 1.294341e-03 0.9384482
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("estimate_parameters_POM", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("f_pdf_rcpp")
+> ### * f_pdf_rcpp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: f_pdf_rcpp
+> ### Title: Compute the PDF of the Parametric Generalized odds rate (GOR)
+> ### Aliases: f_pdf_rcpp
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/10)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.001, (ncol(features) + 3))
+> pdf_value <- f_pdf_rcpp(params, features[1, ], x[3])
+> print(pdf_value)
+[1] 0.0009954127
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("f_pdf_rcpp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("f_pdf_rcpp2")
+> ### * f_pdf_rcpp2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: f_pdf_rcpp2
+> ### Title: Compute the PDF of the Parametric Proportional Odds Model (POM)
+> ### Aliases: f_pdf_rcpp2
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/9)
+> Initialize(features, x, delta1, delta2, h = 1e-4)
+> params <- rep(0.001, (ncol(features) + 2))
+> pdf_value <- f_pdf_rcpp2(params, features[1, ], x[3])
+> print(pdf_value)
+[1] 0.0009870241
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("f_pdf_rcpp2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("f_pdf_rcpp3")
+> ### * f_pdf_rcpp3
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: f_pdf_rcpp3
+> ### Title: Compute the PDF of the Parametric Proportional Hazards Model
+> ###   (PHM)
+> ### Aliases: f_pdf_rcpp3
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(21)
+> features <- matrix(rnorm(300, -1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.0001, (ncol(features) + 2))
+> pdf_value <- f_pdf_rcpp3(params, features[4, ], x[4])
+> print(pdf_value)
+[1] 9.992684e-05
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("f_pdf_rcpp3", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("fertility_data")
+> ### * fertility_data
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: fertility_data
+> ### Title: Fertility History of Rural Women in Shiraz
+> ### Aliases: fertility_data
+> ### Keywords: datasets
+> 
+> ### ** Examples
+> 
+> data(fertility_data)
+> head(fertility_data)
+# A tibble: 6 × 5
+     id   age  time Education Event
+  <dbl> <dbl> <dbl> <fct>     <fct>
+1     1  17.4 1.47  2         1    
+2     2  16.5 0.8   2         1    
+3     3  21.4 0.25  2         2    
+4     4  12.4 0.886 1         1    
+5     5  13.5 5.64  2         1    
+6     6  14.9 0.792 2         1    
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("fertility_data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_f_rcpp")
+> ### * log_f_rcpp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_f_rcpp
+> ### Title: Compute the Log-Likelihood Function Generalized odds rate (GOR)
+> ### Aliases: log_f_rcpp
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/4)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.001, 2 * (ncol(features) + 3))
+> log_likelihood <- log_f_rcpp(params)
+> print(log_likelihood)
+[1] 477851.1
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_f_rcpp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_f_rcpp2")
+> ### * log_f_rcpp2
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_f_rcpp2
+> ### Title: Compute the Log-Likelihood Function Proportional Odds Model
+> ###   (POM)
+> ### Aliases: log_f_rcpp2
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/8)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.001, 2 * (ncol(features) + 2))
+> log_likelihood <- log_f_rcpp2(params)
+> print(log_likelihood)
+[1] 479917.6
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_f_rcpp2", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("log_f_rcpp3")
+> ### * log_f_rcpp3
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: log_f_rcpp3
+> ### Title: Compute the Log-Likelihood Function Proportional Hazards Model
+> ###   (PHM)
+> ### Aliases: log_f_rcpp3
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> set.seed(1984)
+> features <- matrix(rnorm(300, 1, 2), nrow = 100, ncol = 3)
+> delta1 <- sample(c(0, 1), 100, replace = TRUE)
+> delta2 <- 1 - delta1
+> x <- rexp(100, rate = 1/10)
+> Initialize(features, x, delta1, delta2, h = 1e-5)
+> params <- rep(0.001, 2 * (ncol(features) + 2))
+> log_likelihood <- log_f_rcpp3(params)
+> print(log_likelihood)
+[1] 479410.9
+> 
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("log_f_rcpp3", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("makeMat")
+> ### * makeMat
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: makeMat
+> ### Title: Create a matrix of given size filled with a constant value
+> ### Aliases: makeMat
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> # Create a 3x3 matrix filled with 5
+> mat <- makeMat(3, 3, 5)
+> print(mat)
+     [,1] [,2] [,3]
+[1,]    5    5    5
+[2,]    5    5    5
+[3,]    5    5    5
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("makeMat", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("make_Dummy")
+> ### * make_Dummy
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: make_Dummy
+> ### Title: Create Dummy Variables
+> ### Aliases: make_Dummy
+> 
+> ### ** Examples
+> 
+> dat <- data.frame(sex = c('M', 'F', 'M'), cause_burn = c('A', 'B', 'A'))
+> result <- make_Dummy(Data = dat, features = c('sex', 'cause_burn'), reff = "first")
+> print(result$New_Data)
+  sex:2 cause_burn:2
+1     1            0
+2     0            1
+3     1            0
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("make_Dummy", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> cleanEx()
+> nameEx("pdf_gomp")
+> ### * pdf_gomp
+> 
+> flush(stderr()); flush(stdout())
+> 
+> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
+> ### Name: pdf_gomp
+> ### Title: Compute the PDF of the Gompertz Distribution
+> ### Aliases: pdf_gomp
+> 
+> ### ** Examples
+> 
+> library(cmpp)
+> data("fertility_data")
+> Nam <- names(fertility_data)
+> fertility_data$Education
+  [1] 2 2 2 1 2 2 2 2 2 2 1 1 2 2 2 2 1 3 3 2 2 2 2 2 2 2 2 2 1 2 1 2 2 2 2 2 2
+ [38] 2 1 2 3 2 2 1 2 2 2 2 2 2 2 1 2 2 2 1 2 2 2 2 2 1 1 2 2 3 3 2 2 2 2 2 2 3
+ [75] 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 2 2 2 3 2 1 1 2 2 1 1 3 2 2 2 2 1 3 2 2 3
+[112] 3 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 3 2 2 2 2 3
+[149] 3 2 2 1 3 1 3 2 2 3 2 3 3 3 2 2 2 1 2 2 3 1 2 2 1 2 2 3 2 1 2 1 2 1 2 2 2
+[186] 2 1 2 2 2 1 3 2 2 2 2 3 1 2 2 2 2 2 2 2 2 3 2 1 3 1 3 2 2 2 2 3 2 3 2 2 2
+[223] 3 2 2 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 2 3 2 3 2 2 1 2 1 3 2 2 2 2 2 2
+[260] 2 3 1 2 2 2 2 2 2 2 2 2 2 2 3 2 2 2 2 2 1 1 2 1 2 2 2 2 2 1 2 2 2 2 2 2 1
+[297] 1 1 2 2 2 2 2 2 2 2 1 2 1 2 2 2 1 2 2 2 2 2 2 2 2 1 2 1 1 2 1 2 2 2 2 2 1
+[334] 2 3 2 3 3 2 3 2 3 2 2 3 2 2 3 2 2 1 3 2 3 2 2 3 3 3 3 2 2 2 1 3 2 2 2 2 2
+[371] 2 1 2 1 1 1 1 2 2 1 1 2 2 1 1 3 2 1 1 2 1 2 1 2 2 2 1 2 1 2 2 2 1 2 1 3 2
+[408] 2 2 3 2 1 2 1 3 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+[445] 1 2 2 2 2 2 1 3 1 2 3 3 2 1 2 2 2 1 2 2 2 3 2 2 2 2 3 2 2 2 2 2 2 3 3 2 1
+[482] 1 2 2 2 2 2 2 2 2 3 2 2 2 2 2 2 2 3 2 2 2 2 2 2 3 2 3 3 2 2 2 2 3 2 2 2 2
+[519] 3 1 2 2 3 2 2 2 2 3 2 2 2 3 2 3 2 1 1 2 3 2 3 3 2 2 2 2 3 2 3 2 2 2 3 3 2
+[556] 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 3 3 2 2 2 2 2 1 2 3 2 2 2 1 2 2 2 1 2 2 2 2
+[593] 2 2 2 2 2 2 2 1 2 2 2 2 2 2 2 2 2 3 2 2 2 3 2 2 1 2 2 1 2 1 2 2 2 1 2 1 1
+[630] 2 2 2 2 2 2 2 2 3 3 2 1 2 2 1 2 2 2 2 2 1 2 2
+attr(,"label")
+[1] Education Levels
+attr(,"labels")
+       Illiterate Primary/Secondary  Higher Education 
+                1                 2                 3 
+Levels: 1 2 3
+> datt <- make_Dummy(fertility_data, features = c("Education"))
+> datt <- datt$New_Data 
+> datt['Primary_Secondary'] <- datt$`Education:2`
+> datt['Higher_Education'] <- datt$`Education:3`
+> datt$`Education:2` <- datt$`Education:3` <- NULL
+> datt2 <- make_Dummy(datt, features = 'Event')$New_Data
+> d1 <- datt2$`Event:2`
+> d2 <- datt2$`Event:3`
+> feat <- datt2[c('age', 'Primary_Secondary', 'Higher_Education')] |> 
++    data.matrix()
+> timee <- datt2[['time']]
+> Initialize(feat, timee, d1, d2, 1e-10)
+> x <- c(1, 2, 3)
+> alpha <- 0.5
+> beta <- 0.1
+> lapply(x, pdf_gomp, alpha = alpha, beta = beta) |> unlist()
+[1] 0.1448105 0.1927731 0.2233706
+> 
+> 
+> 
+> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
+> base::cat("pdf_gomp", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
+> ### * <FOOTER>
+> ###
+> cleanEx()
+> options(digits = 7L)
+> base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
+Time elapsed:  5.08 0.04 10.49 NA NA 
+> grDevices::dev.off()
+null device 
+          1 
+> ###
+> ### Local variables: ***
+> ### mode: outline-minor ***
+> ### outline-regexp: "\\(> \\)?### [*]+" ***
+> ### End: ***
+> quit('no')

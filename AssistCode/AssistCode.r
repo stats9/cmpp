@@ -16,8 +16,8 @@ devtools :: install()
 devtools :: build(binary = TRUE)
 devtools :: build()
 
-install.packages("./downloads/cmpp_0.0.2.zip", repos = NULL, type = "win-binary")
-install.packages("./downloads/cmpp_0.0.2.tar.gz", repos = NULL, type = "source")
+install.packages("./downloads/cmpp_0.0.3.zip", repos = NULL, type = "win-binary")
+install.packages("./downloads/cmpp_0.0.3.tar.gz", repos = NULL, type = "source")
 # Install from GitHub
 devtools::install_github("stats9/cmpp")
 ## create an example ############

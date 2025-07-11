@@ -4,7 +4,13 @@
 \alias{CIF_Figs}
 \title{Plot Cumulative Incidence Functions (CIF) with Confidence Intervals}
 \usage{
-CIF_Figs(initial_params, TimeFailure, OrderType = c(2, 1), RiskNames = NULL)
+CIF_Figs(
+  initial_params,
+  TimeFailure,
+  OrderType = c(2, 1),
+  RiskNames = NULL,
+  Method = "BFGS"
+)
 }
 \arguments{
 \item{initial_params}{A numeric vector of initial parameter values to start the optimization.}
@@ -14,6 +20,9 @@ CIF_Figs(initial_params, TimeFailure, OrderType = c(2, 1), RiskNames = NULL)
 \item{OrderType}{A numeric vector indicating the order of the competing risks. Default is \code{c(2, 1)}.}
 
 \item{RiskNames}{A character vector of names for the competing risks. Default is \code{NULL}.}
+
+\item{Method}{A character string specifying the optimization method to use.
+The default is \code{"BFGS"}. See \code{?optim} for a list of available methods.}
 }
 \value{
 A ggplot object showing the CIFs and their confidence intervals.

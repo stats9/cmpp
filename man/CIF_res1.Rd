@@ -4,10 +4,13 @@
 \alias{CIF_res1}
 \title{Compute Cumulative Incidence Function (CIF) Results}
 \usage{
-CIF_res1(initial_params = rep(0.001, 4))
+CIF_res1(initial_params = rep(0.001, 4), Method = "BFGS")
 }
 \arguments{
 \item{initial_params}{A numeric vector of initial parameter values to start the optimization. Default is \code{rep(0.001, 4)}.}
+
+\item{Method}{A character string specifying the optimization method to use.
+The default is \code{"BFGS"}. See \code{?optim} for a list of available methods.}
 }
 \value{
 A data frame containing:
@@ -15,7 +18,9 @@ A data frame containing:
 \item{STD}{The standard deviations of the parameters.}
 }
 \description{
-This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive.
+This function estimates the parameters of the model, computes the Hessian matrix,
+and calculates the variances and p-values for the parameters.
+It ensures that the diagonal elements of the covariance matrix are positive.
 }
 \details{
 This function performs the following steps:

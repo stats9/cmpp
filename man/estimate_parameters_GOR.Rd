@@ -4,7 +4,7 @@
 \alias{estimate_parameters_GOR}
 \title{Estimate Parameters for the Generalized odds rate (GOR)}
 \usage{
-estimate_parameters_GOR(initial_params, FeaturesNames = NULL)
+estimate_parameters_GOR(initial_params, FeaturesNames = NULL, Method = "BFGS")
 }
 \arguments{
 \item{initial_params}{A numeric vector of initial parameter values to start the optimization.
@@ -12,6 +12,9 @@ Default is \code{rep(0.001, 2 * (3 + ncol(features)))}, where \code{features} is
 
 \item{FeaturesNames}{A character vector specifying the names of the features (covariates).
 If \code{NULL}, default names (\code{beta1}, \code{beta2}, etc.) will be generated.}
+
+\item{Method}{A character string specifying the optimization method to use.
+The default is \code{"BFGS"}. See \code{?optim} for a list of available methods.}
 }
 \value{
 A data frame containing:

@@ -231,7 +231,7 @@ NULL
 #'    The log-likelihood considers Gompertz distributions for competing risks.
 #'
 #' @param param A numeric vector of model parameters: `alpha1`, `beta1`, `alpha2`, `beta2`, where 
-#' the first two are for the first event and the next two are for the second event.
+#'     the first two are for the first event and the next two are for the second event.
 #'
 #' @details This function requires the data to be initialized using `Initialize` before being called. 
 #' The log-likelihood is based on survival probabilities derived from the Gompertz distributions.
@@ -419,12 +419,12 @@ NULL
 #' can be used.
 #'
 #' @param initial_params A numeric vector of initial parameter values to start the optimization.
-#'                        Default is a vector of four values, all set to 0.01.
+#'     Default is a vector of four values, all set to 0.01.
 #' @param optimMethod A character string specifying the optimization method to use. 
-#'                    The default is `"BFGS"`. See `?optim` for a list of available methods.
+#'     The default is `"BFGS"`. See `?optim` for a list of available methods.
 #'
 #' @return An `optim` object containing the optimization results, including the estimated
-#'         parameters, value of the objective function at the optimum, and other optimization details.
+#'     parameters, value of the objective function at the optimum, and other optimization details.
 #'
 #' @seealso \link[stats:optim]{stats::optim} for more details on optimization methods and usage. 
 #' @examples
@@ -546,10 +546,13 @@ NULL
 #' @name CIF_res1
 #' @title Compute Cumulative Incidence Function (CIF) Results
 #'
-#' @description This function estimates the parameters of the model, computes the Hessian matrix, and calculates the variances and p-values for the parameters. It ensures that the diagonal elements of the covariance matrix are positive.
+#' @description This function estimates the parameters of the model, computes the Hessian matrix, 
+#'     and calculates the variances and p-values for the parameters. 
+#'     It ensures that the diagonal elements of the covariance matrix are positive.
 #'
 #' @param initial_params A numeric vector of initial parameter values to start the optimization. Default is `rep(0.001, 4)`.
-#'
+#' @param Method A character string specifying the optimization method to use. 
+#'     The default is `"BFGS"`. See `?optim` for a list of available methods.
 #' @details This function performs the following steps:
 #' \itemize{
 #'   \item Estimates the model parameters using the `estimate_parameters` function.
@@ -585,8 +588,8 @@ NULL
 #'
 #' @export
 #'
-CIF_res1 <- function(initial_params = rep(0.001, 4)) {
-  Params = estimate_parameters(initial_params = initial_params)$par
+CIF_res1 <- function(initial_params = rep(0.001, 4), Method = "BFGS") {
+  Params = estimate_parameters(initial_params = initial_params, optimMethod = Method)$par
   hessian_mat <- compute_hessian(Params)
   Information_matrix <- - hessian_mat
 
@@ -625,6 +628,8 @@ NULL
 #' @param TimeFailure A numeric vector of failure times corresponding to observations.
 #' @param OrderType A numeric vector indicating the order of the competing risks. Default is `c(2, 1)`.
 #' @param RiskNames A character vector of names for the competing risks. Default is `NULL`.
+#' @param Method A character string specifying the optimization method to use. 
+#'     The default is `"BFGS"`. See `?optim` for a list of available methods.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
@@ -664,8 +669,8 @@ NULL
 #'
 #' @export
 #'
-CIF_Figs <- function(initial_params, TimeFailure, OrderType = c(2, 1), RiskNames = NULL) {
-  Params = estimate_parameters(initial_params = initial_params)$par
+CIF_Figs <- function(initial_params, TimeFailure, OrderType = c(2, 1), RiskNames = NULL, Method = "BFGS") {
+  Params = estimate_parameters(initial_params = initial_params, optimMethod = Method)$par
   hessian_mat <- compute_hessian(Params)
   Information_matrix <- -hessian_mat
   
@@ -894,7 +899,9 @@ NULL
 #' @name compute_log_f_hessian_rcpp
 #' @title Compute the Hessian Matrix of the Log-Likelihood Function Generalized odds rate (GOR)
 #' @description This function computes the Hessian matrix of the log-likelihood function for the parametric model (GOR Approach).
+#'
 #' @param Params A numeric vector of parameters.
+#'
 #' @return A numeric matrix representing the Hessian matrix of the log-likelihood.
 #' @export
 #' @examples
@@ -919,9 +926,11 @@ NULL
 #' The function ensures that the diagonal elements of the covariance matrix are positive for valid variance estimates.
 #'
 #' @param initial_params A numeric vector of initial parameter values to start the optimization. 
-#' Default is `rep(0.001, 2 * (3 + ncol(features)))`, where `features` is the matrix of predictor variables.
+#'     Default is `rep(0.001, 2 * (3 + ncol(features)))`, where `features` is the matrix of predictor variables.
 #' @param FeaturesNames A character vector specifying the names of the features (covariates). 
-#' If `NULL`, default names (`beta1`, `beta2`, etc.) will be generated.
+#'     If `NULL`, default names (`beta1`, `beta2`, etc.) will be generated.
+#' @param Method A character string specifying the optimization method to use. 
+#'     The default is `"BFGS"`. See `?optim` for a list of available methods.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
@@ -965,7 +974,7 @@ NULL
 #'
 #' @export
 #'
-estimate_parameters_GOR <- function(initial_params, FeaturesNames = NULL) {
+estimate_parameters_GOR <- function(initial_params, FeaturesNames = NULL, Method = "BFGS") {
   # Optimize the log-likelihood function to estimate parameters
   tempk <- length(initial_params) - 6
   tempk <- tempk/2
@@ -973,7 +982,7 @@ estimate_parameters_GOR <- function(initial_params, FeaturesNames = NULL) {
     par = initial_params,
     fn = log_f_rcpp,
     gr = compute_log_f_gradient_rcpp,
-    method = "BFGS",
+    method = Method,
     control = list(fnscale = -1)
   )
   if(!is.null(FeaturesNames)) {
@@ -1048,6 +1057,7 @@ NULL
 #' @param Params A numeric vector of parameters.
 #' @param Z A numeric vector of covariates.
 #' @param x A numeric value representing the time point.
+#'
 #' @return A numeric value representing the CDF.
 #' @export
 #' @examples
@@ -1089,6 +1099,7 @@ NULL
 #' @title Compute the Gradient of the Log-Likelihood Function Proportional Odds Model (POM)
 #' @description This function computes the gradient of the log-likelihood function for the parametric model (POM Approach).
 #' @param Params A numeric vector of parameters.
+#'
 #' @return A numeric vector representing the gradient of the log-likelihood.
 #' @export
 #' @examples
@@ -1110,13 +1121,16 @@ NULL
 #' @title Estimate Parameters for the Proportional Odds Model (POM)
 #'
 #' @description This function estimates the parameters of the Proportional Odds Model (POM) using maximum likelihood estimation. 
-#' It computes the Hessian matrix, calculates standard errors, and derives p-values for the estimated parameters. 
-#' The function ensures that the diagonal elements of the covariance matrix are positive for valid variance estimates.
+#'     It computes the Hessian matrix, calculates standard errors, and derives p-values for the estimated parameters. 
+#'     The function ensures that the diagonal elements of the covariance matrix are positive for valid variance estimates.
 #'
 #' @param initial_params A numeric vector of initial parameter values to start the optimization. 
-#' Default is `rep(0.001, 2 * (2 + ncol(features)))`, where `features` is the matrix of predictor variables.
+#'     Default is `rep(0.001, 2 * (2 + ncol(features)))`, where `features` is the matrix of predictor variables.
 #' @param FeaturesNames A character vector specifying the names of the features (covariates). 
-#' If `NULL`, default names (`beta1`, `beta2`, etc.) will be generated.
+#'     If `NULL`, default names (`beta1`, `beta2`, etc.) will be generated.
+#' @param Method A character string specifying the optimization method to use. 
+#'     The default is `"BFGS"`. See `?optim` for a list of available methods.
+#'
 #'
 #' @details This function performs the following steps:
 #' \itemize{
@@ -1161,7 +1175,7 @@ NULL
 #' print(result)
 #'
 #' @export
-estimate_parameters_POM <- function(initial_params, FeaturesNames = NULL) {
+estimate_parameters_POM <- function(initial_params, FeaturesNames = NULL, Method = "BFGS") {
   # Optimize the log-likelihood function to estimate parameters
   tempk <- length(initial_params) - 4
   tempk <- tempk/2
@@ -1169,7 +1183,7 @@ estimate_parameters_POM <- function(initial_params, FeaturesNames = NULL) {
     par = initial_params,
     fn = log_f_rcpp2,
     gr = compute_log_f_gradient_rcpp2,
-    method = "BFGS",
+    method = Method,
     control = list(fnscale = -1)
   )
     if(!is.null(FeaturesNames)) {
@@ -1242,6 +1256,7 @@ NULL
 #' @param Params A numeric vector of parameters.
 #' @param Z A numeric vector of covariates.
 #' @param x A numeric value representing the time point.
+#'
 #' @return A numeric value representing the CDF.
 #' @export
 #' @examples
@@ -1307,9 +1322,11 @@ NULL
 #' The function ensures that the diagonal elements of the covariance matrix are positive for valid variance estimates.
 #'
 #' @param initial_params A numeric vector of initial parameter values to start the optimization. 
-#' Default is `rep(0.001, 2 * (2 + ncol(features)))`, where `features` is the matrix of predictor variables.
+#'     Default is `rep(0.001, 2 * (2 + ncol(features)))`, where `features` is the matrix of predictor variables.
 #' @param FeaturesNames A character vector specifying the names of the features (covariates). 
-#' If `NULL`, default names (`beta1`, `beta2`, etc.) will be generated.
+#'     If `NULL`, default names (`beta1`, `beta2`, etc.) will be generated.
+#' @param Method A character string specifying the optimization method to use. 
+#'     The default is `"BFGS"`. See `?optim` for a list of available methods.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
@@ -1354,7 +1371,7 @@ NULL
 #' print(result)
 #'
 #' @export
-estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL) {
+estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL, Method = "BFGS") {
   # Optimize the log-likelihood function to estimate parameters
   tempk <- length(initial_params) - 4
   tempk <- tempk/2
@@ -1362,7 +1379,7 @@ estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL) {
     par = initial_params,
     fn = log_f_rcpp3,
     gr = compute_log_f_gradient_rcpp3,
-    method = "BFGS",
+    method = Method,
     control = list(fnscale = -1)
   )
   if(!is.null(FeaturesNames)) {
@@ -1555,6 +1572,8 @@ NULL
 #' @param RiskNames A character vector specifying the names of the competing risks. Default is `NULL`, which assigns names as "Risk1" and "Risk2".
 #' @param TypeMethod A character string specifying the model to use for plotting. Must be one of `"GOR"`, `"POM"`, or `"PHM"`. Default is `"GOR"`.
 #' @param predTime A numeric vector of time points for which CIFs are computed. Default is `NULL`, which uses the failure times from the initialized data.
+#' @param optimMethod A character string specifying the optimization method to use. 
+#'     The default is `"BFGS"`. See `?optim` for a list of available methods.
 #'
 #' @details This function performs the following steps:
 #' \itemize{
@@ -1616,7 +1635,7 @@ NULL
 #' @export
 #'
 Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL, 
-    TypeMethod = "GOR", predTime = NULL) {
+    TypeMethod = "GOR", predTime = NULL, optimMethod = "BFGS") {
     
     if(!TypeMethod %in% c("GOR", "POM", "PHM")) {
       stop("TypeMethod must be one of `GOR` or `POM` or `PHM`.")    
@@ -1647,9 +1666,9 @@ Cmpp_CIF <- function(featureID = NULL, featureValue = NULL, RiskNames = NULL,
     }
   }
 
-  Par1 <- estimate_parameters_GOR(rep(0.01, 2*(3 + GetDim()$Nfeature)))
-  Par2 <- estimate_parameters_POM(rep(0.01, 2*(2 + GetDim()$Nfeature)))
-  Par3 <- estimate_parameters_PHM(rep(0.01, 2*(2 + GetDim()$Nfeature)))
+  Par1 <- estimate_parameters_GOR(rep(0.01, 2*(3 + GetDim()$Nfeature)), Method = optimMethod)
+  Par2 <- estimate_parameters_POM(rep(0.01, 2*(2 + GetDim()$Nfeature)), Method = optimMethod)
+  Par3 <- estimate_parameters_PHM(rep(0.01, 2*(2 + GetDim()$Nfeature)), Method = optimMethod)
   Par11 <- Par1[1:(GetDim()$Nfeature + 3), 2]
   Par12 <- Par1[(4 + GetDim()$Nfeature):(dim(Par1)[1]), 2] 
   Par21 <- Par2[1:(GetDim()$Nfeature + 2), 2]

@@ -9,7 +9,8 @@ Cmpp_CIF(
   featureValue = NULL,
   RiskNames = NULL,
   TypeMethod = "GOR",
-  predTime = NULL
+  predTime = NULL,
+  optimMethod = "BFGS"
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ Cmpp_CIF(
 \item{TypeMethod}{A character string specifying the model to use for plotting. Must be one of \code{"GOR"}, \code{"POM"}, or \code{"PHM"}. Default is \code{"GOR"}.}
 
 \item{predTime}{A numeric vector of time points for which CIFs are computed. Default is \code{NULL}, which uses the failure times from the initialized data.}
+
+\item{optimMethod}{A character string specifying the optimization method to use.
+The default is \code{"BFGS"}. See \code{?optim} for a list of available methods.}
 }
 \value{
 A list containing:

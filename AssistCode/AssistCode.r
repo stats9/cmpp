@@ -8,7 +8,7 @@ unlink("src/RcppExports.*")
 Rcpp::compileAttributes()
 
 system("R CMD build .")           # ساخت tar.gz
-system("R CMD INSTALL --build cmpp_0.0.2.tar.gz")  # ساخت zip
+system("R CMD INSTALL --build cmpp_0.0.3.tar.gz")  # ساخت zip
 
 
 devtools :: check()
@@ -16,14 +16,15 @@ devtools :: install()
 devtools :: build(binary = TRUE)
 devtools :: build()
 
-install.packages("./downloads/cmpp_0.0.1.zip", repos = NULL, type = "win-binary")
-install.packages("./downloads/cmpp_0.0.1.tar.gz", repos = NULL, type = "source")
+install.packages("./downloads/cmpp_0.0.2.zip", repos = NULL, type = "win-binary")
+install.packages("./downloads/cmpp_0.0.2.tar.gz", repos = NULL, type = "source")
 # Install from GitHub
 devtools::install_github("stats9/cmpp")
 ## create an example ############
 
 library(cmpp)
 data("fertility_data")
+help(package = "cmpp")
 (Nam <- names(fertility_data))
 fertility_data$Education
 datt <- make_Dummy(fertility_data, features = c("Education"))

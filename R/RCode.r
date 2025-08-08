@@ -976,8 +976,8 @@ NULL
 #'
 estimate_parameters_GOR <- function(initial_params, FeaturesNames = NULL, Method = "BFGS") {
   # Optimize the log-likelihood function to estimate parameters
-  tempk <- length(initial_params) - 6
-  tempk <- tempk/2
+  # tempk <- length(initial_params) - 6
+  # tempk <- tempk/2
   optim_result <- optim(
     par = initial_params,
     fn = log_f_rcpp,
@@ -986,11 +986,13 @@ estimate_parameters_GOR <- function(initial_params, FeaturesNames = NULL, Method
     control = list(fnscale = -1)
   )
   if(!is.null(FeaturesNames)) {
-    varNames <- c('alpha1', 'tau1', 'rho1', paste("Risk1", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"),
-      'alpha2', 'tau2', 'rho2', paste("Risk2", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"))
+    varNames <- c(paste("Risk1", c("alpha", "tau", "rho", FeaturesNames), sep = ":"), 
+      paste("Risk2", c("alpha", "tau", "rho", FeaturesNames), sep = ":"))
   } else{
-      varNames <- c('alpha1', 'tau1', 'rho1', paste("beta1", 1:tempk, sep = ":"),
-        'alpha2', 'tau2', 'rho2', paste("beta2", 1:tempk, sep = ":"))
+      varNames <- c(paste("Risk1", c("alpha", "tau", "rho", 
+        paste0("Beta", 1:ncol(GetData()$features))), sep = ":"), 
+        paste("Risk2", c("alpha", "tau", "rho", 
+        paste0("Beta", 1:ncol(GetData()$features))), sep = ":"))
     }
   
   # Extract estimated parameters
@@ -1008,19 +1010,22 @@ estimate_parameters_GOR <- function(initial_params, FeaturesNames = NULL, Method
   return(hessian_matrix)
 }
 
-  hessian_matrix <- compute_hessian_r(initial_params)
+  hessian_matrix <- compute_hessian_r(estimated_params)
 
   # Compute the standard deviations of the parameters
   std_devs <- diag(solve(-hessian_matrix)) |> abs() |> sqrt()
   
   # Compute the p-values for the parameters
-  p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))
+  # p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))
+  p_values <- 2 * (1 - pnorm(abs(estimated_params / (sqrt(GetDim()$Nsamp) * std_devs))))
+
   
   # Create a data frame with parameter names, estimates, standard deviations, and p-values
   result_df <- data.frame(
     Parameter = varNames,
     Estimate = estimated_params,
-    S.E = std_devs/sqrt(GetDim()$Nsamp),
+    # S.E = std_devs/sqrt(GetDim()$Nsamp),
+    S.E = std_devs,
     # Adjust standard errors by the square root of the sample size
     PValue = p_values
   )
@@ -1177,8 +1182,8 @@ NULL
 #' @export
 estimate_parameters_POM <- function(initial_params, FeaturesNames = NULL, Method = "BFGS") {
   # Optimize the log-likelihood function to estimate parameters
-  tempk <- length(initial_params) - 4
-  tempk <- tempk/2
+  # tempk <- length(initial_params) - 4
+  # tempk <- tempk/2
   optim_result <- optim(
     par = initial_params,
     fn = log_f_rcpp2,
@@ -1187,12 +1192,14 @@ estimate_parameters_POM <- function(initial_params, FeaturesNames = NULL, Method
     control = list(fnscale = -1)
   )
     if(!is.null(FeaturesNames)) {
-    varNames <- c('tau1', 'rho1', paste("Risk1", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"),
-      'tau2', 'rho2', paste("Risk2", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"))
-  } else{
-      varNames <- c('tau1', 'rho1', paste("beta1", 1:tempk, sep = ":"),
-        'tau2', 'rho2', paste("beta2", 1:tempk, sep = ":"))
-    }
+      varNames <- c(paste("Risk1", c("tau", "rho", FeaturesNames), sep = ":"), 
+        paste("Risk2", c("tau", "rho", FeaturesNames), sep = ":"))
+    } else{
+        varNames <- c(paste("Risk1", c("tau", "rho", 
+          paste0("Beta", 1:ncol(GetData()$features))), sep = ":"), 
+          paste("Risk2", c("tau", "rho", 
+          paste0("Beta", 1:ncol(GetData()$features))), sep = ":"))
+      }
   # Extract estimated parameters
   estimated_params <- optim_result$par
   
@@ -1208,19 +1215,22 @@ estimate_parameters_POM <- function(initial_params, FeaturesNames = NULL, Method
   return(hessian_matrix)
 }
 
-  hessian_matrix <- compute_hessian_r(initial_params)
+  hessian_matrix <- compute_hessian_r(estimated_params)
 
   # Compute the standard deviations of the parameters
   std_devs <- diag(solve(-hessian_matrix)) |> abs() |> sqrt()
   
   # Compute the p-values for the parameters
-  p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))
+# p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))  
+p_values <- 2 * (1 - pnorm(abs(estimated_params / (sqrt(GetDim()$Nsamp) * std_devs))))
+  
   
   # Create a data frame with parameter names, estimates, standard deviations, and p-values
   result_df <- data.frame(
     Parameter = varNames,
     Estimate = estimated_params,
-    S.E = std_devs/sqrt(GetDim()$Nsamp),
+    # S.E = std_devs/sqrt(GetDim()$Nsamp),
+    S.E = std_devs,
     PValue = p_values
   )
   
@@ -1373,8 +1383,7 @@ NULL
 #' @export
 estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL, Method = "BFGS") {
   # Optimize the log-likelihood function to estimate parameters
-  tempk <- length(initial_params) - 4
-  tempk <- tempk/2
+
   optim_result <- optim(
     par = initial_params,
     fn = log_f_rcpp3,
@@ -1382,13 +1391,15 @@ estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL, Method
     method = Method,
     control = list(fnscale = -1)
   )
-  if(!is.null(FeaturesNames)) {
-    varNames <- c('tau1', 'rho1', paste("Risk1", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"),
-      'tau2', 'rho2', paste("Risk2", paste(FeaturesNames, 1:tempk, sep = ":"), sep = ":"))
-  } else{
-      varNames <- c('tau1', 'rho1', paste("beta1", 1:tempk, sep = ":"),
-        'tau2', 'rho2', paste("beta2", 1:tempk, sep = ":"))
-    }
+    if(!is.null(FeaturesNames)) {
+      varNames <- c(paste("Risk1", c("tau", "rho", FeaturesNames), sep = ":"), 
+        paste("Risk2", c("tau", "rho", FeaturesNames), sep = ":"))
+    } else{
+        varNames <- c(paste("Risk1", c("tau", "rho", 
+          paste0("Beta", 1:ncol(GetData()$features))), sep = ":"), 
+          paste("Risk2", c("tau", "rho", 
+          paste0("Beta", 1:ncol(GetData()$features))), sep = ":"))
+      }
   
   # Extract estimated parameters
   estimated_params <- optim_result$par
@@ -1404,19 +1415,22 @@ estimate_parameters_PHM <- function(initial_params, FeaturesNames = NULL, Method
   return(hessian_matrix)
 }
 
-  hessian_matrix <- compute_hessian_r(initial_params)
+  hessian_matrix <- compute_hessian_r(estimated_params)
 
   # Compute the standard deviations of the parameters
   std_devs <- diag(solve(-hessian_matrix)) |> abs() |> sqrt()
   
   # Compute the p-values for the parameters
-  p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))
+  # p_values <- 2 * (1 - pnorm(abs(estimated_params / std_devs)))
+  p_values <- 2 * (1 - pnorm(abs(estimated_params / (sqrt(GetDim()$Nsamp) * std_devs))))
+
   
   # Create a data frame with parameter names, estimates, standard deviations, and p-values
   result_df <- data.frame(
     Parameter = varNames,
     Estimate = estimated_params,
-    S.E = std_devs/sqrt(GetDim()$Nsamp),
+    # S.E = std_devs/sqrt(GetDim()$Nsamp),
+    S.E = std_devs,
     PValue = p_values
   )
   
